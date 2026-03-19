@@ -20,6 +20,14 @@ export function useInView({
     const el = ref.current;
     if (!el) return;
 
+    // If the element is already in the viewport on mount, mark it in-view immediately
+    // This prevents above-the-fold sections from being permanently invisible
+    const rect = el.getBoundingClientRect();
+    if (rect.top < window.innerHeight && rect.bottom > 0) {
+      setInView(true);
+      return;
+    }
+
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
