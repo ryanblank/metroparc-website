@@ -1,0 +1,166 @@
+@import "tailwindcss";
+
+/* ===== PARSLAY FONT FACE ===== */
+@font-face {
+  font-family: "Parslay";
+  src: url("/fonts/Parslay.woff2") format("woff2"),
+       url("/fonts/Parslay.woff") format("woff");
+  font-weight: normal;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* ===== DESIGN TOKENS ===== */
+@theme {
+  /* Primary */
+  --color-deep-ocean: #045571;
+  --color-deep-ocean-light: #0d7a9e;
+  --color-deep-ocean-lighter: #1a99bb;
+  --color-deep-ocean-muted: #0a3a4a;
+  --color-deep-ocean-hover: #034455;
+  --color-deep-ocean-active: #023344;
+
+  /* Secondary */
+  --color-calm-waves: #7a97ac;
+  --color-calm-waves-light: #a5b8c7;
+  --color-calm-waves-lighter: #d0dae3;
+  --color-calm-waves-muted: #556878;
+  --color-calm-waves-hover: #6a8399;
+
+  /* Accent — Primary */
+  --color-avocado: #a9ab36;
+  --color-avocado-light: #c8ca5c;
+  --color-avocado-lighter: #e0e297;
+  --color-avocado-muted: #8a8c2d;
+  --color-avocado-hover: #979930;
+
+  /* Accent — Secondary */
+  --color-terracotta: #9b5529;
+  --color-terracotta-light: #b8734d;
+  --color-terracotta-lighter: #d4956f;
+  --color-terracotta-muted: #7a4420;
+  --color-terracotta-hover: #8a4a24;
+
+  /* Neutrals */
+  --color-clouds: #f7f5f2;
+  --color-clouds-muted: #ede9e4;
+  --color-city-night: #313e48;
+  --color-city-night-light: #4a5a6b;
+  --color-city-night-lighter: #6b7a8a;
+  --color-city-night-muted: #1f2a33;
+
+  /* Base */
+  --color-white: #ffffff;
+  --color-black: #0a0a0a;
+
+  /* Semantic */
+  --color-success: #a9ab36;
+  --color-warning: #9b5529;
+  --color-error: #c9302c;
+
+  /* Typography */
+  --font-display: "Parslay", serif;
+  --font-heading: var(--font-montserrat), "Montserrat", sans-serif;
+  --font-body: var(--font-montserrat), "Montserrat", sans-serif;
+  --font-decorative: var(--font-josefin), "Josefin Sans", sans-serif;
+
+  /* Border Radius */
+  --radius-sm: 0.25rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.5rem;
+}
+
+/* ===== GLOBAL STYLES ===== */
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--color-city-night);
+  background: var(--color-white);
+  line-height: 1.6;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ===== TYPOGRAPHY UTILITIES ===== */
+.font-display {
+  font-family: var(--font-display);
+  font-style: italic;
+}
+
+.font-decorative {
+  font-family: var(--font-decorative);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+/* ===== OVERLAY UTILITIES ===== */
+.overlay-deep-ocean {
+  background: rgba(4, 85, 113, 0.65);
+}
+
+.overlay-city-night {
+  background: rgba(49, 62, 72, 0.75);
+}
+
+/* ===== ANIMATION KEYFRAMES ===== */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* ===== SCROLLBAR STYLING ===== */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-clouds);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-calm-waves);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-calm-waves-muted);
+}
