@@ -1,28 +1,57 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useInView } from "@/hooks/useInView";
 
+const GALLERY = [
+  {
+    src: "/images/interiors/kitchen-dining.jpg",
+    alt: "Kitchen and dining area at Metro Parc Hialeah",
+  },
+  {
+    src: "/images/interiors/living-room-styled.jpg",
+    alt: "Styled living room at Metro Parc luxury apartments",
+  },
+  {
+    src: "/images/interiors/bedroom-furnished.jpg",
+    alt: "Furnished bedroom at Metro Parc apartments in Hialeah FL",
+  },
+];
+
 export default function ResidencesTeaser() {
   const { ref, inView } = useInView();
+  const [current, setCurrent] = useState(0);
+
+  // Advance every 4.5 seconds once section is in view
+  useEffect(() => {
+    if (!inView) return;
+    const timer = setInterval(() => {
+      setCurrent((prev) => (prev + 1) % GALLERY.length);
+    }, 4500);
+    return () => clearInterval(timer);
+  }, [inView]);
 
   return (
     <section
       ref={ref as React.RefObject<HTMLElement>}
       className="grid grid-cols-1 lg:grid-cols-2 min-h-[600px] bg-clouds"
     >
-      {/* Image */}
-      <div className="relative overflow-hidden bg-city-night order-2 lg:order-1 min-h-[300px]">
-        <Image
-          src="/images/interiors/unit-a1-living.jpg"
-          alt="Modern apartment living room at Metro Parc"
-          fill
-          className={`object-cover transition-all duration-800 ${
-            inView ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-10"
-          }`}
-          sizes="(max-width: 1024px) 100vw, 50vw"
-        />
+      {/* Crossfade image gallery */}
+      <div className="relative overflow-hidden bg-city-night order-2 lg:order-1 min-h-[400px]">
+        {GALLERY.map((img, i) => (
+          <Image
+            key={img.src}
+            src={img.src}
+            alt={img.alt}
+            fill
+            className="object-cover transition-opacity duration-[1500ms] ease-in-out"
+            style={{ opacity: i === current ? 1 : 0 }}
+            sizes="(max-width: 1024px) 100vw, 50vw"
+            priority={i === 0}
+          />
+        ))}
       </div>
 
       {/* Content */}
@@ -48,12 +77,16 @@ export default function ResidencesTeaser() {
             inView ? "opacity-100 translate-x-0" : "opacity-0 translate-x-10"
           }`}
         >
-          Each residence at Metro Parc is carefully crafted with premium finishes, expansive windows flooding natural light, and open-concept layouts. From luxury vinyl-wood flooring to spa-inspired bathrooms, our floor plans adapt to your lifestyle. Engineered for comfort, designed for living.
+          Each residence at Metro Parc is carefully crafted with premium
+          finishes, expansive windows flooding natural light, and open-concept
+          layouts. From luxury vinyl-wood flooring to spa-inspired bathrooms,
+          our floor plans adapt to your lifestyle. Engineered for comfort,
+          designed for living.
         </p>
 
         <Link
           href="/residences"
-          className={`inline-flex items-center gap-2 text-avocado font-semibold no-underline transition-all duration-600 delay-300 hover:gap-4 ${
+          className={`inline-flex items-center gap-2 text-avocado font-semibold no-underline transition-all duration-300 hover:gap-4 delay-300 ${
             inView ? "opacity-100 translate-x-0" : "opacity-0 translate-x-10"
           }`}
         >

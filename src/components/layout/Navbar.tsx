@@ -43,9 +43,9 @@ export default function Navbar({ onBookTourClick }: NavbarProps) {
     <>
       {/* Navigation Bar */}
       <nav
-        className={`fixed top-0 left-0 right-0 z-[1000] flex justify-between items-center px-6 py-5 transition-all duration-300 ${
+        className={`fixed top-10 left-0 right-0 z-[1000] flex justify-between items-center px-6 py-5 transition-all duration-300 ${
           isScrolled
-            ? "bg-city-night/95 backdrop-blur-[10px] shadow-[0_4px_20px_rgba(0,0,0,0.1)]"
+            ? "bg-deep-ocean/95 backdrop-blur-[10px] shadow-[0_4px_20px_rgba(0,0,0,0.15)]"
             : "bg-transparent"
         }`}
       >
@@ -69,7 +69,7 @@ export default function Navbar({ onBookTourClick }: NavbarProps) {
           {/* Availability button - hidden on mobile */}
           <Link
             href="/availability"
-            className="hidden md:inline-flex items-center bg-avocado text-city-night px-5 py-2.5 border border-avocado rounded-full font-decorative text-[0.8rem] uppercase tracking-[0.1em] transition-all duration-300 hover:bg-avocado-hover hover:border-avocado-hover no-underline"
+            className="hidden md:inline-flex items-center bg-transparent text-clouds px-5 py-2.5 border border-clouds/40 rounded-full font-decorative text-[0.8rem] uppercase tracking-[0.1em] transition-all duration-300 hover:border-clouds/80 hover:bg-clouds/[0.08] no-underline"
           >
             Availability
           </Link>
@@ -77,7 +77,7 @@ export default function Navbar({ onBookTourClick }: NavbarProps) {
           {/* Book a Tour button - hidden on mobile */}
           <button
             onClick={onBookTourClick}
-            className="hidden md:inline-flex items-center bg-avocado text-city-night px-5 py-2.5 border border-avocado rounded-full font-decorative text-[0.8rem] uppercase tracking-[0.1em] cursor-pointer transition-all duration-300 hover:bg-avocado-hover hover:border-avocado-hover"
+            className="hidden md:inline-flex items-center bg-transparent text-clouds px-5 py-2.5 border border-clouds/40 rounded-full font-decorative text-[0.8rem] uppercase tracking-[0.1em] cursor-pointer transition-all duration-300 hover:border-clouds/80 hover:bg-clouds/[0.08]"
           >
             Book a Tour
           </button>

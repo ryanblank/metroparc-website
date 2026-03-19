@@ -11,6 +11,11 @@ const AMENITY_CARDS = [
     label: "Resort-Style Pool",
   },
   {
+    image: "/images/amenities/cabanas.jpg",
+    alt: "Private cabana seating by the pool at Metro Parc apartments",
+    label: "Cabanas",
+  },
+  {
     image: "/images/amenities/gym.jpg",
     alt: "Modern fitness center with free weights and treadmills at Metro Parc",
     label: "Fitness Center",
@@ -19,11 +24,6 @@ const AMENITY_CARDS = [
     image: "/images/amenities/coworking.jpg",
     alt: "Co-working space with private offices at Metro Parc Hialeah",
     label: "Co-Working Space",
-  },
-  {
-    image: "/images/amenities/cabanas.jpg",
-    alt: "Private cabana seating by the pool at Metro Parc apartments",
-    label: "Pool & Cabanas",
   },
 ];
 
@@ -66,7 +66,7 @@ export default function AmenitiesTeaser() {
             inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-5"
           }`}
         >
-          Vida Beyond Your Door
+          Every Detail Matters
         </h2>
       </div>
 
@@ -87,8 +87,8 @@ export default function AmenitiesTeaser() {
               className="object-cover transition-transform duration-400 group-hover:scale-110"
               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
             />
-            <div className="absolute inset-0 overlay-city-night flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-400">
-              <span className="font-decorative text-xl font-semibold uppercase tracking-[0.1em] text-center text-clouds">
+            <div className="absolute inset-0 overlay-city-night flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-400 px-4">
+              <span className="font-decorative text-base font-semibold uppercase tracking-[0.1em] text-center text-clouds leading-snug">
                 {card.label}
               </span>
             </div>

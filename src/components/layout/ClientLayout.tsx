@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import Navbar from "./Navbar";
+import AnnouncementBar from "./AnnouncementBar";
 import Footer from "./Footer";
-import FixedCTA from "./FixedCTA";
 import BookTourModal from "./BookTourModal";
 import { BookTourContext } from "@/context/BookTourContext";
 
@@ -19,10 +19,10 @@ export default function ClientLayout({
 
   return (
     <BookTourContext.Provider value={{ openBookTour }}>
+      <AnnouncementBar />
       <Navbar onBookTourClick={openBookTour} />
       <main className="flex-1">{children}</main>
       <Footer />
-      <FixedCTA onBookTourClick={openBookTour} />
       <BookTourModal isOpen={isBookTourOpen} onClose={closeBookTour} />
     </BookTourContext.Provider>
   );

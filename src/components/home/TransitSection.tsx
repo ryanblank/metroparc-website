@@ -25,7 +25,7 @@ export default function TransitSection() {
       {/* Content */}
       <div className="relative z-[2] text-center text-white px-8 max-w-[800px] mx-auto">
         <div className="font-decorative text-[0.8rem] tracking-[0.2em] text-avocado-light uppercase mb-4 opacity-90">
-          Hialeah Metrorail Station · 2 Blocks Away
+          5 min to Metrorail · 20 min to Downtown Miami
         </div>
 
         <h2 className="text-[clamp(2rem,6vw,3.5rem)] font-bold leading-[1.15] mb-6 text-white">
