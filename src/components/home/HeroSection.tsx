@@ -7,15 +7,24 @@ export default function HeroSection() {
 
   return (
     <section className="relative h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-city-night to-deep-ocean">
-      {/* Background image — swap to Vercel Blob video for production */}
-      {/* <video autoPlay muted loop playsInline poster="/images/exterior/exterior-render.jpg"
-        className="absolute inset-0 w-full h-full object-cover opacity-40 z-0">
-        <source src={process.env.NEXT_PUBLIC_HERO_VIDEO_URL} type="video/mp4" />
-      </video> */}
-      <div
-        className="absolute inset-0 bg-cover bg-center bg-fixed opacity-40 z-0"
-        style={{ backgroundImage: "url('/images/exterior/exterior-render.jpg')" }}
-      />
+      {/* Hero video with image fallback */}
+      {process.env.NEXT_PUBLIC_HERO_VIDEO_URL ? (
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          poster="/images/exterior/exterior-render.jpg"
+          className="absolute inset-0 w-full h-full object-cover opacity-40 z-0"
+        >
+          <source src={process.env.NEXT_PUBLIC_HERO_VIDEO_URL} type="video/mp4" />
+        </video>
+      ) : (
+        <div
+          className="absolute inset-0 bg-cover bg-center bg-fixed opacity-40 z-0"
+          style={{ backgroundImage: "url('/images/exterior/exterior-render.jpg')" }}
+        />
+      )}
 
       {/* Deep-ocean overlay */}
       <div className="absolute inset-0 overlay-deep-ocean z-[1]" />

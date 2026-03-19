@@ -58,6 +58,7 @@ export default function ResidencesPage() {
         subtitle="A New Standard of Living"
         imageSrc="/images/interiors/living-room-styled.jpg"
         imageAlt="Styled luxury apartment living room at Metro Parc studio and 1 & 2-bedroom apartments in Hialeah FL"
+        videoSrc={process.env.NEXT_PUBLIC_RESIDENCES_VIDEO_URL}
       />
 
       {/* Interiors Overview */}
