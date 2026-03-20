@@ -161,14 +161,15 @@ export default function ResidencesPage() {
         {/* Full-width video */}
         <div className="w-full" style={{ height: "60vh" }}>
           <video
-            src="/videos/penthouse.mp4"
             autoPlay
             muted
             loop
             playsInline
             preload="none"
             className="w-full h-full object-cover"
-          />
+          >
+            <source src={process.env.NEXT_PUBLIC_RESIDENCES_VIDEO_URL} type="video/mp4" />
+          </video>
         </div>
 
         {/* Body copy + feature grid */}
