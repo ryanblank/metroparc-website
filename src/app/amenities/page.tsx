@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import PageHero from "@/components/shared/PageHero";
 import PhotoGallery from "@/components/shared/PhotoGallery";
+import AmenitiesGrid from "@/components/amenities/AmenitiesGrid";
 import { BreadcrumbSchema } from "../structured-data";
 import { SITE_URL } from "@/lib/constants";
 
@@ -70,18 +71,6 @@ const ALL_COMMUNITY_AMENITIES = [
   "Free weekly virtual events through AlfredOS",
 ];
 
-const UNIT_FEATURES = [
-  "Open-Concept Floor Plans",
-  "Luxury Vinyl-Wood Flooring",
-  "Stainless Steel Appliances",
-  "Ceramic Tile Backsplash",
-  "Full-Size Washer & Dryer",
-  "LED Lighting Throughout Units",
-  "11' Foot Ceilings *",
-  "Spacious Closets with Ample Storage",
-  "Large Windows with Natural Light",
-];
-
 const GALLERY_IMAGES = [
   { src: "/images/amenities/cabanas.jpg", alt: "Private cabana seating by the pool at Metro Parc Hialeah" },
   { src: "/images/amenities/lobby.jpg", alt: "Main lobby with ring lights and teal seating at Metro Parc" },
@@ -101,20 +90,20 @@ export default function AmenitiesPage() {
         ]}
       />
       <PageHero
-        title="Amenities at Metro Parc — Pet-Friendly Apartments in Hialeah"
-        subtitle="Designed for the Way You Live"
-        imageSrc="/images/amenities/pool.jpg"
-        imageAlt="Resort-style pool deck with cabanas at Metro Parc pet-friendly apartments in Hialeah FL"
+        title="Every Detail Matters"
+        subtitle="temporary filler"
+        imageSrc="/images/amenities/hero.jpg"
+        imageAlt="Lobby and courtyard at Metro Parc apartments in Hialeah FL"
       />
 
       {/* Intro */}
       <section className="bg-clouds py-[clamp(3rem,10vw,6rem)] px-8 text-center">
         <div className="max-w-[700px] mx-auto">
           <p className="font-decorative text-[0.875rem] tracking-[0.15em] text-avocado uppercase mb-4">
-            Your Community
+            Amenities
           </p>
           <h2 className="text-[clamp(1.75rem,4vw,2.5rem)] font-bold text-city-night mb-6 leading-[1.2]">
-            Pet-Friendly Living at Metro Parc
+            Resort-Style Amenities in Hialeah
           </h2>
           <p className="text-city-night-light leading-[1.8]">
             At Metro Parc, we believe that every detail matters. That&apos;s why we&apos;ve designed a pet-friendly community that elevates your living experience with modern conveniences and stylish touches. From our resort-style pool and Peloton-equipped fitness center to the co-working space and 24-hour concierge, our amenities are tailored to meet your every need. <Link href="/residences" className="text-deep-ocean hover:underline">Browse apartment interiors and floor plans</Link> to see the full picture.
@@ -122,79 +111,29 @@ export default function AmenitiesPage() {
         </div>
       </section>
 
-      {/* Featured Amenities Grid */}
-      <section className="bg-white py-[clamp(3rem,10vw,6rem)] px-8">
+      {/* Featured Amenities */}
+      <section className="bg-city-night py-[clamp(3rem,10vw,6rem)] px-8">
         <div className="max-w-[1200px] mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
-            {FEATURED_AMENITIES.map((amenity) => (
-              <div key={amenity.name} className="group rounded-lg overflow-hidden bg-clouds">
-                <div className="relative h-[250px] overflow-hidden">
-                  <Image
-                    src={amenity.image}
-                    alt={amenity.alt}
-                    fill
-                    className="object-cover transition-transform duration-400 group-hover:scale-105"
-                    sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                  />
-                </div>
-                <div className="p-6">
-                  <h3 className="font-decorative text-sm uppercase tracking-[0.1em] text-deep-ocean mb-2">
-                    {amenity.name}
-                  </h3>
-                  <p className="text-sm text-city-night-light">{amenity.description}</p>
-                </div>
-              </div>
-            ))}
+
+          <div className="mb-16">
+            <AmenitiesGrid />
           </div>
 
           {/* Full amenity list */}
-          <div className="border-t border-calm-waves-lighter pt-12">
-            <h3 className="text-xl font-semibold text-city-night mb-6 text-center">
+          <div className="border-t border-clouds/10 pt-12">
+            <h3 className="font-decorative text-[0.875rem] tracking-[0.15em] text-avocado uppercase mb-8 text-center">
               All Community Amenities
             </h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-[900px] mx-auto">
               {ALL_COMMUNITY_AMENITIES.map((amenity) => (
-                <div key={amenity} className="flex items-start gap-3 text-city-night text-sm">
+                <div key={amenity} className="flex items-start gap-3 text-clouds/80 text-sm">
                   <span className="text-avocado mt-0.5 shrink-0">✓</span>
                   <span>{amenity}</span>
                 </div>
               ))}
             </div>
           </div>
-        </div>
-      </section>
 
-      {/* In-Unit Features */}
-      <section className="bg-city-night text-clouds py-[clamp(3rem,10vw,6rem)] px-8">
-        <div className="max-w-[1200px] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          <div>
-            <p className="font-decorative text-[0.875rem] tracking-[0.15em] text-avocado uppercase mb-4">
-              Your Apartment
-            </p>
-            <h2 className="text-[clamp(1.75rem,4vw,2.5rem)] font-bold mb-6 leading-[1.2]">
-              Premium In-Unit Features
-            </h2>
-            <p className="text-calm-waves-light leading-[1.8] mb-8">
-              Every apartment at Metro Parc comes equipped with premium finishes and modern conveniences designed for comfortable, stylish living. <Link href="/neighborhood" className="text-avocado hover:underline">Explore what&apos;s nearby</Link> to see how the neighborhood complements your home.
-            </p>
-            <ul className="space-y-3">
-              {UNIT_FEATURES.map((feature) => (
-                <li key={feature} className="flex items-start gap-3">
-                  <span className="text-avocado mt-1 shrink-0">✓</span>
-                  <span>{feature}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div className="relative h-[450px] rounded-lg overflow-hidden">
-            <Image
-              src="/images/interiors/living-room-styled.jpg"
-              alt="Styled luxury apartment living room with premium vinyl flooring at Metro Parc Hialeah"
-              fill
-              className="object-cover"
-              sizes="(max-width: 1024px) 100vw, 50vw"
-            />
-          </div>
         </div>
       </section>
 

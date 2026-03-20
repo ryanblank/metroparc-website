@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import PageHero from "@/components/shared/PageHero";
-import PhotoGallery from "@/components/shared/PhotoGallery";
+import BookTourButton from "@/components/residences/BookTourButton";
 import { BreadcrumbSchema } from "../structured-data";
 import { SITE_URL } from "@/lib/constants";
 
@@ -18,30 +18,32 @@ const UNIT_FEATURES = [
   "Stainless Steel Appliances",
   "Ceramic Tile Backsplash",
   "Full-Size Washer & Dryer",
-  "LED Lighting Throughout Units",
+  "LED Lighting Throughout",
   "11' Foot Ceilings *",
   "Spacious Closets with Ample Storage",
   "Large Windows with Natural Light",
 ];
 
+
 const HEIGHTS_FEATURES = [
-  "Stunning top-floor perspectives of Hialeah and Miami's iconic skyline",
-  "Ring Camera",
+  "Top-floor perspectives of Hialeah & Miami's skyline",
+  "Ring Video Doorbell",
   "Modern Chandelier Fixture",
   "Era 100 Wireless Speaker",
   "Ecobee Smart Thermostat",
-  "Fireplace",
+  "Electric Fireplace",
   "Credit toward move-in expenses",
-  "Waived Administrative and application fees (Up to $725)",
+  "Waived administrative & application fees (up to $725)",
 ];
 
-const GALLERY_IMAGES = [
-  { src: "/images/interiors/living-room-styled.jpg", alt: "Styled living room with dark accent wall and luxury vinyl flooring at Metro Parc Hialeah" },
-  { src: "/images/interiors/kitchen-dining.jpg", alt: "Kitchen and dining area with stainless steel appliances at Metro Parc apartments" },
-  { src: "/images/interiors/living-open.jpg", alt: "Open-concept floor plan with vinyl wood floors at Metro Parc Hialeah FL" },
-  { src: "/images/interiors/kitchen-clean.jpg", alt: "Modern kitchen with wood cabinets and stainless appliances at Metro Parc" },
-  { src: "/images/interiors/bedroom.jpg", alt: "Spacious bedroom with balcony access at Metro Parc apartments Hialeah" },
-  { src: "/images/interiors/bathroom-laundry.jpg", alt: "Bathroom with in-unit washer and dryer at Metro Parc Hialeah FL" },
+
+const INTERIOR_PHOTOS = [
+  { src: "/images/interiors/living-room-styled.jpg",  alt: "Styled living room at Metro Parc Hialeah",            span: "col-span-2 row-span-2" },
+  { src: "/images/interiors/kitchen-dining.jpg",      alt: "Kitchen and dining area at Metro Parc",               span: "" },
+  { src: "/images/interiors/living-open.jpg",         alt: "Open-concept living at Metro Parc Hialeah",           span: "" },
+  { src: "/images/interiors/kitchen-clean.jpg",       alt: "Modern kitchen at Metro Parc",                        span: "" },
+  { src: "/images/interiors/bedroom-furnished.jpg",   alt: "Furnished bedroom at Metro Parc",                     span: "" },
+  { src: "/images/interiors/bathroom-laundry.jpg",    alt: "Bathroom with in-unit laundry at Metro Parc",         span: "" },
 ];
 
 export default function ResidencesPage() {
@@ -53,129 +55,154 @@ export default function ResidencesPage() {
           { name: "Residences", url: `${SITE_URL}/residences` },
         ]}
       />
+
+      {/* Hero */}
       <PageHero
-        title="Studio, 1 & 2-Bedroom Apartments in Hialeah, FL"
-        subtitle="A New Standard of Living"
+        title="Designed Around You"
+        subtitle="Discover a New Kind of Vida"
         imageSrc="/images/interiors/living-room-styled.jpg"
-        imageAlt="Styled luxury apartment living room at Metro Parc studio and 1 & 2-bedroom apartments in Hialeah FL"
-        videoSrc={process.env.NEXT_PUBLIC_RESIDENCES_VIDEO_URL}
+        imageAlt="Luxury apartment living room at Metro Parc in Hialeah FL"
       />
 
-      {/* Interiors Overview */}
+      {/* Residences overview */}
       <section className="bg-clouds py-[clamp(3rem,10vw,6rem)] px-8">
-        <div className="max-w-[1200px] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          <div>
+        <div className="max-w-[1200px] mx-auto">
+
+          {/* Centered header */}
+          <div className="text-center mb-10">
             <p className="font-decorative text-[0.875rem] tracking-[0.15em] text-avocado uppercase mb-4">
-              Your Apartment
+              Residences
             </p>
             <h2 className="text-[clamp(1.75rem,4vw,2.5rem)] font-bold text-city-night mb-6 leading-[1.2]">
-              A New Standard of Living
+              Studio, 1 &amp; 2-Bedrooms
             </h2>
-            <p className="text-city-night-light leading-[1.8] mb-8">
-              Metro Parc offers studio, 1-bedroom, and 2-bedroom apartments in Hialeah, FL with premium finishes, expansive windows flooding natural light, and open-concept layouts. From luxury vinyl-wood flooring to spa-inspired bathrooms with in-unit laundry, our floor plans adapt to your lifestyle. Residents also enjoy <Link href="/amenities" className="text-deep-ocean hover:underline">resort-style amenities</Link> including a pool, fitness center, and co-working space.
+            <p className="text-city-night-light leading-[1.8] max-w-2xl mx-auto">
+              Premium finishes, expansive windows, and open-concept layouts built for real living.
+              From luxury vinyl-wood flooring to spa-inspired bathrooms with in-unit laundry, every
+              detail is considered. Residents also enjoy{" "}
+              <Link href="/amenities" className="text-deep-ocean hover:underline">
+                resort-style amenities
+              </Link>{" "}
+              including a pool, fitness center, and co-working space.
             </p>
-
-            <ul className="space-y-3">
-              {UNIT_FEATURES.map((feature) => (
-                <li key={feature} className="flex items-start gap-3 text-city-night">
-                  <span className="text-avocado mt-1 shrink-0">✓</span>
-                  <span>{feature}</span>
-                </li>
-              ))}
-            </ul>
           </div>
 
-          <div className="relative h-[500px] rounded-lg overflow-hidden">
-            <Image
-              src="/images/interiors/kitchen-dining.jpg"
-              alt="Kitchen and dining area with stainless steel appliances and balcony at Metro Parc Hialeah"
-              fill
-              className="object-cover"
-              sizes="(max-width: 1024px) 100vw, 50vw"
-            />
-          </div>
-        </div>
-      </section>
-
-      {/* The Heights at Metro Parc — Penthouses */}
-      <section id="penthouses" className="bg-city-night text-clouds py-[clamp(3rem,10vw,6rem)] px-8">
-        <div className="max-w-[1200px] mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div className="relative h-[500px] rounded-lg overflow-hidden order-2 lg:order-1">
+          {/* Asymmetric photo grid */}
+          <div className="grid grid-cols-3 grid-rows-[280px_280px_240px] gap-3">
+            {/* Large anchor image — spans left 2 cols × 2 rows */}
+            <div className="relative col-span-2 row-span-2 overflow-hidden">
               <Image
-                src="/images/interiors/penthouse-banner.jpg"
-                alt="The Heights penthouse residences with skyline views at Metro Parc Hialeah"
+                src={INTERIOR_PHOTOS[0].src}
+                alt={INTERIOR_PHOTOS[0].alt}
                 fill
                 className="object-cover"
-                sizes="(max-width: 1024px) 100vw, 50vw"
+                sizes="(max-width: 1024px) 100vw, 66vw"
+                priority
               />
             </div>
-
-            <div className="order-1 lg:order-2">
-              <p className="font-decorative text-[0.875rem] tracking-[0.15em] text-avocado uppercase mb-4">
-                Premium Collection
-              </p>
-              <h2 className="text-[clamp(1.75rem,4vw,2.5rem)] font-bold mb-2 leading-[1.2]">
-                The Heights at Metro Parc
-              </h2>
-              <p className="font-display text-[clamp(1.25rem,2.5vw,1.75rem)] text-avocado-light mb-6">
-                Where the Skyline Meets the Rail Line.
-              </p>
-              <p className="text-calm-waves-light leading-[1.8] mb-8">
-                Live at the Heart of Hialeah. These select penthouse residences offer more than just a place to live — they immerse you in the vibrant rhythm of Hialeah&apos;s cultural core while keeping you seamlessly connected to all of South Florida via the nearby Metrorail and Tri-Rail. <Link href="/availability" className="text-avocado hover:underline">Check availability for penthouse units</Link>.
-              </p>
-
-              <ul className="space-y-3 mb-8">
-                {HEIGHTS_FEATURES.map((feature) => (
-                  <li key={feature} className="flex items-start gap-3">
-                    <span className="text-avocado mt-1 shrink-0">✓</span>
-                    <span>{feature}</span>
-                  </li>
-                ))}
-              </ul>
-
-              <div className="flex flex-wrap gap-4">
-                <Link
-                  href="/availability"
-                  className="inline-flex items-center gap-2 px-6 py-3 bg-avocado text-city-night rounded-full font-decorative text-[0.85rem] uppercase tracking-[0.1em] no-underline transition-all duration-300 hover:bg-avocado-hover"
-                >
-                  View Available Apartments
-                </Link>
+            {/* Stacked right column */}
+            {INTERIOR_PHOTOS.slice(1, 3).map((img) => (
+              <div key={img.src} className="relative overflow-hidden">
+                <Image
+                  src={img.src}
+                  alt={img.alt}
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 1024px) 100vw, 33vw"
+                />
               </div>
-            </div>
+            ))}
+            {/* Bottom row — 3 equal images */}
+            {INTERIOR_PHOTOS.slice(3).map((img) => (
+              <div key={img.src} className="relative overflow-hidden">
+                <Image
+                  src={img.src}
+                  alt={img.alt}
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 1024px) 100vw, 33vw"
+                />
+              </div>
+            ))}
           </div>
+
+          {/* Feature list — 3-column compact grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-x-8 gap-y-3 mt-10">
+            {UNIT_FEATURES.map((feature) => (
+              <div key={feature} className="flex items-center gap-2 text-city-night text-[0.9rem]">
+                <span className="text-avocado shrink-0">✓</span>
+                <span>{feature}</span>
+              </div>
+            ))}
+          </div>
+
         </div>
       </section>
 
-      {/* Photo Gallery */}
-      <section className="bg-clouds py-[clamp(3rem,10vw,6rem)] px-8">
-        <div className="max-w-[1200px] mx-auto">
-          <p className="font-decorative text-[0.875rem] tracking-[0.15em] text-avocado uppercase mb-4 text-center">
-            Gallery
+      {/* The Heights — Penthouses */}
+      <section id="the-heights" className="bg-deep-ocean text-clouds overflow-hidden">
+
+        {/* Header */}
+        <div className="pt-[clamp(3rem,10vw,6rem)] pb-12 px-8 text-center">
+          <p className="font-decorative text-[0.875rem] tracking-[0.15em] text-avocado uppercase mb-4">
+            Premium Penthouse Collection
           </p>
-          <h2 className="text-[clamp(1.75rem,4vw,2.5rem)] font-bold text-city-night mb-8 text-center leading-[1.2]">
-            See Inside Metro Parc
+          <h2 className="text-[clamp(1.75rem,4vw,2.75rem)] font-bold mb-6 leading-[1.2]">
+            The Heights at Metro Parc
           </h2>
-          <PhotoGallery
-            images={GALLERY_IMAGES}
-            columns={3}
-            initialCount={6}
+          <p className="text-clouds/75 leading-[1.9] text-[1.05rem] max-w-2xl mx-auto">
+            Live at the heart of Hialeah. These select top-floor residences offer more than a
+            place to live — they immerse you in Hialeah&apos;s vibrant cultural energy while
+            keeping you seamlessly connected to all of South Florida via the nearby Metrorail
+            and Tri-Rail.
+          </p>
+        </div>
+
+        {/* Full-width video */}
+        <div className="w-full" style={{ height: "60vh" }}>
+          <video
+            src="/videos/penthouse.mp4"
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="none"
+            className="w-full h-full object-cover"
           />
         </div>
+
+        {/* Body copy + feature grid */}
+        <div className="px-8 py-[clamp(3rem,8vw,5rem)]">
+          <div className="max-w-[1200px] mx-auto">
+
+            {/* Cursive tagline */}
+            <p className="font-display text-[clamp(1.1rem,2.5vw,1.5rem)] text-avocado-light text-center mb-10">
+              Where the Skyline Meets the Rail Line.
+            </p>
+
+            {/* 3-col feature grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-x-8 gap-y-3 mb-12">
+              {HEIGHTS_FEATURES.map((feature) => (
+                <div key={feature} className="flex items-center gap-2 text-clouds/80 text-[0.9rem]">
+                  <span className="text-avocado shrink-0">✓</span>
+                  <span>{feature}</span>
+                </div>
+              ))}
+            </div>
+
+          </div>
+        </div>
+
       </section>
 
-      {/* CTAs */}
+
+      {/* CTA */}
       <section className="bg-deep-ocean text-clouds py-16 px-8 text-center">
         <h2 className="text-[clamp(1.5rem,4vw,2.25rem)] font-bold mb-6">
           Ready to See Your New Home?
         </h2>
         <div className="flex flex-wrap gap-4 justify-center">
-          <Link
-            href="/availability"
-            className="inline-flex items-center gap-2 px-8 py-4 bg-avocado text-city-night rounded-full font-decorative text-[0.875rem] uppercase tracking-[0.1em] no-underline transition-all duration-300 hover:bg-avocado-hover"
-          >
-            View Available Apartments
-          </Link>
+          <BookTourButton />
         </div>
       </section>
     </>
