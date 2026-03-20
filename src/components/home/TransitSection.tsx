@@ -1,16 +1,21 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 
 export default function TransitSection() {
   return (
     <section className="relative h-[70vh] min-h-[480px] flex items-center justify-center overflow-hidden">
       {/* Full-bleed background image */}
-      <div
-        className="absolute inset-0 bg-cover bg-center bg-fixed"
-        style={{ backgroundImage: "url('/images/neighborhood/transit-rail.jpg')" }}
-        aria-hidden="true"
-      />
+      <div className="absolute inset-0" aria-hidden="true">
+        <Image
+          src="/images/neighborhood/transit-rail.jpg"
+          alt=""
+          fill
+          className="object-cover object-center"
+          priority
+        />
+      </div>
 
       {/* Dark gradient overlay — heavier at bottom where text sits */}
       <div
