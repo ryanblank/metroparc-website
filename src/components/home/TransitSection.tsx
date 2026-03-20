@@ -8,7 +8,7 @@ export default function TransitSection() {
       {/* Full-bleed background image */}
       <div
         className="absolute inset-0 bg-cover bg-center bg-fixed"
-        style={{ backgroundImage: "url('/images/neighborhood/transit-lifestyle.jpg')" }}
+        style={{ backgroundImage: "url('/images/neighborhood/transit-rail.jpg')" }}
         aria-hidden="true"
       />
 
