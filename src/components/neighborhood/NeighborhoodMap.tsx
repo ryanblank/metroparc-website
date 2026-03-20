@@ -12,10 +12,26 @@ export default function NeighborhoodMap() {
   const mapRef = useRef<mapboxgl.Map | null>(null);
   const markersRef = useRef<{ pin: MapPin; marker: mapboxgl.Marker }[]>([]);
   const [activeCategories, setActiveCategories] = useState<string[]>([
-    ...FILTERABLE_CATEGORIES,
+    "transit", "dining", "shopping", "parks",
   ]);
 
   const token = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
+
+  // Fit map to bounds of all visible pins
+  const fitToVisible = (map: mapboxgl.Map, categories: string[]) => {
+    const visible = MAP_PINS.filter(
+      (p) => p.category === "property" || categories.includes(p.category)
+    );
+    if (visible.length < 2) return;
+
+    const bounds = new mapboxgl.LngLatBounds();
+    visible.forEach((p) => bounds.extend(p.coordinates));
+    map.fitBounds(bounds, {
+      padding: { top: 80, bottom: 80, left: 80, right: 80 },
+      maxZoom: 15,
+      duration: 600,
+    });
+  };
 
   useEffect(() => {
     if (!mapContainer.current || !token || token === "pk.placeholder") return;
@@ -36,17 +52,17 @@ export default function NeighborhoodMap() {
     map.addControl(new mapboxgl.NavigationControl(), "top-right");
     mapRef.current = map;
 
-    // Add markers
     MAP_PINS.forEach((pin) => {
       const cat = PIN_CATEGORIES[pin.category];
-      const size = pin.category === "property" ? 16 : 10;
+      const isProperty = pin.category === "property";
+      const size = isProperty ? 16 : 10;
 
       const el = document.createElement("div");
       el.style.width = `${size}px`;
       el.style.height = `${size}px`;
       el.style.borderRadius = "50%";
       el.style.backgroundColor = cat.color;
-      el.style.border = pin.category === "property" ? "3px solid #a9ab36" : "2px solid rgba(255,255,255,0.6)";
+      el.style.border = isProperty ? "3px solid #a9ab36" : "2px solid rgba(255,255,255,0.6)";
       el.style.cursor = "pointer";
       el.style.boxShadow = "0 2px 6px rgba(0,0,0,0.4)";
 
@@ -69,20 +85,28 @@ export default function NeighborhoodMap() {
       markersRef.current.push({ pin, marker });
     });
 
+    // Fit to all visible pins on load
+    map.on("load", () => {
+      fitToVisible(map, [...FILTERABLE_CATEGORIES]);
+    });
+
     return () => {
       map.remove();
       markersRef.current = [];
     };
   }, [token]);
 
-  // Filter markers when active categories change
+  // Update visibility and fit bounds when filters change
   useEffect(() => {
     markersRef.current.forEach(({ pin, marker }) => {
-      if (pin.category === "property") return; // always visible
+      if (pin.category === "property") return;
       const el = marker.getElement();
-      const visible = activeCategories.includes(pin.category);
-      el.style.display = visible ? "block" : "none";
+      el.style.display = activeCategories.includes(pin.category) ? "block" : "none";
     });
+
+    if (mapRef.current) {
+      fitToVisible(mapRef.current, activeCategories);
+    }
   }, [activeCategories]);
 
   const toggleCategory = (cat: string) => {
@@ -93,7 +117,7 @@ export default function NeighborhoodMap() {
 
   if (!token || token === "pk.placeholder") {
     return (
-      <div className="w-full h-[500px] bg-city-night-muted rounded-lg flex items-center justify-center">
+      <div className="w-full h-[500px] bg-city-night-muted flex items-center justify-center">
         <p className="text-calm-waves text-sm text-center px-4">
           Interactive map will be available once the Mapbox token is configured.
         </p>
@@ -104,7 +128,7 @@ export default function NeighborhoodMap() {
   return (
     <div>
       {/* Category filters */}
-      <div className="flex flex-wrap gap-3 mb-6">
+      <div className="flex flex-wrap gap-3 mb-6 px-8">
         {FILTERABLE_CATEGORIES.map((cat) => {
           const config = PIN_CATEGORIES[cat];
           const isActive = activeCategories.includes(cat);
@@ -129,10 +153,10 @@ export default function NeighborhoodMap() {
         })}
       </div>
 
-      {/* Map container */}
+      {/* Map container — full bleed */}
       <div
         ref={mapContainer}
-        className="w-full h-[500px] lg:h-[600px] rounded-lg overflow-hidden"
+        className="w-full h-[500px] lg:h-[600px] overflow-hidden"
       />
     </div>
   );

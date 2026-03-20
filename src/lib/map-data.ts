@@ -13,7 +13,7 @@ export const MAP_CONFIG = {
   pitch: 0,
   bearing: 0,
   maxZoom: 16,
-  minZoom: 11,
+  minZoom: 9,
 };
 
 export const PIN_CATEGORIES = {
@@ -49,13 +49,62 @@ export const MAP_PINS: MapPin[] = [
     coordinates: [-80.263033, 25.846063],
   },
 
-  // Transit
+  // Transit — Metrorail Green Line stations
   {
     id: "metrorail-tri-rail",
-    name: "Hialeah Metrorail / Tri-Rail Transfer Station",
+    name: "Hialeah Metrorail / Tri-Rail Transfer",
     address: "1125 E 25th St, Hialeah, FL 33013",
     category: "transit",
     coordinates: [-80.259912, 25.84552],
+  },
+  {
+    id: "metrorail-mlk",
+    name: "Dr. Martin Luther King Jr. Plaza",
+    address: "Metrorail Green Line, Miami, FL",
+    category: "transit",
+    coordinates: [-80.214399, 25.819869],
+  },
+  {
+    id: "metrorail-earlington",
+    name: "Earlington Heights",
+    address: "Metrorail Green Line, Miami, FL",
+    category: "transit",
+    coordinates: [-80.226524, 25.807611],
+  },
+  {
+    id: "metrorail-civic-center",
+    name: "Civic Center / Health District",
+    address: "Metrorail Green Line — 15 min from Metro Parc",
+    category: "transit",
+    coordinates: [-80.211264, 25.790066],
+  },
+  {
+    id: "metrorail-government-center",
+    name: "Government Center — Downtown Miami",
+    address: "Metrorail Green Line — 20 min from Metro Parc",
+    category: "transit",
+    coordinates: [-80.193659, 25.775163],
+  },
+  {
+    id: "metrorail-brickell",
+    name: "Brickell Station",
+    address: "Metrorail Green Line — 25 min from Metro Parc",
+    category: "transit",
+    coordinates: [-80.191788, 25.761690],
+  },
+  {
+    id: "metrorail-coconut-grove",
+    name: "Coconut Grove",
+    address: "Metrorail Green Line — 30 min from Metro Parc",
+    category: "transit",
+    coordinates: [-80.199866, 25.731895],
+  },
+  {
+    id: "trirail-opalocka",
+    name: "Opa-locka (Tri-Rail North)",
+    address: "Tri-Rail — northbound toward Broward",
+    category: "transit",
+    coordinates: [-80.250433, 25.900741],
   },
 
   // Dining
