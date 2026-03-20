@@ -6,9 +6,10 @@ interface PageHeroProps {
   imageSrc: string;
   imageAlt: string;
   videoSrc?: string;
+  showScrollIndicator?: boolean;
 }
 
-export default function PageHero({ title, subtitle, imageSrc, imageAlt, videoSrc }: PageHeroProps) {
+export default function PageHero({ title, subtitle, imageSrc, imageAlt, videoSrc, showScrollIndicator }: PageHeroProps) {
   return (
     <section className="relative h-[75vh] min-h-[560px] flex items-center justify-center overflow-hidden bg-city-night">
       {videoSrc ? (
@@ -43,6 +44,11 @@ export default function PageHero({ title, subtitle, imageSrc, imageAlt, videoSrc
           </p>
         )}
       </div>
+      {showScrollIndicator && (
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-[2] animate-bounce">
+          <div className="text-clouds text-2xl opacity-70">↓</div>
+        </div>
+      )}
     </section>
   );
 }

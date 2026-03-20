@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import PageHero from "@/components/shared/PageHero";
 import ListingsSection from "@/components/availability/ListingsSection";
 import { BreadcrumbSchema } from "../structured-data";
@@ -28,29 +27,20 @@ export default async function AvailabilityPage() {
         ]}
       />
       <PageHero
-        title="Available Apartments & Pricing at Metro Parc"
+        title="See What's Available"
         subtitle="Find Your Perfect Fit"
         imageSrc="/images/exterior/exterior-render.jpg"
         imageAlt="Metro Parc apartments for rent in Hialeah FL with pricing and availability"
+        showScrollIndicator
       />
 
       {/* Listings */}
       <section className="bg-clouds py-[clamp(3rem,10vw,6rem)] px-8">
         <div className="max-w-[1200px] mx-auto">
-          <p className="font-decorative text-[0.875rem] tracking-[0.15em] text-avocado uppercase mb-4 text-center">
-            Available Apartments
-          </p>
-          <h2 className="text-[clamp(1.75rem,4vw,2.5rem)] font-bold text-city-night mb-2 text-center leading-[1.2]">
-            Browse Our Floor Plans
-          </h2>
-          <p className="text-city-night-light text-center mb-4 max-w-[600px] mx-auto">
-            Metro Parc offers apartments for rent in Hialeah, FL with studios, 1-bedroom, and 2-bedroom floor plans. <Link href="/residences" className="text-deep-ocean hover:underline">Learn more about unit features</Link> or <Link href="/contact" className="text-deep-ocean hover:underline">schedule a tour</Link> to see them in person.
-          </p>
-          <p className="text-city-night-light/60 text-center text-sm mb-8 max-w-[600px] mx-auto">
+          <ListingsSection units={units} />
+          <p className="text-city-night-light/60 text-center text-sm mt-8 max-w-[600px] mx-auto">
             Floor plans are artist&apos;s rendering. All dimensions are approximate. Prices and availability are subject to change.
           </p>
-
-          <ListingsSection units={units} />
         </div>
       </section>
     </>

@@ -112,7 +112,7 @@ export default function ContactPage() {
       />
       <FAQPageSchema faqs={faqsForSchema} />
       <PageHero
-        title="Contact Metro Parc — Schedule a Tour in Hialeah, FL"
+        title="Contact Metro Parc"
         subtitle="We'd Love to Hear from You"
         imageSrc="/images/amenities/lobby.jpg"
         imageAlt="Metro Parc lobby and concierge area in Hialeah FL"
