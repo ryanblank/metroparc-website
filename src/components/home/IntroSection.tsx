@@ -36,15 +36,15 @@ export default function IntroSection() {
         Metro Parc places you at the pulse of Hialeah&apos;s vibrant energy, offering a lifestyle that&apos;s as connected as it is convenient. Dining, culture, and transportation at your doorstep.
       </p>
 
-      {/* Stats row */}
+      {/* Stats row — 2×2 grid on mobile, single row on desktop */}
       <div
-        className={`flex flex-wrap justify-center items-center mt-8 transition-all duration-600 delay-300 ${
+        className={`grid grid-cols-2 md:flex md:flex-wrap md:justify-center md:items-center mt-8 gap-y-6 md:gap-y-0 transition-all duration-600 delay-300 ${
           inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-5"
         }`}
       >
         {STATS.map((stat, i) => (
-          <div key={stat.label} className="flex items-center">
-            <div className="flex flex-col items-center px-8 py-2">
+          <div key={stat.label} className="flex items-center justify-center md:justify-start">
+            <div className="flex flex-col items-center px-6 md:px-8 py-2">
               {stat.href ? (
                 <Link
                   href={stat.href}
@@ -69,7 +69,7 @@ export default function IntroSection() {
               )}
             </div>
             {i < STATS.length - 1 && (
-              <div className="w-px h-8 bg-city-night/20" />
+              <div className="hidden md:block w-px h-8 bg-city-night/20" />
             )}
           </div>
         ))}

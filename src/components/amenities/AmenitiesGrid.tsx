@@ -99,7 +99,9 @@ function AmenityCard({ slot }: { slot: typeof SLOTS[0] }) {
   return (
     <div
       className={`relative overflow-hidden group ${
-        slot.large ? "col-span-2 row-span-2" : ""
+        slot.large
+          ? "h-[320px] md:h-auto md:col-span-2 md:row-span-2"
+          : "h-[260px] md:h-auto"
       }`}
     >
       <Image
@@ -139,7 +141,7 @@ function AmenityCard({ slot }: { slot: typeof SLOTS[0] }) {
 
 export default function AmenitiesGrid() {
   return (
-    <div className="grid grid-cols-2 md:grid-cols-3 grid-rows-[340px_280px] gap-3">
+    <div className="grid grid-cols-1 md:grid-cols-3 md:grid-rows-[340px_280px_260px] gap-3">
       {SLOTS.map((slot) => (
         <AmenityCard key={slot.id} slot={slot} />
       ))}

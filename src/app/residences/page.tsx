@@ -87,40 +87,40 @@ export default function ResidencesPage() {
             </p>
           </div>
 
-          {/* Asymmetric photo grid */}
-          <div className="grid grid-cols-3 grid-rows-[280px_280px_240px] gap-3">
-            {/* Large anchor image — spans left 2 cols × 2 rows */}
-            <div className="relative col-span-2 row-span-2 overflow-hidden">
+          {/* Asymmetric photo grid — stacks on mobile, asymmetric at md+ */}
+          <div className="grid grid-cols-1 gap-3 md:grid-cols-3 md:grid-rows-[280px_280px_240px]">
+            {/* Large anchor image — full width on mobile, spans 2 cols × 2 rows on desktop */}
+            <div className="relative h-[320px] md:h-auto md:col-span-2 md:row-span-2 overflow-hidden">
               <Image
                 src={INTERIOR_PHOTOS[0].src}
                 alt={INTERIOR_PHOTOS[0].alt}
                 fill
                 className="object-cover"
-                sizes="(max-width: 1024px) 100vw, 66vw"
+                sizes="(max-width: 768px) 100vw, 66vw"
                 priority
               />
             </div>
             {/* Stacked right column */}
             {INTERIOR_PHOTOS.slice(1, 3).map((img) => (
-              <div key={img.src} className="relative overflow-hidden">
+              <div key={img.src} className="relative h-[260px] md:h-auto overflow-hidden">
                 <Image
                   src={img.src}
                   alt={img.alt}
                   fill
                   className="object-cover"
-                  sizes="(max-width: 1024px) 100vw, 33vw"
+                  sizes="(max-width: 768px) 100vw, 33vw"
                 />
               </div>
             ))}
             {/* Bottom row — 3 equal images */}
             {INTERIOR_PHOTOS.slice(3).map((img) => (
-              <div key={img.src} className="relative overflow-hidden">
+              <div key={img.src} className="relative h-[260px] md:h-auto overflow-hidden">
                 <Image
                   src={img.src}
                   alt={img.alt}
                   fill
                   className="object-cover"
-                  sizes="(max-width: 1024px) 100vw, 33vw"
+                  sizes="(max-width: 768px) 100vw, 33vw"
                 />
               </div>
             ))}

@@ -118,7 +118,7 @@ export default function Navbar({ onBookTourClick }: NavbarProps) {
 
       {/* Full-Screen Menu Overlay */}
       <div
-        className={`fixed inset-0 z-[999] flex flex-col justify-center items-center px-8 pt-24 pb-8 transition-[clip-path] duration-500 ${
+        className={`fixed inset-0 z-[999] flex flex-col justify-center items-center px-8 pt-40 pb-8 transition-[clip-path] duration-500 ${
           isMenuOpen
             ? "[clip-path:circle(150%_at_calc(100%-2.5rem)_2.5rem)]"
             : "[clip-path:circle(0px_at_calc(100%-2.5rem)_2.5rem)]"
