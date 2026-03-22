@@ -102,28 +102,17 @@ const SLOTS = [
 
 function AmenityCard({ slot }: { slot: typeof SLOTS[0] }) {
   const [index, setIndex] = useState(0);
-  const [prevIndex, setPrevIndex] = useState(0);
-  const [transitioning, setTransitioning] = useState(false);
 
   useEffect(() => {
     if (slot.images.length <= 1) return;
     const timeout = setTimeout(() => {
       const timer = setInterval(() => {
-        setTransitioning(true);
-        setIndex((prev) => {
-          setPrevIndex(prev);
-          return (prev + 1) % slot.images.length;
-        });
-        // Reset transition state after crossfade completes
-        setTimeout(() => setTransitioning(false), 1200);
+        setIndex((prev) => (prev + 1) % slot.images.length);
       }, slot.interval);
       return () => clearInterval(timer);
     }, slot.offset);
     return () => clearTimeout(timeout);
   }, [slot]);
-
-  const current = slot.images[index];
-  const previous = slot.images[prevIndex];
 
   return (
     <div
@@ -133,28 +122,19 @@ function AmenityCard({ slot }: { slot: typeof SLOTS[0] }) {
           : "h-[260px] md:h-auto"
       }`}
     >
-      {/* Previous image (fades out) */}
-      {transitioning && (
+      {/* All images stacked — only the active one is visible */}
+      {slot.images.map((img, i) => (
         <Image
-          src={previous.src}
-          alt={previous.alt}
+          key={img.src}
+          src={img.src}
+          alt={img.alt}
           fill
-          className="object-cover"
+          className="object-cover transition-opacity duration-[1500ms] ease-in-out"
+          style={{ opacity: i === index ? 1 : 0 }}
           sizes={slot.large ? "(max-width: 768px) 100vw, 66vw" : "33vw"}
+          priority={slot.large && i === 0}
         />
-      )}
-      {/* Current image (fades in) */}
-      <Image
-        key={current.src}
-        src={current.src}
-        alt={current.alt}
-        fill
-        className={`object-cover transition-opacity duration-[1200ms] ease-in-out group-hover:scale-105 transition-transform ${
-          transitioning ? "opacity-0 animate-[fadeIn_1.2s_ease-in-out_forwards]" : ""
-        }`}
-        sizes={slot.large ? "(max-width: 768px) 100vw, 66vw" : "33vw"}
-        priority={slot.large}
-      />
+      ))}
       <div className="absolute inset-0 bg-gradient-to-t from-city-night/80 via-transparent to-transparent" />
       <div className={`absolute bottom-0 left-0 ${slot.large ? "p-6" : "p-4"}`}>
         <p className={`font-decorative uppercase tracking-[0.18em] text-avocado mb-1 ${slot.large ? "text-[0.75rem]" : "text-[0.7rem]"}`}>
