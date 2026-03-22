@@ -38,10 +38,10 @@ const HEIGHTS_FEATURES = [
 
 
 const INTERIOR_PHOTOS = [
-  { src: "/images/interiors/living-room-styled.jpg",  alt: "Styled living room at Metro Parc Hialeah",            span: "col-span-2 row-span-2" },
+  { src: "/images/interiors/living-room-reading.jpg", alt: "Relaxing in a styled living room at Metro Parc Hialeah", span: "col-span-2 row-span-2" },
   { src: "/images/interiors/kitchen-dining.jpg",      alt: "Kitchen and dining area at Metro Parc",               span: "" },
   { src: "/images/interiors/living-open.jpg",         alt: "Open-concept living at Metro Parc Hialeah",           span: "" },
-  { src: "/images/interiors/kitchen-clean.jpg",       alt: "Modern kitchen at Metro Parc",                        span: "" },
+  { src: "/images/interiors/kitchen-lifestyle.jpg",   alt: "Modern kitchen at Metro Parc",                        span: "" },
   { src: "/images/interiors/bedroom-furnished.jpg",   alt: "Furnished bedroom at Metro Parc",                     span: "" },
   { src: "/images/interiors/bathroom-laundry.jpg",    alt: "Bathroom with in-unit laundry at Metro Parc",         span: "" },
 ];
@@ -60,7 +60,7 @@ export default function ResidencesPage() {
       <PageHero
         title="Designed Around You"
         subtitle="Discover a New Kind of Vida"
-        imageSrc="/images/interiors/living-room-styled.jpg"
+        imageSrc="/images/interiors/residences-hero.jpg"
         imageAlt="Luxury apartment living room at Metro Parc in Hialeah FL"
       />
 

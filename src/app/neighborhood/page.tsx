@@ -155,7 +155,7 @@ export default function NeighborhoodPage() {
       <PageHero
         title="Culture and Connection"
         subtitle="filler here"
-        imageSrc="/images/neighborhood/street-2.jpg"
+        imageSrc="/images/neighborhood/neighborhood-hero-test2.jpg"
         imageAlt="Metro Parc apartments near Metrorail and Tri-Rail station in Hialeah FL"
       />
 
@@ -169,44 +169,17 @@ export default function NeighborhoodPage() {
             Living in Hialeah Means Being Connected to All of Miami
           </h2>
           <p className="text-city-night-light leading-[1.8]">
-            Metro Parc sits two blocks from the Hialeah Metrorail and Tri-Rail Transfer Station — the only apartment community in Hialeah with this level of direct rail access. Brickell is 25 minutes away. Downtown Miami is 20. The Health District is 15. The airport is 13 minutes by car. All without touching I-95. Below that connectivity is Hialeah itself: a neighborhood with deep Cuban roots, an emerging food scene, great parks, and a Walk Score of 73. This is a place people are discovering — and Metro Parc puts you at the center of it.
+            Metro Parc sits two blocks from the Hialeah Metrorail and Tri-Rail Transfer Station — the only apartment community in Hialeah with this level of direct rail access. This is a place people are discovering — and Metro Parc puts you at the center of it.
           </p>
         </div>
       </section>
 
-      {/* Full-width image break — transit */}
-      <div className="relative w-full h-[320px] md:h-[420px] overflow-hidden">
-        <Image
-          src="/images/neighborhood/transit-rail-wide.jpg"
-          alt="Hialeah Metrorail station near Metro Parc apartments"
-          fill
-          className="object-cover object-center"
-          sizes="100vw"
-        />
-        <div className="absolute inset-0 bg-city-night/40" />
-      </div>
-
-      {/* Transit Stats */}
-      <section className="bg-city-night text-clouds py-16 px-8">
-        <div className="max-w-[1100px] mx-auto grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-6">
-          {TRANSIT_STATS.map((stat) => (
-            <div key={stat.label} className="text-center p-6">
-              <div className="text-[clamp(1.5rem,4vw,2.5rem)] font-[800] text-avocado mb-2 leading-none">
-                {stat.number}
-              </div>
-              <div className="font-decorative text-xs uppercase tracking-[0.1em] text-clouds/60 mt-2">
-                {stat.label}
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
 
       {/* Commute Times — image-backed */}
       <section className="relative py-[clamp(3rem,10vw,6rem)] px-8">
         <div className="absolute inset-0">
           <Image
-            src="/images/neighborhood/transit-rail.jpg"
+            src="/images/neighborhood/commute-trirail-test.jpg"
             alt=""
             fill
             className="object-cover object-center"
@@ -246,6 +219,65 @@ export default function NeighborhoodPage() {
         </div>
       </section>
 
+      {/* Local Dining & Culture */}
+      <section className="bg-clouds py-[clamp(3rem,10vw,6rem)] px-8">
+        <div className="max-w-[1200px] mx-auto">
+          <p className="font-decorative text-[0.875rem] tracking-[0.15em] text-avocado uppercase mb-4 text-center">
+            Around the Corner
+          </p>
+          <h2 className="text-[clamp(1.75rem,4vw,2.5rem)] font-bold text-city-night mb-4 text-center leading-[1.2]">
+            Hialeah Has Its Own Food Scene
+          </h2>
+          <p className="text-city-night-light text-center max-w-[560px] mx-auto mb-12 leading-[1.8]">
+            Cuban cafecito at the ventanita. Churros at the food truck park. Sushi in a container. This neighborhood has range.
+          </p>
+
+          {/* Mobile: horizontal scroll */}
+          <div className="md:hidden overflow-x-auto scrollbar-hide -mx-8 px-8 pb-2">
+            <div className="flex gap-4 w-max">
+              {[
+                { img: "/images/neighborhood/dining-ventanita.jpg", name: "La Ventanita", tag: "Cuban Coffee", desc: "Cafecito culture, right outside your door" },
+                { img: "/images/neighborhood/dining-molinas.jpg", name: "Molina's Ranch", tag: "Cuban Restaurant", desc: "A Hialeah institution since 1959" },
+                { img: "/images/neighborhood/dining-churro-mania.jpg", name: "Churro Mania", tag: "Food Truck", desc: "Churros, hot drinks, and good vibes" },
+                { img: "/images/neighborhood/dining-burger-trap.jpg", name: "Burger Trap", tag: "Food Hall", desc: "Burgers and neon at the outdoor food hall" },
+                { img: "/images/neighborhood/dining-temaki.jpg", name: "Temaki", tag: "Sushi", desc: "Rolls and tempura in a container park" },
+              ].map((place) => (
+                <div key={place.name} className="relative w-[72vw] max-w-[280px] h-[360px] rounded-xl overflow-hidden shrink-0 group">
+                  <Image src={place.img} alt={place.name} fill className="object-cover transition-transform duration-500 group-hover:scale-105" sizes="72vw" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-city-night/90 via-city-night/20 to-transparent" />
+                  <div className="absolute bottom-0 left-0 right-0 p-5">
+                    <p className="font-decorative text-[0.7rem] uppercase tracking-[0.15em] text-avocado mb-1">{place.tag}</p>
+                    <p className="text-clouds font-bold text-[1rem] mb-1">{place.name}</p>
+                    <p className="text-clouds/70 text-[0.8rem] leading-[1.5]">{place.desc}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Desktop: grid */}
+          <div className="hidden md:grid grid-cols-5 gap-4">
+            {[
+              { img: "/images/neighborhood/dining-ventanita.jpg", name: "La Ventanita", tag: "Cuban Coffee", desc: "Cafecito culture, right outside your door" },
+              { img: "/images/neighborhood/dining-molinas.jpg", name: "Molina's Ranch", tag: "Cuban Restaurant", desc: "A Hialeah institution since 1959" },
+              { img: "/images/neighborhood/dining-churro-mania.jpg", name: "Churro Mania", tag: "Food Truck", desc: "Churros, hot drinks, and good vibes" },
+              { img: "/images/neighborhood/dining-burger-trap.jpg", name: "Burger Trap", tag: "Food Hall", desc: "Burgers and neon at the outdoor food hall" },
+              { img: "/images/neighborhood/dining-temaki.jpg", name: "Temaki", tag: "Sushi", desc: "Rolls and tempura in a container park" },
+            ].map((place) => (
+              <div key={place.name} className="relative h-[420px] rounded-xl overflow-hidden group cursor-default">
+                <Image src={place.img} alt={place.name} fill className="object-cover transition-transform duration-500 group-hover:scale-105" sizes="20vw" />
+                <div className="absolute inset-0 bg-gradient-to-t from-city-night/90 via-city-night/20 to-transparent" />
+                <div className="absolute bottom-0 left-0 right-0 p-5">
+                  <p className="font-decorative text-[0.65rem] uppercase tracking-[0.15em] text-avocado mb-1">{place.tag}</p>
+                  <p className="text-clouds font-bold text-[0.95rem] mb-1">{place.name}</p>
+                  <p className="text-clouds/70 text-[0.78rem] leading-[1.5]">{place.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Map — full bleed */}
       <section className="bg-white py-[clamp(3rem,10vw,6rem)]">
         <div className="max-w-[1200px] mx-auto px-8 mb-8">
@@ -259,16 +291,38 @@ export default function NeighborhoodPage() {
         <NeighborhoodMap />
       </section>
 
-      {/* Full-width image break */}
-      <div className="relative w-full h-[280px] md:h-[380px] overflow-hidden">
+      {/* Neighborhood Photo Strip */}
+      <div className="flex w-full overflow-x-auto scrollbar-hide">
+        {[
+          { src: "/images/neighborhood/strip-ventanita-walk.jpg", alt: "Picking up a cafecito in the neighborhood" },
+          { src: "/images/neighborhood/strip-food-park-walk.jpg", alt: "Friends exploring the local food park" },
+          { src: "/images/neighborhood/strip-food-park-table.jpg", alt: "Dining outdoors at the food park" },
+          { src: "/images/neighborhood/strip-burger-trap-neon.jpg", alt: "Burger Trap Miami neon sign" },
+        ].map((photo, i) => (
+          <div
+            key={i}
+            className="relative flex-none w-[75vw] md:w-[25%] h-[300px] md:h-[380px]"
+          >
+            <Image
+              src={photo.src}
+              alt={photo.alt}
+              fill
+              className="object-cover object-center"
+              sizes="(min-width: 768px) 25vw, 75vw"
+            />
+          </div>
+        ))}
+      </div>
+
+      {/* Full-bleed transit photo */}
+      <div className="relative w-full h-[280px] md:h-[420px] overflow-hidden">
         <Image
-          src="/images/neighborhood/street-1.jpg"
-          alt="Hialeah neighborhood near Metro Parc apartments"
+          src="/images/neighborhood/transit-boarding-test.jpg"
+          alt="Boarding the Metrorail at Hialeah station"
           fill
           className="object-cover object-center"
           sizes="100vw"
         />
-        <div className="absolute inset-0 bg-city-night/30" />
       </div>
 
       {/* Nearby Neighborhoods */}
@@ -327,40 +381,6 @@ export default function NeighborhoodPage() {
                   </div>
                 </div>
                 <p className="text-clouds/50 text-[0.85rem] leading-[1.7]">{emp.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Points of Interest */}
-      <section className="bg-clouds py-[clamp(3rem,10vw,6rem)] px-8">
-        <div className="max-w-[1100px] mx-auto">
-          <p className="font-decorative text-[0.875rem] tracking-[0.15em] text-avocado uppercase mb-4 text-center">
-            Around the Corner
-          </p>
-          <h2 className="text-[clamp(1.5rem,3vw,2rem)] font-bold text-city-night mb-12 text-center">
-            Points of Interest Near Metro Parc
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {POI_GROUPS.map((group) => (
-              <div key={group.category} className="bg-white rounded-lg p-6 border border-city-night/8">
-                <div className="flex items-center gap-3 mb-5">
-                  <span className="text-xl">{group.icon}</span>
-                  <h3 className="font-decorative text-sm uppercase tracking-[0.12em] text-deep-ocean">
-                    {group.category}
-                  </h3>
-                </div>
-                <ul className="space-y-3">
-                  {group.items.map((item) => (
-                    <li
-                      key={item}
-                      className="text-[0.875rem] text-city-night-light leading-[1.6] pl-3 border-l-2 border-avocado/30"
-                    >
-                      {item}
-                    </li>
-                  ))}
-                </ul>
               </div>
             ))}
           </div>

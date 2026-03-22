@@ -9,7 +9,7 @@ export default function TransitSection() {
       {/* Full-bleed background image */}
       <div className="absolute inset-0" aria-hidden="true">
         <Image
-          src="/images/neighborhood/transit-rail.jpg"
+          src="/images/neighborhood/transit-lifestyle.jpg"
           alt=""
           fill
           className="object-cover object-center"

@@ -7,16 +7,16 @@ import { useInView } from "@/hooks/useInView";
 
 const GALLERY = [
   {
-    src: "/images/interiors/kitchen-dining.jpg",
-    alt: "Kitchen and dining area at Metro Parc Hialeah",
+    src: "/images/interiors/lifestyle-unit-walkthrough.jpg",
+    alt: "Resident walking through open-concept living space at Metro Parc Hialeah",
   },
   {
-    src: "/images/interiors/living-room-styled.jpg",
-    alt: "Styled living room at Metro Parc luxury apartments",
+    src: "/images/interiors/lifestyle-bedroom-mirror.jpg",
+    alt: "Resident in styled bedroom with city view at Metro Parc Hialeah",
   },
   {
-    src: "/images/interiors/bedroom-furnished.jpg",
-    alt: "Furnished bedroom at Metro Parc apartments in Hialeah FL",
+    src: "/images/interiors/lifestyle-living-room.jpg",
+    alt: "Resident relaxing in living room at Metro Parc apartments Hialeah",
   },
 ];
 

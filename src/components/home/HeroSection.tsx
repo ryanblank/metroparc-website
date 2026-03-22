@@ -15,19 +15,19 @@ export default function HeroSection() {
           loop
           playsInline
           poster="/images/exterior/exterior-render.jpg"
-          className="absolute inset-0 w-full h-full object-cover opacity-75 z-0"
+          className="absolute inset-0 w-full h-full object-cover z-0"
         >
           <source src={process.env.NEXT_PUBLIC_HERO_VIDEO_URL} type="video/mp4" />
         </video>
       ) : (
         <div
-          className="absolute inset-0 bg-cover bg-center bg-fixed opacity-75 z-0"
+          className="absolute inset-0 bg-cover bg-center z-0"
           style={{ backgroundImage: "url('/images/exterior/exterior-render.jpg')" }}
         />
       )}
 
       {/* Gradient overlay — transparent top, brand teal bottom */}
-      <div className="absolute inset-0 bg-gradient-to-t from-deep-ocean/80 via-deep-ocean/30 to-transparent z-[1]" />
+      <div className="absolute inset-0 bg-gradient-to-t from-city-night/70 via-city-night/10 to-transparent z-[1]" />
 
       {/* Content */}
       <div className="relative z-[2] text-center text-clouds max-w-[90%]">

@@ -13,24 +13,28 @@ const UNIT_CONFIG: Array<{
   label: string;
   video: string;
   poster: string;
+  image: string;
 }> = [
   {
     beds: 0,
     label: "Studios",
     video: "/videos/units/studio.mp4",
-    poster: "/images/interiors/studio-furnished.jpg",
+    poster: "/images/interiors/studio-kitchen.jpg",
+    image: "/images/interiors/studio-kitchen.jpg",
   },
   {
     beds: 1,
     label: "1 Bedrooms",
     video: "/videos/units/one-bed.mp4",
-    poster: "/images/interiors/one-bed-furnished.jpg",
+    poster: "/images/interiors/one-bed-living.jpg",
+    image: "/images/interiors/one-bed-living.jpg",
   },
   {
     beds: 2,
     label: "2 Bedrooms",
     video: "/videos/units/two-bed.mp4",
-    poster: "/images/interiors/two-bed-furnished.jpg",
+    poster: "/images/interiors/two-bed-bedroom.jpg",
+    image: "/images/interiors/two-bed-bedroom.jpg",
   },
 ];
 
@@ -45,6 +49,7 @@ function deriveUnitGroups(units: Awaited<ReturnType<typeof getListings>>[0]["uni
       label: config.label,
       video: config.video,
       poster: config.poster,
+      image: config.image,
       fromPrice,
     };
   });

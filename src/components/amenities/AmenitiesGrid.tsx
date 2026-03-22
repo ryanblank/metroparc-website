@@ -7,13 +7,15 @@ const SLOTS = [
   {
     id: "hero",
     images: [
-      { src: "/images/amenities/lobby-alt.jpg",  alt: "Lobby and courtyard at Metro Parc Hialeah" },
-      { src: "/images/amenities/pool.jpg",        alt: "Resort-style pool at Metro Parc Hialeah" },
-      { src: "/images/amenities/cabanas.jpg",     alt: "Private cabanas at Metro Parc Hialeah" },
-      { src: "/images/amenities/concierge.jpg",   alt: "Concierge service at Metro Parc Hialeah" },
+      { src: "/images/amenities/pool-aerial-wide.jpg", alt: "Aerial view of resort-style pool at Metro Parc Hialeah" },
+      { src: "/images/amenities/pool-floating.jpg", alt: "Resident floating in the pool at Metro Parc Hialeah" },
+      { src: "/images/amenities/pool-deck-walk.jpg", alt: "Pool deck and cabanas at Metro Parc Hialeah" },
+      { src: "/images/amenities/pool-swimming.jpg", alt: "Swimming in the resort-style pool at Metro Parc" },
+      { src: "/images/amenities/pool-lifestyle-towel.jpg", alt: "Poolside lifestyle at Metro Parc Hialeah" },
+      { src: "/images/amenities/pool-lounging.jpg", alt: "Lounging by the pool at Metro Parc Hialeah" },
     ],
     name: "Resort-Style Living",
-    desc: "Pool, cabanas, 24-hr concierge & more",
+    desc: "Pool, cabanas & resort-style amenities",
     large: true,
     interval: 5000,
     offset: 0,
@@ -21,9 +23,12 @@ const SLOTS = [
   {
     id: "fitness",
     images: [
-      { src: "/images/amenities/gym.jpg",          alt: "Fitness center at Metro Parc Hialeah" },
-      { src: "/images/amenities/gym-lifestyle.jpg", alt: "Fitness lifestyle at Metro Parc Hialeah" },
-      { src: "/images/amenities/peloton.jpg",       alt: "Peloton bikes at Metro Parc Hialeah" },
+      { src: "/images/amenities/gym-spin-bikes.jpg", alt: "Spin bikes at the fitness center at Metro Parc" },
+      { src: "/images/amenities/gym-cable-wide.jpg", alt: "Full fitness center with cable machines at Metro Parc" },
+      { src: "/images/amenities/gym-cable-action.jpg", alt: "Working out at the cable machine at Metro Parc" },
+      { src: "/images/amenities/gym-barbell-wide.jpg", alt: "Free weights area at Metro Parc fitness center" },
+      { src: "/images/amenities/gym-barbell-rear.jpg", alt: "Barbell workout at Metro Parc Hialeah" },
+      { src: "/images/amenities/gym-squats.jpg", alt: "Squat rack at Metro Parc fitness center" },
     ],
     name: "Fitness Center",
     desc: "Matrix gear & Peloton bikes",
@@ -34,8 +39,11 @@ const SLOTS = [
   {
     id: "coworking",
     images: [
-      { src: "/images/amenities/coworking.jpg",  alt: "Co-working space at Metro Parc Hialeah" },
-      { src: "/images/amenities/lobby-mural.jpg", alt: "Lobby mural at Metro Parc Hialeah" },
+      { src: "/images/amenities/cowork-pods-walk.jpg", alt: "Co-working pods at Metro Parc Hialeah" },
+      { src: "/images/amenities/cowork-pod-laptop.jpg", alt: "Working from a private pod at Metro Parc" },
+      { src: "/images/amenities/cowork-pod-closeup.jpg", alt: "Private work pod at Metro Parc Hialeah" },
+      { src: "/images/amenities/cowork-terrace-phone.jpg", alt: "Phone call in co-working space at Metro Parc" },
+      { src: "/images/amenities/cowork-outdoor-call.jpg", alt: "Outdoor work area at Metro Parc Hialeah" },
     ],
     name: "Co-Working Space",
     desc: "Private booths & high-speed Wi-Fi",
@@ -46,11 +54,14 @@ const SLOTS = [
   {
     id: "clubhouse",
     images: [
-      { src: "/images/amenities/clubhouse.jpg", alt: "Clubroom at Metro Parc Hialeah" },
-      { src: "/images/amenities/lobby.jpg",     alt: "Lobby lounge at Metro Parc Hialeah" },
+      { src: "/images/amenities/club-overview.jpg", alt: "Clubroom overview at Metro Parc Hialeah" },
+      { src: "/images/amenities/club-pool-table.jpg", alt: "Pool table in the clubroom at Metro Parc" },
+      { src: "/images/amenities/club-foosball-tv.jpg", alt: "Foosball and TV lounge at Metro Parc" },
+      { src: "/images/amenities/club-lounge.jpg", alt: "Lounge seating in the clubroom at Metro Parc" },
+      { src: "/images/amenities/club-terrace-chairs.jpg", alt: "Terrace seating at Metro Parc clubroom" },
     ],
     name: "Clubroom",
-    desc: "Upper-floor lounge with terrace views",
+    desc: "Game room, lounge & terrace views",
     large: false,
     interval: 5000,
     offset: 800,
@@ -58,7 +69,12 @@ const SLOTS = [
   {
     id: "grilling",
     images: [
-      { src: "/images/amenities/grilling.jpg", alt: "Outdoor grilling at Metro Parc Hialeah" },
+      { src: "/images/amenities/grill-setup.jpg", alt: "Outdoor grilling station at Metro Parc Hialeah" },
+      { src: "/images/amenities/grill-action.jpg", alt: "Grilling at the outdoor kitchen at Metro Parc" },
+      { src: "/images/amenities/grill-couple-wide.jpg", alt: "Couple at the outdoor grill at Metro Parc" },
+      { src: "/images/amenities/grill-serving.jpg", alt: "Serving grilled food at Metro Parc" },
+      { src: "/images/amenities/grill-laughing.jpg", alt: "Enjoying the outdoor dining at Metro Parc" },
+      { src: "/images/amenities/grill-dining.jpg", alt: "Outdoor dining at Metro Parc Hialeah" },
     ],
     name: "Outdoor Grilling",
     desc: "Grilling stations & outdoor kitchen",
@@ -67,27 +83,39 @@ const SLOTS = [
     offset: 2000,
   },
   {
-    id: "gameroom",
+    id: "services",
     images: [
-      { src: "/images/amenities/game-room.jpg",     alt: "Game room at Metro Parc Hialeah" },
-      { src: "/images/amenities/game-room-alt.jpg", alt: "Game room alternate view at Metro Parc" },
+      { src: "/images/amenities/lobby-wide.jpg", alt: "Lobby and concierge at Metro Parc Hialeah" },
+      { src: "/images/amenities/concierge-interaction.jpg", alt: "24-hour concierge service at Metro Parc" },
+      { src: "/images/amenities/concierge-laughing.jpg", alt: "Friendly concierge at Metro Parc Hialeah" },
+      { src: "/images/amenities/lobby-seating.jpg", alt: "Lobby lounge seating at Metro Parc" },
+      { src: "/images/amenities/lobby-dog-wide.jpg", alt: "Pet-friendly lobby at Metro Parc Hialeah" },
+      { src: "/images/amenities/lobby-dog-closeup.jpg", alt: "Dog-friendly community at Metro Parc" },
     ],
-    name: "Game Room",
-    desc: "Pool table, foosball & social seating",
+    name: "24-Hour Services",
+    desc: "Concierge, lobby & pet-friendly living",
     large: false,
     interval: 5000,
-    offset: 3200,
+    offset: 1600,
   },
 ];
 
 function AmenityCard({ slot }: { slot: typeof SLOTS[0] }) {
   const [index, setIndex] = useState(0);
+  const [prevIndex, setPrevIndex] = useState(0);
+  const [transitioning, setTransitioning] = useState(false);
 
   useEffect(() => {
     if (slot.images.length <= 1) return;
     const timeout = setTimeout(() => {
       const timer = setInterval(() => {
-        setIndex((i) => (i + 1) % slot.images.length);
+        setTransitioning(true);
+        setIndex((prev) => {
+          setPrevIndex(prev);
+          return (prev + 1) % slot.images.length;
+        });
+        // Reset transition state after crossfade completes
+        setTimeout(() => setTransitioning(false), 1200);
       }, slot.interval);
       return () => clearInterval(timer);
     }, slot.offset);
@@ -95,6 +123,7 @@ function AmenityCard({ slot }: { slot: typeof SLOTS[0] }) {
   }, [slot]);
 
   const current = slot.images[index];
+  const previous = slot.images[prevIndex];
 
   return (
     <div
@@ -104,12 +133,25 @@ function AmenityCard({ slot }: { slot: typeof SLOTS[0] }) {
           : "h-[260px] md:h-auto"
       }`}
     >
+      {/* Previous image (fades out) */}
+      {transitioning && (
+        <Image
+          src={previous.src}
+          alt={previous.alt}
+          fill
+          className="object-cover"
+          sizes={slot.large ? "(max-width: 768px) 100vw, 66vw" : "33vw"}
+        />
+      )}
+      {/* Current image (fades in) */}
       <Image
         key={current.src}
         src={current.src}
         alt={current.alt}
         fill
-        className="object-cover transition-all duration-700 group-hover:scale-105"
+        className={`object-cover transition-opacity duration-[1200ms] ease-in-out group-hover:scale-105 transition-transform ${
+          transitioning ? "opacity-0 animate-[fadeIn_1.2s_ease-in-out_forwards]" : ""
+        }`}
         sizes={slot.large ? "(max-width: 768px) 100vw, 66vw" : "33vw"}
         priority={slot.large}
       />
@@ -122,7 +164,7 @@ function AmenityCard({ slot }: { slot: typeof SLOTS[0] }) {
           {slot.desc}
         </p>
       </div>
-      {/* Dot indicators if multiple images */}
+      {/* Dot indicators */}
       {slot.images.length > 1 && (
         <div className="absolute bottom-0 right-0 p-3 flex gap-1">
           {slot.images.map((_, i) => (
@@ -141,7 +183,7 @@ function AmenityCard({ slot }: { slot: typeof SLOTS[0] }) {
 
 export default function AmenitiesGrid() {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 md:grid-rows-[340px_280px_260px] gap-3">
+    <div className="grid grid-cols-1 md:grid-cols-3 md:grid-rows-[320px_300px_280px] gap-3">
       {SLOTS.map((slot) => (
         <AmenityCard key={slot.id} slot={slot} />
       ))}

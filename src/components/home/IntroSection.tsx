@@ -36,44 +36,6 @@ export default function IntroSection() {
         Metro Parc places you at the pulse of Hialeah&apos;s vibrant energy, offering a lifestyle that&apos;s as connected as it is convenient. Dining, culture, and transportation at your doorstep.
       </p>
 
-      {/* Stats row — 2×2 grid on mobile, single row on desktop */}
-      <div
-        className={`grid grid-cols-2 md:flex md:flex-wrap md:justify-center md:items-center mt-8 gap-y-6 md:gap-y-0 transition-all duration-600 delay-300 ${
-          inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-5"
-        }`}
-      >
-        {STATS.map((stat, i) => (
-          <div key={stat.label} className="flex items-center justify-center md:justify-start">
-            <div className="flex flex-col items-center px-6 md:px-8 py-2">
-              {stat.href ? (
-                <Link
-                  href={stat.href}
-                  className="flex flex-col items-center group no-underline"
-                >
-                  <span className="text-[1.5rem] font-bold text-avocado leading-none mb-1 group-hover:text-avocado/70 transition-colors duration-200">
-                    {stat.value}
-                  </span>
-                  <span className="font-decorative text-[0.7rem] uppercase tracking-[0.14em] text-city-night-light group-hover:text-avocado/70 transition-colors duration-200">
-                    {stat.label}
-                  </span>
-                </Link>
-              ) : (
-                <>
-                  <span className="text-[1.5rem] font-bold text-avocado leading-none mb-1">
-                    {stat.value}
-                  </span>
-                  <span className="font-decorative text-[0.7rem] uppercase tracking-[0.14em] text-city-night-light">
-                    {stat.label}
-                  </span>
-                </>
-              )}
-            </div>
-            {i < STATS.length - 1 && (
-              <div className="hidden md:block w-px h-8 bg-city-night/20" />
-            )}
-          </div>
-        ))}
-      </div>
     </section>
   );
 }

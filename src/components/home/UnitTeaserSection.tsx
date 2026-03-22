@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { useInView } from "@/hooks/useInView";
 
@@ -8,6 +9,7 @@ export interface UnitGroup {
   label: string;
   video: string;
   poster: string;
+  image?: string;
   fromPrice: number | null;
 }
 
@@ -55,18 +57,28 @@ function VideoCard({ unit, delay, sectionInView }: VideoCardProps) {
       }`}
       style={{ transitionDelay: sectionInView ? `${delay}ms` : "0ms" }}
     >
-      {/* Video */}
+      {/* Image or Video */}
       <div className="relative h-[260px] overflow-hidden bg-city-night">
-        <video
-          ref={videoRef}
-          src={unit.video}
-          poster={unit.poster}
-          muted
-          loop
-          playsInline
-          preload="none"
-          className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-        />
+        {unit.image ? (
+          <Image
+            src={unit.image}
+            alt={unit.label}
+            fill
+            className="object-cover transition-transform duration-700 group-hover:scale-105"
+            sizes="(max-width: 640px) 100vw, 33vw"
+          />
+        ) : (
+          <video
+            ref={videoRef}
+            src={unit.video}
+            poster={unit.poster}
+            muted
+            loop
+            playsInline
+            preload="none"
+            className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+          />
+        )}
         <div className="absolute inset-0 bg-gradient-to-t from-city-night/80 via-transparent to-transparent" />
       </div>
 
@@ -116,13 +128,6 @@ export default function UnitTeaserSection({ units }: UnitTeaserSectionProps) {
         >
           Find Your Home
         </h2>
-        <p
-          className={`text-clouds/70 text-base max-w-[480px] mx-auto transition-all duration-600 delay-150 ${
-            inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-5"
-          }`}
-        >
-          2 Months Free on a 14-Month Lease — Limited Availability
-        </p>
       </div>
 
       {/* Unit cards */}
