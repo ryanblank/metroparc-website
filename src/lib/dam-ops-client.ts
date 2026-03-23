@@ -16,14 +16,21 @@ export interface Attribution {
 export function getAttribution(): Attribution {
   if (typeof window === "undefined") return {};
 
-  return {
-    source_utm_source: sessionStorage.getItem("dam_utm_source") || undefined,
-    source_utm_medium: sessionStorage.getItem("dam_utm_medium") || undefined,
-    source_utm_campaign: sessionStorage.getItem("dam_utm_campaign") || undefined,
-    source_utm_term: sessionStorage.getItem("dam_utm_term") || undefined,
-    source_utm_content: sessionStorage.getItem("dam_utm_content") || undefined,
-    source_referrer: sessionStorage.getItem("dam_referrer") || undefined,
-    source_raw: sessionStorage.getItem("dam_landing_page") || undefined,
-    source_gclid: sessionStorage.getItem("dam_gclid") || undefined,
-  };
+  try {
+    const raw = sessionStorage.getItem("dam_attribution");
+    const data = raw ? JSON.parse(raw) : {};
+
+    return {
+      source_utm_source: data.utm_source || undefined,
+      source_utm_medium: data.utm_medium || undefined,
+      source_utm_campaign: data.utm_campaign || undefined,
+      source_utm_term: data.utm_term || undefined,
+      source_utm_content: data.utm_content || undefined,
+      source_referrer: data.referrer || undefined,
+      source_raw: data.landing_page || undefined,
+      source_gclid: data.gclid || undefined,
+    };
+  } catch {
+    return {};
+  }
 }
