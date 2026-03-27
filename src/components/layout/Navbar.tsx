@@ -166,7 +166,7 @@ export default function Navbar({ onBookTourClick }: NavbarProps) {
           <div className="font-body text-sm leading-[1.8] mb-6">
             <p>{ADDRESS.full}</p>
             <p>
-              <a href={`tel:${PHONE.replace(/[^0-9]/g, "")}`} className="text-clouds no-underline hover:text-avocado transition-colors">
+              <a href={`tel:${PHONE.replace(/[^0-9]/g, "")}`} className="DCRPhoneHref text-clouds no-underline hover:text-avocado transition-colors">
                 {PHONE}
               </a>
             </p>

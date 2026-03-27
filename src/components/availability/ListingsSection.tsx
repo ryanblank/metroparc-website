@@ -152,7 +152,7 @@ export default function ListingsSection({ units }: ListingsSectionProps) {
     return (
       <p className="text-center text-city-night-light py-8">
         Listings are temporarily unavailable. Please contact us at{" "}
-        <a href="tel:+13056149674" className="text-deep-ocean hover:underline">
+        <a href="tel:+13056149674" className="DCRPhoneHref text-deep-ocean hover:underline">
           (305) 614-9674
         </a>
         .
