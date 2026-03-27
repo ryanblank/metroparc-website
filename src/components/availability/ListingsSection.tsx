@@ -11,6 +11,47 @@ interface ListingsSectionProps {
 type MediaType = "floorplan" | "3dtour" | "video";
 type FormType = "floor_plan" | "video_tour" | "3d_tour" | "contact";
 
+/* ── Inline SVG icons for the desktop table ── */
+
+function Icon3DTour({ className = "" }: { className?: string }) {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className={className}>
+      {/* corner brackets */}
+      <path d="M2 8V2h6M16 2h6v6M22 16v6h-6M8 22H2v-6" />
+      {/* cube */}
+      <path d="M12 6l5 3v6l-5 3-5-3V9z" />
+      <path d="M12 6v6M12 12l5-3M12 12l-5-3" />
+    </svg>
+  );
+}
+
+function IconFloorPlan({ className = "" }: { className?: string }) {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className={className}>
+      <rect x="3" y="3" width="18" height="18" rx="1" />
+      <path d="M3 12h8v9M14 3v8h7" />
+    </svg>
+  );
+}
+
+function IconVideo({ className = "" }: { className?: string }) {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className={className}>
+      <rect x="2" y="4" width="15" height="16" rx="2" />
+      <path d="M17 9l5-3v12l-5-3" />
+    </svg>
+  );
+}
+
+function IconInquire({ className = "" }: { className?: string }) {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className={className}>
+      <rect x="2" y="4" width="20" height="16" rx="2" />
+      <path d="M22 4L12 13 2 4" />
+    </svg>
+  );
+}
+
 const MEDIA_TO_FORM_TYPE: Record<MediaType, FormType> = {
   floorplan: "floor_plan",
   "3dtour": "3d_tour",
@@ -133,15 +174,15 @@ export default function ListingsSection({ units }: ListingsSectionProps) {
                 <th className="py-3 px-4 font-decorative text-xs uppercase tracking-[0.1em] text-deep-ocean">Net Price</th>
               )}
               {hasFloorPlan && (
-                <th className="py-3 px-4 font-decorative text-xs uppercase tracking-[0.1em] text-deep-ocean">Floorplan</th>
+                <th className="py-3 px-4 w-16 text-center font-decorative text-xs uppercase tracking-[0.1em] text-deep-ocean">Floorplan</th>
               )}
               {hasVideoTour && (
-                <th className="py-3 px-4 font-decorative text-xs uppercase tracking-[0.1em] text-deep-ocean">Video Tour</th>
+                <th className="py-3 px-4 w-16 text-center font-decorative text-xs uppercase tracking-[0.1em] text-deep-ocean">Video Tour</th>
               )}
               {has3DTour && (
-                <th className="py-3 px-4 font-decorative text-xs uppercase tracking-[0.1em] text-deep-ocean">3D Tour</th>
+                <th className="py-3 px-4 w-16 text-center font-decorative text-xs uppercase tracking-[0.1em] text-deep-ocean">3D Tour</th>
               )}
-              <th className="py-3 px-4 font-decorative text-xs uppercase tracking-[0.1em] text-deep-ocean">Inquire</th>
+              <th className="py-3 px-4 w-16 text-center font-decorative text-xs uppercase tracking-[0.1em] text-deep-ocean">Inquire</th>
             </tr>
           </thead>
           <tbody>
@@ -154,13 +195,14 @@ export default function ListingsSection({ units }: ListingsSectionProps) {
                   <td className="py-4 px-4 text-city-night-light">{formatPrice(unit.price_net)}</td>
                 )}
                 {hasFloorPlan && (
-                  <td className="py-4 px-4">
+                  <td className="py-4 px-4 text-center">
                     {unit.floor_plan_url ? (
                       <button
                         onClick={() => openMedia("floorplan", unit)}
-                        className="text-xs px-3 py-1.5 rounded border border-deep-ocean text-deep-ocean bg-transparent cursor-pointer hover:bg-deep-ocean hover:text-white transition-colors font-decorative uppercase tracking-wider"
+                        className="inline-flex items-center justify-center w-9 h-9 rounded-full text-deep-ocean bg-transparent cursor-pointer hover:bg-deep-ocean hover:text-white transition-colors border-none"
+                        aria-label={`View floor plan for ${unit.unit_number}`}
                       >
-                        View
+                        <IconFloorPlan className="w-5 h-5" />
                       </button>
                     ) : (
                       <span className="text-city-night-light">—</span>
@@ -168,13 +210,14 @@ export default function ListingsSection({ units }: ListingsSectionProps) {
                   </td>
                 )}
                 {hasVideoTour && (
-                  <td className="py-4 px-4">
+                  <td className="py-4 px-4 text-center">
                     {unit.video_tour_url ? (
                       <button
                         onClick={() => openMedia("video", unit)}
-                        className="text-xs px-3 py-1.5 rounded border border-deep-ocean text-deep-ocean bg-transparent cursor-pointer hover:bg-deep-ocean hover:text-white transition-colors font-decorative uppercase tracking-wider"
+                        className="inline-flex items-center justify-center w-9 h-9 rounded-full text-deep-ocean bg-transparent cursor-pointer hover:bg-deep-ocean hover:text-white transition-colors border-none"
+                        aria-label={`Watch video tour for ${unit.unit_number}`}
                       >
-                        Watch
+                        <IconVideo className="w-5 h-5" />
                       </button>
                     ) : (
                       <span className="text-city-night-light">—</span>
@@ -182,25 +225,27 @@ export default function ListingsSection({ units }: ListingsSectionProps) {
                   </td>
                 )}
                 {has3DTour && (
-                  <td className="py-4 px-4">
+                  <td className="py-4 px-4 text-center">
                     {unit.tour_3d_url ? (
                       <button
                         onClick={() => openMedia("3dtour", unit)}
-                        className="text-xs px-3 py-1.5 rounded border border-avocado text-avocado-muted bg-transparent cursor-pointer hover:bg-avocado hover:text-city-night transition-colors font-decorative uppercase tracking-wider"
+                        className="inline-flex items-center justify-center w-9 h-9 rounded-full text-city-night bg-transparent cursor-pointer hover:bg-city-night hover:text-white transition-colors border-none"
+                        aria-label={`Explore 3D tour for ${unit.unit_number}`}
                       >
-                        Explore
+                        <Icon3DTour className="w-5 h-5" />
                       </button>
                     ) : (
                       <span className="text-city-night-light">—</span>
                     )}
                   </td>
                 )}
-                <td className="py-4 px-4">
+                <td className="py-4 px-4 text-center">
                   <button
                     onClick={() => openInquiry(unit)}
-                    className="text-xs px-3 py-1.5 rounded bg-deep-ocean text-white cursor-pointer hover:bg-deep-ocean-hover transition-colors font-decorative uppercase tracking-wider border-none"
+                    className="inline-flex items-center justify-center w-9 h-9 rounded-full text-deep-ocean bg-transparent cursor-pointer hover:bg-deep-ocean hover:text-white transition-colors border-none"
+                    aria-label={`Inquire about ${unit.unit_number}`}
                   >
-                    Inquire
+                    <IconInquire className="w-5 h-5" />
                   </button>
                 </td>
               </tr>

@@ -69,6 +69,7 @@ export default function Navbar({ onBookTourClick }: NavbarProps) {
           {/* Availability button - hidden on mobile */}
           <Link
             href="/availability"
+            onClick={closeMenu}
             className="hidden md:inline-flex items-center bg-transparent text-clouds px-5 py-2.5 border border-clouds/40 rounded-full font-decorative text-[0.8rem] uppercase tracking-[0.1em] transition-all duration-300 hover:border-clouds/80 hover:bg-clouds/[0.08] no-underline"
           >
             Availability
@@ -76,7 +77,10 @@ export default function Navbar({ onBookTourClick }: NavbarProps) {
 
           {/* Book a Tour button - hidden on mobile */}
           <button
-            onClick={onBookTourClick}
+            onClick={() => {
+              closeMenu();
+              onBookTourClick();
+            }}
             className="hidden md:inline-flex items-center bg-transparent text-clouds px-5 py-2.5 border border-clouds/40 rounded-full font-decorative text-[0.8rem] uppercase tracking-[0.1em] cursor-pointer transition-all duration-300 hover:border-clouds/80 hover:bg-clouds/[0.08]"
           >
             Book a Tour
@@ -85,9 +89,7 @@ export default function Navbar({ onBookTourClick }: NavbarProps) {
           {/* Hamburger Menu Button */}
           <button
             onClick={toggleMenu}
-            className={`flex items-center gap-3 bg-transparent border border-clouds/40 rounded-full cursor-pointer px-5 py-2.5 text-clouds transition-all duration-300 hover:border-clouds/80 hover:bg-clouds/[0.08] ${
-              isMenuOpen ? "z-[1001]" : ""
-            }`}
+            className="flex items-center gap-3 bg-transparent border border-clouds/40 rounded-full cursor-pointer px-5 py-2.5 text-clouds transition-all duration-300 hover:border-clouds/80 hover:bg-clouds/[0.08]"
             aria-label={isMenuOpen ? "Close menu" : "Open menu"}
             aria-expanded={isMenuOpen}
           >
