@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48">
+  <!-- Circular background -->
+  <circle cx="24" cy="24" r="23" fill="#015570" stroke="#aaac24" stroke-width="2"/>
+  <!-- MP icon scaled and centered (original viewBox ~0-93 x 0-51, scaled to fit ~32px wide) -->
+  <g transform="translate(4.5, 8) scale(0.42)">
+    <!-- Green shapes (avocado) -->
+    <polygon fill="#aaac24" points="1.5564 1.7956 1.5564 49.2559 14.7261 49.2559 21.6794 1.7956"/>
+    <path fill="#aaac24" d="M80.3276,18.0155c0-3.5663-2.0158-5.1049-6.5336-5.1049h-11.61v10.2098h11.61c4.5178,0,6.5336-1.608,6.5336-5.1049Z"/>
+    <path fill="#aaac24" d="M93.0641,11.8131V1.7785h-15.6685c8.3779.4589,13.682,3.8665,15.6685,10.0346Z"/>
+    <path fill="#aaac24" d="M75.3925,34.3086h-13.2084v14.9083h30.88v-25.0258c-2.1406,6.632-8.131,10.1175-17.6716,10.1175Z"/>
+    <!-- Blue shapes (deep ocean) -->
+    <polygon fill="#ffffff" points="49.0165 49.2556 49.0165 30.8835 40.3366 49.2556"/>
+    <polygon fill="#ffffff" points="48.7223 1.7956 31.7465 1.7956 39.9694 20.0383"/>
+    <polygon fill="#ffffff" points="27.6293 49.2556 39.8451 49.2556 30.4679 29.8808"/>
+  </g>
+</svg>

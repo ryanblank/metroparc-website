@@ -43,7 +43,7 @@ export default function AmenitiesPage() {
       />
       <PageHero
         title="Every Detail Matters"
-        subtitle="temporary filler"
+        subtitle="Elevate Your Experience"
         imageSrc="/images/amenities/hero-test4.jpg"
         imageAlt="Lobby and courtyard at Metro Parc apartments in Hialeah FL"
       />
@@ -55,7 +55,7 @@ export default function AmenitiesPage() {
             Amenities
           </p>
           <h2 className="text-[clamp(1.75rem,4vw,2.5rem)] font-bold text-city-night mb-6 leading-[1.2]">
-            Resort-Style Amenities in Hialeah
+            Resort-Style Living in Hialeah
           </h2>
           <p className="text-city-night-light leading-[1.8]">
             At Metro Parc, we believe that every detail matters. That&apos;s why we&apos;ve designed a pet-friendly community that elevates your living experience with modern conveniences and stylish touches. From our resort-style pool and Peloton-equipped fitness center to the co-working space and 24-hour concierge, our amenities are tailored to meet your every need. <Link href="/residences" className="text-deep-ocean hover:underline">Browse apartment interiors and floor plans</Link> to see the full picture.

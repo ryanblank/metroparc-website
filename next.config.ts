@@ -66,6 +66,16 @@ const nextConfig: NextConfig = {
         destination: "/contact",
         permanent: true,
       },
+      {
+        source: "/p/workforcehousing",
+        destination: "/workforce-housing",
+        permanent: true,
+      },
+      {
+        source: "/p/workforcehousing/:path*",
+        destination: "/workforce-housing",
+        permanent: true,
+      },
     ];
   },
 };

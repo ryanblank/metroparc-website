@@ -129,7 +129,6 @@ export default function ListingsSection({ units }: ListingsSectionProps) {
               <th className="py-3 px-4 font-decorative text-xs uppercase tracking-[0.1em] text-deep-ocean">Unit</th>
               <th className="py-3 px-4 font-decorative text-xs uppercase tracking-[0.1em] text-deep-ocean">Bed</th>
               <th className="py-3 px-4 font-decorative text-xs uppercase tracking-[0.1em] text-deep-ocean">Bath</th>
-              <th className="py-3 px-4 font-decorative text-xs uppercase tracking-[0.1em] text-deep-ocean">Gross Price</th>
               {hasNetPrice && (
                 <th className="py-3 px-4 font-decorative text-xs uppercase tracking-[0.1em] text-deep-ocean">Net Price</th>
               )}
@@ -151,7 +150,6 @@ export default function ListingsSection({ units }: ListingsSectionProps) {
                 <td className="py-4 px-4 font-semibold text-city-night">{unit.unit_number}</td>
                 <td className="py-4 px-4 text-city-night-light">{bedroomLabel(unit.bedrooms)}</td>
                 <td className="py-4 px-4 text-city-night-light">{unit.bathrooms ?? "—"}</td>
-                <td className="py-4 px-4 font-semibold text-deep-ocean">{formatPrice(unit.price_gross)}</td>
                 {hasNetPrice && (
                   <td className="py-4 px-4 text-city-night-light">{formatPrice(unit.price_net)}</td>
                 )}
@@ -223,18 +221,12 @@ export default function ListingsSection({ units }: ListingsSectionProps) {
                 </p>
               </div>
             </div>
-            <div className="flex gap-4 mb-4">
-              <div>
-                <p className="text-xs text-city-night-light">Gross</p>
-                <p className="text-lg font-semibold text-deep-ocean">{formatPrice(unit.price_gross)}</p>
+            {hasNetPrice && unit.price_net != null && (
+              <div className="mb-4">
+                <p className="text-xs text-city-night-light">Net Price</p>
+                <p className="text-lg font-semibold text-city-night">{formatPrice(unit.price_net)}</p>
               </div>
-              {hasNetPrice && unit.price_net != null && (
-                <div>
-                  <p className="text-xs text-city-night-light">Net</p>
-                  <p className="text-lg font-semibold text-city-night">{formatPrice(unit.price_net)}</p>
-                </div>
-              )}
-            </div>
+            )}
             <div className="flex gap-2 flex-wrap">
               {unit.floor_plan_url && (
                 <button

@@ -60,48 +60,6 @@ const COMMUTE_DESTINATIONS = [
   },
 ];
 
-const NEARBY_NEIGHBORHOODS = [
-  { name: "Doral", time: "10 min drive", desc: "Corporate corridor, top-rated dining, strong job market." },
-  { name: "Miami Springs", time: "8 min drive", desc: "Quiet, walkable residential neighborhood right next to MIA." },
-  { name: "Miami Lakes", time: "12 min drive", desc: "Suburban charm, excellent schools, local shopping." },
-  { name: "Downtown Miami", time: "20 min by rail", desc: "Business, culture, nightlife — no parking required." },
-  { name: "Brickell", time: "25 min by rail", desc: "Finance district, waterfront restaurants, Mary Brickell Village." },
-  { name: "Coconut Grove", time: "30 min by rail", desc: "Arts, dining, Peacock Park, and bayside living." },
-];
-
-const EMPLOYMENT_CENTERS = [
-  {
-    name: "Health District & Jackson Memorial",
-    time: "15 min",
-    via: "Metrorail",
-    desc: "Florida's largest hospital and UM Medical campus. Direct Metrorail ride — no car, no parking, no stress. The Civic Center station puts you steps from the entrance.",
-  },
-  {
-    name: "Downtown Miami",
-    time: "20 min",
-    via: "Metrorail",
-    desc: "Government Center, courthouse, major office towers. One of Miami's largest employment corridors and a straight shot on the Green Line.",
-  },
-  {
-    name: "Brickell Financial District",
-    time: "25 min",
-    via: "Metrorail",
-    desc: "Finance, tech, hospitality. Average 1-bedroom in Brickell runs $3,201/mo. Metro Parc 1-bedrooms start at $2,205 — same commute, significant savings.",
-  },
-  {
-    name: "Miami International Airport",
-    time: "13 min",
-    via: "by car",
-    desc: "4 miles via Okeechobee Rd. One of the busiest airports in the country. Ideal for airline crews, travel industry, and anyone who flies frequently.",
-  },
-  {
-    name: "Doral Business Parks",
-    time: "10 min",
-    via: "by car",
-    desc: "Miami's corporate west side — logistics, pharmaceuticals, retail headquarters, and more. Some of the best office inventory in the metro area.",
-  },
-];
-
 const POI_GROUPS = [
   {
     category: "Restaurants & Cafes",
@@ -154,7 +112,7 @@ export default function NeighborhoodPage() {
       {/* Hero */}
       <PageHero
         title="Culture and Connection"
-        subtitle="filler here"
+        subtitle="Everything Within Reach"
         imageSrc="/images/neighborhood/neighborhood-hero-test2.jpg"
         imageAlt="Metro Parc apartments near Metrorail and Tri-Rail station in Hialeah FL"
       />
@@ -279,12 +237,12 @@ export default function NeighborhoodPage() {
       </section>
 
       {/* Map — full bleed */}
-      <section className="bg-white py-[clamp(3rem,10vw,6rem)]">
+      <section className="bg-city-night pt-[clamp(3rem,10vw,6rem)] pb-0">
         <div className="max-w-[1200px] mx-auto px-8 mb-8">
           <p className="font-decorative text-[0.875rem] tracking-[0.15em] text-avocado uppercase mb-4 text-center">
             Explore Nearby
           </p>
-          <h2 className="text-[clamp(1.75rem,4vw,2.5rem)] font-bold text-city-night text-center leading-[1.2]">
+          <h2 className="text-[clamp(1.75rem,4vw,2.5rem)] font-bold text-clouds text-center leading-[1.2]">
             Everything Within Reach
           </h2>
         </div>
@@ -325,67 +283,16 @@ export default function NeighborhoodPage() {
         />
       </div>
 
-      {/* Nearby Neighborhoods */}
-      <section className="bg-clouds py-[clamp(3rem,10vw,6rem)] px-8">
-        <div className="max-w-[1200px] mx-auto">
-          <p className="font-decorative text-[0.875rem] tracking-[0.15em] text-avocado uppercase mb-4 text-center">
-            Well-Connected
-          </p>
-          <h2 className="text-[clamp(1.75rem,4vw,2.5rem)] font-bold text-city-night mb-4 text-center leading-[1.2]">
-            Neighboring Communities
-          </h2>
-          <p className="text-city-night-light text-center max-w-[600px] mx-auto mb-12 leading-[1.8]">
-            Metro Parc sits at the intersection of Hialeah, Doral, and Miami Springs — with Metrorail access none of them have.
-          </p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {NEARBY_NEIGHBORHOODS.map((n) => (
-              <div key={n.name} className="bg-white rounded-lg p-6 border border-city-night/8">
-                <p className="font-bold text-city-night text-[1.1rem] mb-1">{n.name}</p>
-                <p className="font-decorative text-[0.7rem] uppercase tracking-[0.12em] text-avocado mb-3">
-                  {n.time}
-                </p>
-                <p className="text-city-night-light text-[0.875rem] leading-[1.7]">{n.desc}</p>
-              </div>
-            ))}
+      {/* Walk Score */}
+      <div className="bg-city-night py-4 px-8">
+        <div className="max-w-[1200px] mx-auto flex items-center justify-center gap-6">
+          <div className="flex items-baseline gap-3">
+            <span className="text-avocado font-[800] text-[1.75rem] leading-none">73</span>
+            <span className="text-clouds font-bold text-[0.95rem]">Walk Score®</span>
+            <span className="text-clouds/50 text-[0.85rem]">— Very Walkable</span>
           </div>
         </div>
-      </section>
-
-      {/* Employment Centers */}
-      <section className="bg-city-night py-[clamp(3rem,10vw,6rem)] px-8">
-        <div className="max-w-[1200px] mx-auto">
-          <p className="font-decorative text-[0.875rem] tracking-[0.15em] text-avocado uppercase mb-4 text-center">
-            Work From Here
-          </p>
-          <h2 className="text-[clamp(1.75rem,4vw,2.5rem)] font-bold text-clouds mb-4 text-center leading-[1.2]">
-            Major Employment Centers Nearby
-          </h2>
-          <p className="text-clouds/60 text-center max-w-[600px] mx-auto mb-12 leading-[1.8]">
-            Whether you work in healthcare, finance, aviation, or business — Metro Parc puts you close.
-          </p>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {EMPLOYMENT_CENTERS.map((emp) => (
-              <div
-                key={emp.name}
-                className="border border-clouds/10 rounded-lg p-6 hover:border-avocado/30 transition-colors duration-300"
-              >
-                <div className="flex items-start justify-between gap-4 mb-3">
-                  <p className="font-bold text-clouds text-[1rem] leading-[1.3]">{emp.name}</p>
-                  <div className="text-right shrink-0">
-                    <span className="block text-avocado font-[800] text-[1.1rem] leading-none">
-                      {emp.time}
-                    </span>
-                    <span className="font-decorative text-[0.65rem] uppercase tracking-[0.1em] text-clouds/40">
-                      {emp.via}
-                    </span>
-                  </div>
-                </div>
-                <p className="text-clouds/50 text-[0.85rem] leading-[1.7]">{emp.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      </div>
 
       {/* Price-Value Callout — image-backed */}
       <section className="relative py-[clamp(3rem,8vw,5rem)] px-8 text-center">

@@ -22,7 +22,7 @@ const FAQ_ITEMS: FAQItem[] = [
   },
   {
     question: "Is Metro Parc a pet-friendly community?",
-    answer: "Yes, Metro Parc is a pet-friendly community welcoming both cats and dogs.",
+    answer: "Yes, Metro Parc is a pet-friendly community welcoming cats and dogs of all sizes, including larger breeds. Contact our leasing team for details on our pet policy.",
     category: "General Community",
   },
   // Community Amenities

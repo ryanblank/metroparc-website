@@ -47,6 +47,7 @@ export default function NeighborhoodMap() {
       bearing: MAP_CONFIG.bearing,
       maxZoom: MAP_CONFIG.maxZoom,
       minZoom: MAP_CONFIG.minZoom,
+      cooperativeGestures: true,
     });
 
     map.addControl(new mapboxgl.NavigationControl(), "top-right");
@@ -55,16 +56,28 @@ export default function NeighborhoodMap() {
     MAP_PINS.forEach((pin) => {
       const cat = PIN_CATEGORIES[pin.category];
       const isProperty = pin.category === "property";
-      const size = isProperty ? 16 : 10;
 
       const el = document.createElement("div");
-      el.style.width = `${size}px`;
-      el.style.height = `${size}px`;
-      el.style.borderRadius = "50%";
-      el.style.backgroundColor = cat.color;
-      el.style.border = isProperty ? "3px solid #a9ab36" : "2px solid rgba(255,255,255,0.6)";
-      el.style.cursor = "pointer";
-      el.style.boxShadow = "0 2px 6px rgba(0,0,0,0.4)";
+
+      if (isProperty) {
+        // Custom logo marker for the property
+        const img = document.createElement("img");
+        img.src = "/images/map-pin-mp.svg";
+        img.style.width = "48px";
+        img.style.height = "48px";
+        img.style.filter = "drop-shadow(0 2px 6px rgba(0,0,0,0.5))";
+        el.appendChild(img);
+        el.style.cursor = "pointer";
+      } else {
+        const size = 10;
+        el.style.width = `${size}px`;
+        el.style.height = `${size}px`;
+        el.style.borderRadius = "50%";
+        el.style.backgroundColor = cat.color;
+        el.style.border = "2px solid rgba(255,255,255,0.6)";
+        el.style.cursor = "pointer";
+        el.style.boxShadow = "0 2px 6px rgba(0,0,0,0.4)";
+      }
 
       const popup = new mapboxgl.Popup({ offset: 15, closeButton: false })
         .setHTML(`

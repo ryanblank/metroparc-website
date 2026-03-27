@@ -22,7 +22,7 @@ export const PIN_CATEGORIES = {
     color: "#045571",
   },
   dining: {
-    label: "Dining",
+    label: "Drinks & Dining",
     color: "#a9ab36",
   },
   shopping: {
@@ -62,14 +62,14 @@ export const MAP_PINS: MapPin[] = [
     name: "Dr. Martin Luther King Jr. Plaza",
     address: "Metrorail Green Line, Miami, FL",
     category: "transit",
-    coordinates: [-80.214399, 25.819869],
+    coordinates: [-80.241066, 25.831251],
   },
   {
     id: "metrorail-earlington",
     name: "Earlington Heights",
     address: "Metrorail Green Line, Miami, FL",
     category: "transit",
-    coordinates: [-80.226524, 25.807611],
+    coordinates: [-80.231366, 25.812883],
   },
   {
     id: "metrorail-civic-center",
@@ -97,7 +97,7 @@ export const MAP_PINS: MapPin[] = [
     name: "Coconut Grove",
     address: "Metrorail Green Line — 30 min from Metro Parc",
     category: "transit",
-    coordinates: [-80.199866, 25.731895],
+    coordinates: [-80.23844, 25.73992],
   },
   {
     id: "trirail-opalocka",
@@ -150,6 +150,55 @@ export const MAP_PINS: MapPin[] = [
     category: "dining",
     coordinates: [-80.273613, 25.867513],
   },
+  {
+    id: "molinas-ranch",
+    name: "Molina's Ranch",
+    address: "4090 E 8th Ave, Hialeah, FL 33013",
+    category: "dining",
+    coordinates: [-80.2670, 25.8597],
+  },
+  {
+    id: "9-feet-under",
+    name: "9 Feet Under",
+    address: "885 SE 14th St, Hialeah, FL 33010",
+    category: "dining",
+    coordinates: [-80.262892, 25.810584],
+  },
+  {
+    id: "habibi-cafe",
+    name: "Habibi Cafe",
+    address: "914 E 25th St, Hialeah, FL 33013",
+    category: "dining",
+    coordinates: [-80.2637278, 25.8451081],
+  },
+  {
+    id: "cuatro-esquinas",
+    name: "Cuatro Esquinas Restaurant",
+    address: "1001 E 27th St, Hialeah, FL 33013",
+    category: "dining",
+    coordinates: [-80.2620675, 25.8474941],
+  },
+  {
+    id: "pronto-cafe",
+    name: "Pronto Cafe | Wings & Subs",
+    address: "86 W 29th St, Hialeah, FL 33012",
+    category: "dining",
+    coordinates: [-80.2840507, 25.8480148],
+  },
+  {
+    id: "rinconcito-pinareno",
+    name: "Rinconcito Pinareño",
+    address: "1002 E 29th St, Hialeah, FL 33013",
+    category: "dining",
+    coordinates: [-80.2619882, 25.8486880],
+  },
+  {
+    id: "vice-miami",
+    name: "Vice Miami",
+    address: "766 E 25th St, Hialeah, FL 33013",
+    category: "dining",
+    coordinates: [-80.2668375, 25.8448157],
+  },
 
   // Shopping & Services
   {
@@ -174,6 +223,13 @@ export const MAP_PINS: MapPin[] = [
     coordinates: [-80.317324, 25.868497],
   },
   {
+    id: "flamingo-plaza",
+    name: "Flamingo Plaza",
+    address: "901 E 10th Ave, Hialeah, FL 33010",
+    category: "shopping",
+    coordinates: [-80.2598357, 25.8327514],
+  },
+  {
     id: "target",
     name: "Target",
     address: "1750 W 37th St, Hialeah, FL 33012",
@@ -193,6 +249,20 @@ export const MAP_PINS: MapPin[] = [
     address: "1201 E 10th Ave, Hialeah, FL 33010",
     category: "shopping",
     coordinates: [-80.261534, 25.834084],
+  },
+  {
+    id: "westland-promenade",
+    name: "Westland Promenade",
+    address: "3705 W 20th Ave, Hialeah, FL 33014",
+    category: "shopping",
+    coordinates: [-80.3206, 25.8552],
+  },
+  {
+    id: "dolphin-mall",
+    name: "Dolphin Mall",
+    address: "11401 NW 12th St, Miami, FL 33172",
+    category: "shopping",
+    coordinates: [-80.3806, 25.7878],
   },
 
   // Parks & Entertainment

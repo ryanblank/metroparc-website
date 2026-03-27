@@ -47,10 +47,23 @@ export default function RootLayout({
       className={`${montserrat.variable} ${josefinSans.variable}`}
     >
       <head>
-        {/* DAM Ops Attribution — captures UTMs, gclid, referrer → sessionStorage. Must load BEFORE Funnel DNI. */}
+        {/* Google Tag Manager */}
         <Script
-          src="https://widgets.damoperations.com/attribution.js"
+          id="gtm-script"
           strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-PCMMZXZ2');`,
+          }}
+        />
+        {/* DAM Ops Attribution — captures UTMs, gclid, referrer → sessionStorage (first-touch-wins). Inline to avoid external dependency & ensure pre-hydration timing. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){var K='dam_attribution',P=['utm_source','utm_medium','utm_campaign','utm_term','utm_content','gclid'];var s=new URLSearchParams(location.search),a={},f=!sessionStorage.getItem(K);P.forEach(function(k){var v=s.get(k);if(v)a[k]=v});if(document.referrer&&f)a.referrer=document.referrer;if(Object.keys(a).length>0||f){var e={};try{e=JSON.parse(sessionStorage.getItem(K)||'{}')}catch(x){e={}}P.forEach(function(k){if(a[k]&&!e[k])e[k]=a[k]});if(a.referrer&&!e.referrer)e.referrer=a.referrer;if(!e.landing_page)e.landing_page=location.pathname;if(!e.captured_at)e.captured_at=new Date().toISOString();sessionStorage.setItem(K,JSON.stringify(e))}})();`,
+          }}
         />
         {/* Funnel DNI — Dynamic Number Insertion for call tracking */}
         <Script
@@ -59,6 +72,15 @@ export default function RootLayout({
         />
       </head>
       <body className="min-h-screen flex flex-col">
+        {/* Google Tag Manager (noscript) */}
+        <noscript>
+          <iframe
+            src="https://www.googletagmanager.com/ns.html?id=GTM-PCMMZXZ2"
+            height="0"
+            width="0"
+            style={{ display: "none", visibility: "hidden" }}
+          />
+        </noscript>
         <ApartmentComplexSchema />
         <ClientLayout>{children}</ClientLayout>
       </body>
