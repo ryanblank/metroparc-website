@@ -166,6 +166,7 @@ export default function ResidencesPage() {
             loop
             playsInline
             preload="none"
+            aria-label="Video tour of the Penthouse Collection at Metro Parc Hialeah"
             className="w-full h-full object-cover"
           >
             <source src={process.env.NEXT_PUBLIC_RESIDENCES_VIDEO_URL} type="video/mp4" />

@@ -15,6 +15,7 @@ export default function HeroSection() {
           loop
           playsInline
           poster="/images/exterior/exterior-render.jpg"
+          aria-label="Aerial video tour of Metro Parc luxury apartments in Hialeah FL"
           className="absolute inset-0 w-full h-full object-cover z-0"
         >
           <source src={process.env.NEXT_PUBLIC_HERO_VIDEO_URL} type="video/mp4" />
