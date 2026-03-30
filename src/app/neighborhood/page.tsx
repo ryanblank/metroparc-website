@@ -113,7 +113,7 @@ export default function NeighborhoodPage() {
       <PageHero
         title="Culture and Connection"
         subtitle="Everything Within Reach"
-        imageSrc="/images/neighborhood/neighborhood-hero-test2.jpg"
+        imageSrc="/images/neighborhood/neighborhood-hero.jpg"
         imageAlt="Metro Parc apartments near Metrorail and Tri-Rail station in Hialeah FL"
       />
 
@@ -275,7 +275,7 @@ export default function NeighborhoodPage() {
       {/* Full-bleed transit photo */}
       <div className="relative w-full h-[280px] md:h-[420px] overflow-hidden">
         <Image
-          src="/images/neighborhood/transit-boarding-test.jpg"
+          src="/images/neighborhood/transit-boarding.jpg"
           alt="Boarding the Metrorail at Hialeah station"
           fill
           className="object-cover object-center"

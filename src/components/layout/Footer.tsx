@@ -59,7 +59,7 @@ export default function Footer() {
               <p>
                 <a
                   href={`tel:${PHONE.replace(/[^0-9]/g, "")}`}
-                  className="text-clouds/80 no-underline transition-colors hover:text-avocado"
+                  className="DCRPhoneHref text-clouds/80 no-underline transition-colors hover:text-avocado"
                 >
                   {PHONE}
                 </a>
@@ -139,6 +139,33 @@ export default function Footer() {
             >
               Instagram
             </a>
+          </div>
+
+          {/* Regulatory Icons */}
+          <div className="flex items-center gap-4 text-clouds/70">
+            {/* Pet Friendly — paw print, filled */}
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="w-6 h-6" fill="currentColor" aria-label="Pet Friendly">
+              <ellipse cx="6.5" cy="6.5" rx="2.2" ry="2.8"/>
+              <ellipse cx="12" cy="4.5" rx="2.2" ry="2.8"/>
+              <ellipse cx="17.5" cy="6.5" rx="2.2" ry="2.8"/>
+              <path d="M15.5 13.5c0-2.5-2-4-3.5-4s-3.5 1.5-3.5 4c0 1.8 1.2 3.5 2.5 4.5.7.5 1 1 1 1s.3-.5 1-1c1.3-1 2.5-2.7 2.5-4.5z"/>
+            </svg>
+            {/* Equal Housing Opportunity — house with = sign, filled */}
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="w-6 h-6" fill="currentColor" aria-label="Equal Housing Opportunity">
+              <path d="M12 2L1 10h3v12h16V10h3L12 2zM8 12.5h8v2H8v-2zm0 3.5h8v2H8v-2z"/>
+            </svg>
+            {/* Handicap Accessible — wheelchair symbol, filled */}
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="w-6 h-6" fill="currentColor" aria-label="Handicap Accessible">
+              <circle cx="11.5" cy="4" r="2.5"/>
+              <path d="M14 9h-3.5l-.5 4h-1.5a5 5 0 104.5 5.5h-2a3 3 0 11-2.5-4.5H11l.5-3H14V9z"/>
+              <path d="M14 15h2l1.5 4h2l-2-5h-3.5v1z"/>
+            </svg>
+            {/* Smoke Free — no smoking, filled */}
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="w-6 h-6" aria-label="Smoke Free Community">
+              <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2" fill="none"/>
+              <rect x="5" y="10.5" width="10" height="3" rx="0.5" fill="currentColor"/>
+              <line x1="4.9" y1="19.1" x2="19.1" y2="4.9" stroke="currentColor" strokeWidth="2"/>
+            </svg>
           </div>
 
           {/* Legal Links */}

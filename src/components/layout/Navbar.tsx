@@ -52,7 +52,7 @@ export default function Navbar({ onBookTourClick }: NavbarProps) {
         {/* Logo */}
         <Link href="/" className="max-w-[180px] transition-opacity duration-300 hover:opacity-80" onClick={closeMenu}>
           <Image
-            src="/images/logos/MetroParc__Horizontal_cream.png"
+            src="/images/logos/MetroParc__Horizontal_Logo Mark.png"
             alt="Metro Parc Apartments in Hialeah FL"
             width={180}
             height={40}

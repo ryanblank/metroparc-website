@@ -22,7 +22,7 @@ export default function AnnouncementBar() {
           isScrolled ? "text-city-night" : "text-clouds"
         }`}
       >
-        2 Months Free on a 14-Month Lease
+        Now Offering Up to 2.5 Months Free
       </p>
     </div>
   );

@@ -114,7 +114,7 @@ export default function ContactPage() {
       <PageHero
         title="Contact Metro Parc"
         subtitle="We'd Love to Hear from You"
-        imageSrc="/images/amenities/lobby.jpg"
+        imageSrc="/images/contact/contact-hero.jpg"
         imageAlt="Metro Parc lobby and concierge area in Hialeah FL"
       />
 
@@ -152,7 +152,7 @@ export default function ContactPage() {
 
               <div>
                 <h3 className="font-semibold text-sm uppercase tracking-wider mb-2">Phone</h3>
-                <a href={`tel:${PHONE.replace(/[^0-9]/g, "")}`} className="text-deep-ocean hover:underline">
+                <a href={`tel:${PHONE.replace(/[^0-9]/g, "")}`} className="DCRPhoneHref text-deep-ocean hover:underline">
                   {PHONE}
                 </a>
               </div>
