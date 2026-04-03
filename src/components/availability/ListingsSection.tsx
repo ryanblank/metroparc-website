@@ -110,7 +110,7 @@ export default function ListingsSection({ units }: ListingsSectionProps) {
       content = (
         <img
           src={unit.floor_plan_url}
-          alt={`${unit.unit_number} Floor Plan`}
+          alt={`${unit.unit_number} floor plan — apartments for rent in Hialeah FL`}
           className="max-w-full max-h-[500px] mx-auto"
         />
       );

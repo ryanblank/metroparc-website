@@ -33,6 +33,14 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     siteName: "Metro Parc",
+    images: [
+      {
+        url: "/images/exterior/exterior-render.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Metro Parc — Luxury Apartments for Rent in Hialeah FL",
+      },
+    ],
   },
 };
 

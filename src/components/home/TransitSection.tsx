@@ -10,7 +10,7 @@ export default function TransitSection() {
       <div className="absolute inset-0" aria-hidden="true">
         <Image
           src="/images/neighborhood/transit-lifestyle.jpg"
-          alt=""
+          alt="Luxury apartments near Metrorail in Hialeah FL"
           fill
           className="object-cover object-center"
           priority

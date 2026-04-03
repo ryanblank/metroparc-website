@@ -138,7 +138,7 @@ export default function NeighborhoodPage() {
         <div className="absolute inset-0">
           <Image
             src="/images/neighborhood/commute-trirail-test.jpg"
-            alt=""
+            alt="Tri-Rail and Metrorail commute from Hialeah apartments near Downtown Miami"
             fill
             className="object-cover object-center"
             sizes="100vw"
@@ -201,7 +201,7 @@ export default function NeighborhoodPage() {
                 { img: "/images/neighborhood/dining-temaki.jpg", name: "Temaki", tag: "Sushi", desc: "Rolls and tempura in a container park" },
               ].map((place) => (
                 <div key={place.name} className="relative w-[72vw] max-w-[280px] h-[360px] rounded-xl overflow-hidden shrink-0 group">
-                  <Image src={place.img} alt={place.name} fill className="object-cover transition-transform duration-500 group-hover:scale-105" sizes="72vw" />
+                  <Image src={place.img} alt={`${place.name} near Metro Parc apartments in Hialeah`} fill className="object-cover transition-transform duration-500 group-hover:scale-105" sizes="72vw" />
                   <div className="absolute inset-0 bg-gradient-to-t from-city-night/90 via-city-night/20 to-transparent" />
                   <div className="absolute bottom-0 left-0 right-0 p-5">
                     <p className="font-decorative text-[0.7rem] uppercase tracking-[0.15em] text-avocado mb-1">{place.tag}</p>
@@ -223,7 +223,7 @@ export default function NeighborhoodPage() {
               { img: "/images/neighborhood/dining-temaki.jpg", name: "Temaki", tag: "Sushi", desc: "Rolls and tempura in a container park" },
             ].map((place) => (
               <div key={place.name} className="relative h-[420px] rounded-xl overflow-hidden group cursor-default">
-                <Image src={place.img} alt={place.name} fill className="object-cover transition-transform duration-500 group-hover:scale-105" sizes="20vw" />
+                <Image src={place.img} alt={`${place.name} near Metro Parc apartments in Hialeah`} fill className="object-cover transition-transform duration-500 group-hover:scale-105" sizes="20vw" />
                 <div className="absolute inset-0 bg-gradient-to-t from-city-night/90 via-city-night/20 to-transparent" />
                 <div className="absolute bottom-0 left-0 right-0 p-5">
                   <p className="font-decorative text-[0.65rem] uppercase tracking-[0.15em] text-avocado mb-1">{place.tag}</p>
@@ -252,10 +252,10 @@ export default function NeighborhoodPage() {
       {/* Neighborhood Photo Strip */}
       <div className="flex w-full overflow-x-auto scrollbar-hide">
         {[
-          { src: "/images/neighborhood/strip-ventanita-walk.jpg", alt: "Picking up a cafecito in the neighborhood" },
-          { src: "/images/neighborhood/strip-food-park-walk.jpg", alt: "Friends exploring the local food park" },
-          { src: "/images/neighborhood/strip-food-park-table.jpg", alt: "Dining outdoors at the food park" },
-          { src: "/images/neighborhood/strip-burger-trap-neon.jpg", alt: "Burger Trap Miami neon sign" },
+          { src: "/images/neighborhood/strip-ventanita-walk.jpg", alt: "Picking up a cafecito near Metro Parc apartments in Hialeah" },
+          { src: "/images/neighborhood/strip-food-park-walk.jpg", alt: "Friends exploring the local food park near Hialeah apartments" },
+          { src: "/images/neighborhood/strip-food-park-table.jpg", alt: "Dining outdoors at the food park near Metro Parc in Hialeah" },
+          { src: "/images/neighborhood/strip-burger-trap-neon.jpg", alt: "Burger Trap Miami neon sign near Hialeah Metrorail apartments" },
         ].map((photo, i) => (
           <div
             key={i}
@@ -299,7 +299,7 @@ export default function NeighborhoodPage() {
         <div className="absolute inset-0">
           <Image
             src="/images/neighborhood/street-3.jpg"
-            alt=""
+            alt="Hialeah neighborhood street near Metro Parc apartments and Metrorail"
             fill
             className="object-cover object-center"
             sizes="100vw"
