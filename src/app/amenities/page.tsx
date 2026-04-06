@@ -44,7 +44,7 @@ export default function AmenitiesPage() {
       <PageHero
         title="Every Detail Matters"
         subtitle="Elevate Your Experience"
-        imageSrc="/images/amenities/hero-test4.jpg"
+        imageSrc="/images/amenities/hero.jpg"
         imageAlt="Lobby and courtyard at Metro Parc apartments in Hialeah FL"
       />
 

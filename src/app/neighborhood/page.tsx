@@ -137,7 +137,7 @@ export default function NeighborhoodPage() {
       <section className="relative py-[clamp(3rem,10vw,6rem)] px-8">
         <div className="absolute inset-0">
           <Image
-            src="/images/neighborhood/commute-trirail-test.jpg"
+            src="/images/neighborhood/commute-trirail.jpg"
             alt="Tri-Rail and Metrorail commute from Hialeah apartments near Downtown Miami"
             fill
             className="object-cover object-center"
