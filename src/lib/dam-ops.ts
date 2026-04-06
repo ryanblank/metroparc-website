@@ -16,7 +16,7 @@ export interface DamUnit {
   square_feet: number | null;
   status: string | null;
   available_date: string | null;
-  floor_plan_url: string | null;
+  floor_plans: string[] | null;
   video_tour_url: string | null;
   tour_3d_url: string | null;
   photos: unknown;

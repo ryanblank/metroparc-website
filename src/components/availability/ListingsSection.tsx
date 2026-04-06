@@ -89,7 +89,7 @@ export default function ListingsSection({ units }: ListingsSectionProps) {
   });
 
   // Auto-hide columns if ALL units lack the value
-  const hasFloorPlan = units.some((u) => u.floor_plan_url);
+  const hasFloorPlan = units.some((u) => u.floor_plans && u.floor_plans.length > 0);
   const hasVideoTour = units.some((u) => u.video_tour_url);
   const has3DTour = units.some((u) => u.tour_3d_url);
   const hasNetPrice = units.some((u) => u.price_net != null);
@@ -106,10 +106,10 @@ export default function ListingsSection({ units }: ListingsSectionProps) {
           allowFullScreen
         />
       );
-    } else if (type === "floorplan" && unit.floor_plan_url) {
+    } else if (type === "floorplan" && unit.floor_plans?.[0]) {
       content = (
         <img
-          src={unit.floor_plan_url}
+          src={unit.floor_plans[0]}
           alt={`${unit.unit_number} floor plan — apartments for rent in Hialeah FL`}
           className="max-w-full max-h-[500px] mx-auto"
         />
@@ -196,7 +196,7 @@ export default function ListingsSection({ units }: ListingsSectionProps) {
                 )}
                 {hasFloorPlan && (
                   <td className="py-4 px-4 text-center">
-                    {unit.floor_plan_url ? (
+                    {unit.floor_plans?.[0] ? (
                       <button
                         onClick={() => openMedia("floorplan", unit)}
                         className="inline-flex items-center justify-center w-9 h-9 rounded-full text-deep-ocean bg-transparent cursor-pointer hover:bg-deep-ocean hover:text-white transition-colors border-none"
@@ -273,7 +273,7 @@ export default function ListingsSection({ units }: ListingsSectionProps) {
               </div>
             )}
             <div className="flex gap-2 flex-wrap">
-              {unit.floor_plan_url && (
+              {unit.floor_plans?.[0] && (
                 <button
                   onClick={() => openMedia("floorplan", unit)}
                   className="text-xs py-2 px-3 rounded border border-deep-ocean text-deep-ocean bg-transparent cursor-pointer hover:bg-deep-ocean hover:text-white transition-colors font-decorative uppercase tracking-wider"
