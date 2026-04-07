@@ -46,6 +46,54 @@ export default function GatedMediaModal({
     }
   }, []);
 
+  // Silent lead capture for ungated inquiry
+  useEffect(() => {
+    if (!isOpen || isGated || formType !== "contact") return;
+
+    const stored = sessionStorage.getItem(SESSION_KEY);
+    if (!stored) return;
+
+    let userData: { firstName: string; lastName: string; email: string };
+    try {
+      const parsed = JSON.parse(stored);
+      // Handle legacy "true" values from before we stored user data
+      if (typeof parsed !== "object" || !parsed.email) return;
+      userData = parsed;
+    } catch {
+      return;
+    }
+
+    const attribution = getAttribution();
+
+    fetch("/api/lead", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        firstName: userData.firstName,
+        lastName: userData.lastName,
+        email: userData.email,
+        formType: "contact",
+        unitId,
+        bedrooms: unitBedrooms ?? undefined,
+        ...attribution,
+      }),
+    })
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (!data) return;
+        const eventName = GTM_EVENTS.listingsLead.event;
+        const w = window as unknown as { dataLayer?: Record<string, unknown>[] };
+        w.dataLayer = w.dataLayer || [];
+        w.dataLayer.push({
+          event: eventName,
+          form_type: "contact",
+          lead_id: data.lead_id,
+          customer_id: data.customer_id,
+          is_new_customer: data.is_new_customer,
+        });
+      });
+  }, [isOpen, isGated, formType, unitId, unitBedrooms]);
+
   // Lock body scroll
   useEffect(() => {
     if (isOpen) {
@@ -126,7 +174,14 @@ export default function GatedMediaModal({
         });
 
         // Store in session to skip gate for rest of session
-        sessionStorage.setItem(SESSION_KEY, "true");
+        sessionStorage.setItem(
+          SESSION_KEY,
+          JSON.stringify({
+            firstName: formData.firstName,
+            lastName: formData.lastName,
+            email: formData.email,
+          })
+        );
       }
 
       setIsGated(false);
@@ -245,10 +300,28 @@ export default function GatedMediaModal({
               </p>
             )}
             <div className="min-h-[400px] flex items-center justify-center">
-              {mediaContent || (
-                <p className="text-calm-waves text-sm">
-                  Media content will be displayed here.
-                </p>
+              {formType === "contact" ? (
+                <div className="text-center px-8 py-12">
+                  <h2 className="text-2xl font-semibold text-city-night mb-3">
+                    We&apos;ve got your info!
+                  </h2>
+                  <p className="text-calm-waves-muted text-sm mb-6 max-w-md mx-auto">
+                    Our leasing team will reach out to you shortly about{" "}
+                    {unitName ? `Unit ${unitName}` : "this unit"}.
+                  </p>
+                  <a
+                    href="tel:+13056149674"
+                    className="DCRPhoneHref inline-block bg-deep-ocean text-clouds py-3 px-8 rounded-md font-decorative text-sm uppercase tracking-[0.1em] transition-all duration-300 hover:bg-deep-ocean-hover no-underline"
+                  >
+                    Call Us Now
+                  </a>
+                </div>
+              ) : (
+                mediaContent || (
+                  <p className="text-calm-waves text-sm">
+                    Media content will be displayed here.
+                  </p>
+                )
               )}
             </div>
           </div>
