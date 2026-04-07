@@ -6,6 +6,7 @@ import ResidencesTeaser from "@/components/home/ResidencesTeaser";
 import UnitTeaserSection from "@/components/home/UnitTeaserSection";
 import type { UnitGroup } from "@/components/home/UnitTeaserSection";
 import AvailabilityCTA from "@/components/home/AvailabilityCTA";
+import Image from "next/image";
 import { getListings } from "@/lib/dam-ops";
 
 const UNIT_CONFIG: Array<{
@@ -71,6 +72,15 @@ export default async function Home() {
       <AmenitiesTeaser />
       <ResidencesTeaser />
       <UnitTeaserSection units={unitGroups} />
+      <div className="bg-clouds py-10 flex justify-center">
+        <Image
+          src="/images/The-800-Award-2026__Badge.png"
+          alt="Reputation 800 Award 2026"
+          width={115}
+          height={115}
+          className="w-[115px] h-auto"
+        />
+      </div>
       <AvailabilityCTA />
     </>
   );

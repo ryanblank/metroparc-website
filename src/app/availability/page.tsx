@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import PageHero from "@/components/shared/PageHero";
 import ListingsSection from "@/components/availability/ListingsSection";
 import { BreadcrumbSchema } from "../structured-data";
@@ -38,6 +39,15 @@ export default async function AvailabilityPage() {
       <section className="bg-clouds py-[clamp(3rem,10vw,6rem)] px-8">
         <div className="max-w-[1200px] mx-auto">
           <ListingsSection units={units} />
+          <div className="mt-10 flex justify-center">
+            <Image
+              src="/images/The-800-Award-2026__Badge.png"
+              alt="Reputation 800 Award 2026"
+              width={96}
+              height={96}
+              className="w-24 h-auto"
+            />
+          </div>
           <p className="text-city-night-light/60 text-center text-sm mt-8 max-w-[600px] mx-auto">
             Floor plans are artist&apos;s rendering. All dimensions are approximate. Prices and availability are subject to change.
           </p>

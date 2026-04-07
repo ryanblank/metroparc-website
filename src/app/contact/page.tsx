@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import PageHero from "@/components/shared/PageHero";
 import ContactForm from "@/components/contact/ContactForm";
 import FAQAccordion from "@/components/shared/FAQAccordion";
@@ -171,6 +172,16 @@ export default function ContactPage() {
                     <span className="font-medium text-city-night">{oh.days}:</span> {oh.hours}
                   </p>
                 ))}
+              </div>
+
+              <div className="pt-4">
+                <Image
+                  src="/images/The-800-Award-2026__Badge.png"
+                  alt="Reputation 800 Award 2026"
+                  width={96}
+                  height={96}
+                  className="w-24 h-auto"
+                />
               </div>
             </div>
           </div>

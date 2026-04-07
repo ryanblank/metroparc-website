@@ -57,7 +57,7 @@ export default function Navbar({ onBookTourClick }: NavbarProps) {
             width={180}
             height={40}
             priority
-            className="w-full h-auto"
+            className="w-full h-auto drop-shadow-[0_1px_3px_rgba(0,0,0,0.5)]"
           />
         </Link>
 
