@@ -43,7 +43,7 @@ export async function POST(request: NextRequest) {
       source_referrer: body.source_referrer,
       source_raw: body.source_raw,
       source_gclid: body.source_gclid,
-      notes: `Tour requested for ${start}`,
+      notes: `Tour requested for ${new Date(start).toLocaleString("en-US", { weekday: "long", month: "long", day: "numeric", year: "numeric", hour: "numeric", minute: "2-digit", hour12: true, timeZone: "America/New_York" })}`,
     });
 
     // 2. Forward to Funnel CRM if enabled (best-effort)
