@@ -219,8 +219,8 @@ export default function BookTourModal({ isOpen, onClose }: BookTourModalProps) {
 
   // Get min date (today)
   const today = new Date().toISOString().split("T")[0];
-  // Get max date (7 days out)
-  const maxDate = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
+  // Get max date (30 days out)
+  const maxDate = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)
     .toISOString()
     .split("T")[0];
 
