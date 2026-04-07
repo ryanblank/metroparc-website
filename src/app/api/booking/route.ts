@@ -22,7 +22,30 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // 1. Always capture in DAM Ops first
+    // 1. Forward to Funnel CRM first to get funnel_client_id (best-effort)
+    let funnelClientId: number | null = null;
+    const funnelEnabled = process.env.FUNNEL_ENABLED === "true";
+    if (funnelEnabled) {
+      try {
+        const funnelResult = await bookTour({
+          firstName,
+          lastName: lastName || "",
+          email,
+          phone: phone || undefined,
+          start,
+          moveInDate: body.moveInDate,
+          priceFloor: budgetMin,
+          priceCeiling: budgetMax,
+          notes: body.notes,
+        });
+        funnelClientId = funnelResult?.data?.client?.id || null;
+      } catch (funnelError) {
+        console.error("[Funnel] Tour booking failed:", funnelError);
+        // Do NOT throw — proceed to DAM Ops without funnel_client_id
+      }
+    }
+
+    // 2. Capture in DAM Ops with funnel_client_id if available
     const damResult = await captureLead({
       organization_id: process.env.METROPARC_ORGANIZATION_ID!,
       building_id: process.env.METROPARC_BUILDING_ID!,
@@ -35,6 +58,7 @@ export async function POST(request: NextRequest) {
       bedrooms: bedrooms != null ? Number(bedrooms) : undefined,
       budget_min: budgetMin != null ? Number(budgetMin) : undefined,
       budget_max: budgetMax != null ? Number(budgetMax) : undefined,
+      funnel_client_id: funnelClientId,
       source_utm_source: body.source_utm_source,
       source_utm_medium: body.source_utm_medium,
       source_utm_campaign: body.source_utm_campaign,
@@ -45,27 +69,6 @@ export async function POST(request: NextRequest) {
       source_gclid: body.source_gclid,
       notes: `Tour requested for ${new Date(start).toLocaleString("en-US", { weekday: "long", month: "long", day: "numeric", year: "numeric", hour: "numeric", minute: "2-digit", hour12: true, timeZone: "America/New_York" })}`,
     });
-
-    // 2. Forward to Funnel CRM if enabled (best-effort)
-    const funnelEnabled = process.env.FUNNEL_ENABLED === "true";
-    if (funnelEnabled) {
-      try {
-        await bookTour({
-          firstName,
-          lastName: lastName || "",
-          email,
-          phone: phone || undefined,
-          start,
-          moveInDate: body.moveInDate,
-          priceFloor: budgetMin,
-          priceCeiling: budgetMax,
-          notes: body.notes,
-        });
-      } catch (funnelError) {
-        console.error("[Funnel] Tour booking failed:", funnelError);
-        // Do NOT throw — lead is safe in DAM Ops
-      }
-    }
 
     // 3. Return capture-lead response to client
     return NextResponse.json(damResult, { status: 201 });

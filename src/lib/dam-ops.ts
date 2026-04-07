@@ -61,6 +61,7 @@ export interface CaptureLeadPayload {
   bedrooms?: number;
   budget_min?: number;
   budget_max?: number;
+  funnel_client_id?: number | null;
 }
 
 export interface CaptureLeadResponse {
