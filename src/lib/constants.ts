@@ -65,7 +65,6 @@ export const BEDROOM_OPTIONS = [
   { value: "0", label: "Studio" },
   { value: "1", label: "1 Bedroom" },
   { value: "2", label: "2 Bedrooms" },
-  { value: "3", label: "3+ Bedrooms" },
 ] as const;
 
 // ===== PRICE RANGE OPTIONS =====
