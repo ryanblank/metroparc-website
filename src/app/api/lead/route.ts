@@ -23,6 +23,7 @@ export async function POST(request: NextRequest) {
       first_name: firstName,
       last_name: lastName || "",
       email,
+      phone: body.phone || undefined,
       form_type: formType || "contact",
       source: "website",
       bedrooms: bedrooms != null ? Number(bedrooms) : undefined,

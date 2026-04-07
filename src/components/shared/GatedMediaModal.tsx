@@ -36,6 +36,7 @@ export default function GatedMediaModal({
     firstName: "",
     lastName: "",
     email: "",
+    phone: "",
   });
 
   // Check session for existing submission
@@ -53,7 +54,7 @@ export default function GatedMediaModal({
     const stored = sessionStorage.getItem(SESSION_KEY);
     if (!stored) return;
 
-    let userData: { firstName: string; lastName: string; email: string };
+    let userData: { firstName: string; lastName: string; email: string; phone?: string };
     try {
       const parsed = JSON.parse(stored);
       // Handle legacy "true" values from before we stored user data
@@ -72,6 +73,7 @@ export default function GatedMediaModal({
         firstName: userData.firstName,
         lastName: userData.lastName,
         email: userData.email,
+        phone: userData.phone || undefined,
         formType: "contact",
         unitId,
         bedrooms: unitBedrooms ?? undefined,
@@ -131,6 +133,7 @@ export default function GatedMediaModal({
           firstName: formData.firstName,
           lastName: formData.lastName,
           email: formData.email,
+          phone: formData.phone || undefined,
           formType,
           unitId,
           bedrooms: unitBedrooms ?? undefined,
@@ -180,6 +183,7 @@ export default function GatedMediaModal({
             firstName: formData.firstName,
             lastName: formData.lastName,
             email: formData.email,
+            phone: formData.phone,
           })
         );
       }
@@ -277,6 +281,21 @@ export default function GatedMediaModal({
                   value={formData.email}
                   onChange={handleChange}
                   className="w-full px-3 py-2.5 border border-calm-waves-lighter rounded-md text-sm text-city-night bg-white focus:outline-none focus:border-deep-ocean focus:ring-1 focus:ring-deep-ocean transition-colors"
+                />
+              </div>
+
+              <div>
+                <label htmlFor="gate-phone" className="block text-xs font-medium text-city-night mb-1">
+                  Phone
+                </label>
+                <input
+                  id="gate-phone"
+                  name="phone"
+                  type="tel"
+                  value={formData.phone}
+                  onChange={handleChange}
+                  className="w-full px-3 py-2.5 border border-calm-waves-lighter rounded-md text-sm text-city-night bg-white focus:outline-none focus:border-deep-ocean focus:ring-1 focus:ring-deep-ocean transition-colors"
+                  placeholder="(305) 555-0123"
                 />
               </div>
 
