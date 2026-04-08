@@ -277,7 +277,7 @@ export default function ListingsSection({ units }: ListingsSectionProps) {
               {unit.floor_plans?.[0] && (
                 <button
                   onClick={() => openMedia("floorplan", unit)}
-                  className="text-xs py-2 px-3 rounded border border-deep-ocean text-deep-ocean bg-transparent cursor-pointer hover:bg-deep-ocean hover:text-white transition-colors font-decorative uppercase tracking-wider"
+                  className="text-xs py-2 px-3 rounded bg-deep-ocean text-white border-none cursor-pointer hover:bg-deep-ocean-hover transition-colors font-decorative uppercase tracking-wider"
                 >
                   Floor Plan
                 </button>
@@ -285,7 +285,7 @@ export default function ListingsSection({ units }: ListingsSectionProps) {
               {unit.video_tour_url && (
                 <button
                   onClick={() => openMedia("video", unit)}
-                  className="text-xs py-2 px-3 rounded border border-deep-ocean text-deep-ocean bg-transparent cursor-pointer hover:bg-deep-ocean hover:text-white transition-colors font-decorative uppercase tracking-wider"
+                  className="text-xs py-2 px-3 rounded bg-deep-ocean text-white border-none cursor-pointer hover:bg-deep-ocean-hover transition-colors font-decorative uppercase tracking-wider"
                 >
                   Video
                 </button>
@@ -293,14 +293,14 @@ export default function ListingsSection({ units }: ListingsSectionProps) {
               {unit.tour_3d_url && (
                 <button
                   onClick={() => openMedia("3dtour", unit)}
-                  className="text-xs py-2 px-3 rounded border border-avocado text-avocado-muted bg-transparent cursor-pointer hover:bg-avocado hover:text-city-night transition-colors font-decorative uppercase tracking-wider"
+                  className="text-xs py-2 px-3 rounded border border-deep-ocean text-deep-ocean bg-transparent cursor-pointer hover:bg-deep-ocean hover:text-white transition-colors font-decorative uppercase tracking-wider"
                 >
                   3D Tour
                 </button>
               )}
               <button
                 onClick={() => openInquiry(unit)}
-                className="text-xs py-2 px-3 rounded bg-deep-ocean text-white cursor-pointer hover:bg-deep-ocean-hover transition-colors font-decorative uppercase tracking-wider border-none"
+                className="text-xs py-2 px-3 rounded border border-deep-ocean text-deep-ocean bg-transparent cursor-pointer hover:bg-deep-ocean hover:text-white transition-colors font-decorative uppercase tracking-wider"
               >
                 Inquire
               </button>
