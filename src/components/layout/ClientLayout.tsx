@@ -5,6 +5,7 @@ import Navbar from "./Navbar";
 import AnnouncementBar from "./AnnouncementBar";
 import Footer from "./Footer";
 import BookTourModal from "./BookTourModal";
+import FixedCTA from "./FixedCTA";
 import { BookTourContext } from "@/context/BookTourContext";
 
 export default function ClientLayout({
@@ -23,6 +24,7 @@ export default function ClientLayout({
       <Navbar onBookTourClick={openBookTour} />
       <main className="flex-1">{children}</main>
       <Footer />
+      <FixedCTA />
       <BookTourModal isOpen={isBookTourOpen} onClose={closeBookTour} />
     </BookTourContext.Provider>
   );
