@@ -15,7 +15,7 @@ interface TimeSlot {
 }
 
 export default function BookTourModal({ isOpen, onClose }: BookTourModalProps) {
-  const [step, setStep] = useState<"form" | "confirmation">("form");
+  const [step, setStep] = useState<"form" | "confirmation" | "partial">("form");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [availableTimes, setAvailableTimes] = useState<TimeSlot[]>([]);
@@ -190,7 +190,12 @@ export default function BookTourModal({ isOpen, onClose }: BookTourModalProps) {
         });
       }
 
-      setStep("confirmation");
+      // Funnel booking failed but lead was captured — show partial success
+      if (data.tour_booked === false) {
+        setStep("partial");
+      } else {
+        setStep("confirmation");
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong. Please try again.");
     } finally {
@@ -480,7 +485,7 @@ export default function BookTourModal({ isOpen, onClose }: BookTourModalProps) {
               </button>
             </form>
           </div>
-        ) : (
+        ) : step === "confirmation" ? (
           /* Confirmation Step */
           <div className="p-8 text-center">
             <div className="w-16 h-16 bg-avocado/10 rounded-full flex items-center justify-center mx-auto mb-6">
@@ -517,6 +522,32 @@ export default function BookTourModal({ isOpen, onClose }: BookTourModalProps) {
             <button
               onClick={handleClose}
               className="bg-deep-ocean text-clouds px-8 py-3 rounded-md font-decorative text-sm uppercase tracking-[0.1em] cursor-pointer transition-all duration-300 hover:bg-deep-ocean-hover border-none"
+            >
+              Close
+            </button>
+          </div>
+        ) : (
+          /* Partial Success — lead captured but tour not scheduled */
+          <div className="p-8 text-center">
+            <div className="w-16 h-16 bg-amber-50 rounded-full flex items-center justify-center mx-auto mb-6">
+              <span className="text-amber-500 text-3xl">!</span>
+            </div>
+            <h2 className="text-2xl font-semibold text-city-night mb-3">
+              We&apos;ve Got Your Info
+            </h2>
+            <p className="text-calm-waves-muted mb-6">
+              We couldn&apos;t schedule your tour online right now, but our leasing team has your request and will reach out to confirm your appointment.
+            </p>
+            <a
+              href="tel:+13056149674"
+              className="DCRPhoneHref inline-block bg-deep-ocean text-clouds px-8 py-3 rounded-md font-decorative text-sm uppercase tracking-[0.1em] transition-all duration-300 hover:bg-deep-ocean-hover no-underline mb-3"
+            >
+              Call Us Now
+            </a>
+            <br />
+            <button
+              onClick={handleClose}
+              className="text-sm text-calm-waves underline cursor-pointer bg-transparent border-none mt-2"
             >
               Close
             </button>

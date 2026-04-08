@@ -22,8 +22,9 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // 1. Forward to Funnel CRM first to get funnel_client_id (best-effort)
+    // 1. Forward to Funnel CRM to book the appointment
     let funnelClientId: number | null = null;
+    let funnelFailed = false;
     const funnelEnabled = process.env.FUNNEL_ENABLED === "true";
     if (funnelEnabled) {
       try {
@@ -41,11 +42,11 @@ export async function POST(request: NextRequest) {
         funnelClientId = funnelResult?.data?.client?.id || null;
       } catch (funnelError) {
         console.error("[Funnel] Tour booking failed:", funnelError);
-        // Do NOT throw — proceed to DAM Ops without funnel_client_id
+        funnelFailed = true;
       }
     }
 
-    // 2. Capture in DAM Ops with funnel_client_id if available
+    // 2. Always capture in DAM Ops (don't lose the lead even if Funnel failed)
     const damResult = await captureLead({
       organization_id: process.env.METROPARC_ORGANIZATION_ID!,
       building_id: process.env.METROPARC_BUILDING_ID!,
@@ -70,8 +71,16 @@ export async function POST(request: NextRequest) {
       notes: `Tour requested for ${new Date(start).toLocaleString("en-US", { weekday: "long", month: "long", day: "numeric", year: "numeric", hour: "numeric", minute: "2-digit", hour12: true, timeZone: "America/New_York" })}`,
     });
 
-    // 3. Return capture-lead response to client
-    return NextResponse.json(damResult, { status: 201 });
+    // 3. If Funnel booking failed, tell the client the tour was not scheduled
+    if (funnelFailed) {
+      return NextResponse.json(
+        { ...damResult, tour_booked: false, error: "We couldn't schedule your tour right now. Our leasing team has your info and will reach out to confirm." },
+        { status: 207 }
+      );
+    }
+
+    // 4. Return success
+    return NextResponse.json({ ...damResult, tour_booked: true }, { status: 201 });
   } catch (error) {
     console.error("Booking error:", error);
     return NextResponse.json(
