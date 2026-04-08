@@ -63,9 +63,10 @@ function formatPrice(price: number | null): string {
   return `$${price.toLocaleString("en-US")}`;
 }
 
-function bedroomLabel(bedrooms: number | null): string {
+function bedroomLabel(bedrooms: number | null, full = false): string {
   if (bedrooms == null) return "—";
   if (bedrooms === 0) return "Studio";
+  if (full) return `${bedrooms} Bed`;
   return String(bedrooms);
 }
 
@@ -262,7 +263,7 @@ export default function ListingsSection({ units }: ListingsSectionProps) {
               <div>
                 <h3 className="font-semibold text-city-night text-lg">{unit.unit_number}</h3>
                 <p className="text-sm text-city-night-light">
-                  {bedroomLabel(unit.bedrooms)} Bed &middot; {unit.bathrooms ?? "—"} Bath
+                  {bedroomLabel(unit.bedrooms, true)} &middot; {unit.bathrooms ?? "—"} Bath
                 </p>
               </div>
             </div>
