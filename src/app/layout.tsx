@@ -54,7 +54,8 @@ export default function RootLayout({
       lang="en"
       className={`${montserrat.variable} ${josefinSans.variable}`}
     >
-      <head>
+      <head />
+      <body className="min-h-screen flex flex-col">
         {/* Google Tag Manager */}
         <Script
           id="gtm-script"
@@ -80,8 +81,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
           src="https://integrations.funnelleasing.com/dni/v1/dni.js"
           strategy="afterInteractive"
         />
-      </head>
-      <body className="min-h-screen flex flex-col">
         {/* Google Tag Manager (noscript) */}
         <noscript>
           <iframe

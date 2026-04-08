@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { NAV_ITEMS, SITE_TAGLINE, ADDRESS, PHONE, SOCIAL_LINKS } from "@/lib/constants";
+import { NAV_ITEMS, SITE_TAGLINE, ADDRESS, PHONE, SOCIAL_LINKS, APPLY_URL } from "@/lib/constants";
 
 interface NavbarProps {
   onBookTourClick: () => void;
@@ -153,10 +153,20 @@ export default function Navbar({ onBookTourClick }: NavbarProps) {
             closeMenu();
             onBookTourClick();
           }}
-          className="bg-avocado text-city-night px-8 py-3 border border-avocado rounded-full font-decorative text-[0.9rem] uppercase tracking-[0.1em] cursor-pointer transition-all duration-300 hover:bg-avocado-hover hover:border-avocado-hover mb-8"
+          className="bg-avocado text-city-night px-8 py-3 border border-avocado rounded-full font-decorative text-[0.9rem] uppercase tracking-[0.1em] cursor-pointer transition-all duration-300 hover:bg-avocado-hover hover:border-avocado-hover mb-4"
         >
           Book a Tour
         </button>
+
+        {/* Apply Now link in overlay */}
+        <a
+          href={APPLY_URL}
+          target="_blank"
+          onClick={closeMenu}
+          className="text-clouds no-underline font-decorative text-[0.9rem] uppercase tracking-[0.1em] px-8 py-3 border border-clouds/40 rounded-full transition-all duration-300 hover:border-clouds/80 hover:bg-clouds/[0.08] mb-8"
+        >
+          Apply Now
+        </a>
 
         {/* Overlay Footer */}
         <div className="mt-auto text-center border-t border-white/20 pt-8 text-clouds">

@@ -10,6 +10,7 @@ import {
   NAV_ITEMS,
   SOCIAL_LINKS,
   FOOTER_LEGAL_LINKS,
+  APPLY_URL,
 } from "@/lib/constants";
 
 export default function Footer() {
@@ -42,6 +43,15 @@ export default function Footer() {
                   </Link>
                 </li>
               ))}
+              <li>
+                <a
+                  href={APPLY_URL}
+                  target="_blank"
+                  className="text-clouds/80 no-underline text-sm font-light transition-colors hover:text-avocado"
+                >
+                  Apply Now
+                </a>
+              </li>
             </ul>
           </div>
 
@@ -100,6 +110,7 @@ export default function Footer() {
             </div>
           </div>
         </div>
+
       </div>
 
       {/* Bottom Bar */}

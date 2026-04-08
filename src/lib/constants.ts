@@ -20,6 +20,8 @@ export const EMAIL = "info@metroparchialeah.com";
 export const DIRECTIONS_URL =
   "https://www.google.com/maps/dir/?api=1&destination=952+East+26th+Street+Hialeah+FL+33013";
 
+export const APPLY_URL = "https://9167924.onlineleasing.realpage.com/";
+
 // ===== OFFICE HOURS =====
 export const OFFICE_HOURS = [
   { days: "Monday - Friday", hours: "9:00 AM - 6:00 PM" },

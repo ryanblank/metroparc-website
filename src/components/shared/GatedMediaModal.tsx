@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { GTM_EVENTS } from "@/lib/constants";
 import { getAttribution } from "@/lib/dam-ops-client";
 
@@ -38,6 +38,7 @@ export default function GatedMediaModal({
     email: "",
     phone: "",
   });
+  const justSubmittedRef = useRef(false);
 
   // Check session for existing submission
   useEffect(() => {
@@ -47,9 +48,14 @@ export default function GatedMediaModal({
     }
   }, []);
 
-  // Silent lead capture for ungated inquiry
+  // Silent lead capture for ungated inquiry (returning user opens modal for a new unit)
   useEffect(() => {
     if (!isOpen || isGated || formType !== "contact") return;
+    // Skip if the user just submitted the form manually — that already captured the lead
+    if (justSubmittedRef.current) {
+      justSubmittedRef.current = false;
+      return;
+    }
 
     const stored = sessionStorage.getItem(SESSION_KEY);
     if (!stored) return;
@@ -188,6 +194,7 @@ export default function GatedMediaModal({
         );
       }
 
+      justSubmittedRef.current = true;
       setIsGated(false);
     } catch {
       setError("Something went wrong. Please try again.");
