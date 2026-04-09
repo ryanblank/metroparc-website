@@ -54,14 +54,6 @@ export const FUNNEL_GROUP_ID = 7380;
 export const FUNNEL_DISCOVERY_SOURCE = 20; // Property Website
 export const FUNNEL_CLIENT_REFERRAL = "Metroparc Website";
 
-// ===== MOVE-IN TIMELINE OPTIONS =====
-export const MOVE_IN_OPTIONS = [
-  { value: "immediately", label: "Immediately" },
-  { value: "1-2-months", label: "1-2 Months" },
-  { value: "3-6-months", label: "3-6 Months" },
-  { value: "6-plus-months", label: "6+ Months" },
-] as const;
-
 // ===== BEDROOM OPTIONS =====
 export const BEDROOM_OPTIONS = [
   { value: "0", label: "Studio" },

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { GTM_EVENTS, MOVE_IN_OPTIONS, BEDROOM_OPTIONS, PRICE_RANGE_OPTIONS } from "@/lib/constants";
+import { GTM_EVENTS, BEDROOM_OPTIONS, PRICE_RANGE_OPTIONS } from "@/lib/constants";
 import { getAttribution } from "@/lib/dam-ops-client";
 
 export default function ContactForm() {
@@ -13,7 +13,6 @@ export default function ContactForm() {
     lastName: "",
     email: "",
     phone: "",
-    moveInDate: "",
     bedrooms: "",
     priceRange: "",
     message: "",
@@ -48,7 +47,6 @@ export default function ContactForm() {
           lastName: formData.lastName,
           email: formData.email,
           phone: formData.phone,
-          moveInDate: formData.moveInDate,
           bedrooms: formData.bedrooms !== "" ? Number(formData.bedrooms) : undefined,
           budgetMin: formData.priceRange ? Number(formData.priceRange.split("-")[0]) : undefined,
           budgetMax: formData.priceRange ? Number(formData.priceRange.split("-")[1]) : undefined,
@@ -93,7 +91,7 @@ export default function ContactForm() {
       }
 
       setIsSuccess(true);
-      setFormData({ firstName: "", lastName: "", email: "", phone: "", moveInDate: "", bedrooms: "", priceRange: "", message: "" });
+      setFormData({ firstName: "", lastName: "", email: "", phone: "", bedrooms: "", priceRange: "", message: "" });
     } catch {
       setError("Something went wrong. Please try again.");
     } finally {
@@ -181,26 +179,6 @@ export default function ContactForm() {
           required
           className="w-full px-3 py-2.5 border border-calm-waves-lighter rounded-md text-base text-city-night bg-clouds focus:outline-none focus:border-deep-ocean focus:ring-1 focus:ring-deep-ocean focus:bg-white transition-colors"
         />
-      </div>
-
-      <div className="mb-4">
-        <label htmlFor="contact-moveIn" className="block text-xs font-medium text-city-night mb-1">
-          Move-in Timeline
-        </label>
-        <select
-          id="contact-moveIn"
-          name="moveInDate"
-          value={formData.moveInDate}
-          onChange={handleChange}
-          className="w-full px-3 py-2.5 border border-calm-waves-lighter rounded-md text-base text-city-night bg-clouds focus:outline-none focus:border-deep-ocean focus:ring-1 focus:ring-deep-ocean focus:bg-white transition-colors"
-        >
-          <option value="">Select timeline...</option>
-          {MOVE_IN_OPTIONS.map((opt) => (
-            <option key={opt.value} value={opt.value}>
-              {opt.label}
-            </option>
-          ))}
-        </select>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
