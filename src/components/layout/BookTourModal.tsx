@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback, useRef } from "react";
-import { MOVE_IN_OPTIONS, BEDROOM_OPTIONS, PRICE_RANGE_OPTIONS, GTM_EVENTS } from "@/lib/constants";
+import { BEDROOM_OPTIONS, PRICE_RANGE_OPTIONS, GTM_EVENTS } from "@/lib/constants";
 import { getAttribution } from "@/lib/dam-ops-client";
 
 interface BookTourModalProps {
@@ -30,7 +30,6 @@ export default function BookTourModal({ isOpen, onClose }: BookTourModalProps) {
     phone: "",
     date: "",
     time: "",
-    moveIn: "",
     priceRange: "",
     bedrooms: "",
     message: "",
@@ -144,7 +143,6 @@ export default function BookTourModal({ isOpen, onClose }: BookTourModalProps) {
           email: formData.email,
           phone: formData.phone,
           start: formData.time,
-          moveInDate: formData.moveIn,
           budgetMin: formData.priceRange ? Number(formData.priceRange.split("-")[0]) : undefined,
           budgetMax: formData.priceRange ? Number(formData.priceRange.split("-")[1]) : undefined,
           bedrooms: formData.bedrooms !== "" ? Number(formData.bedrooms) : undefined,
@@ -212,7 +210,6 @@ export default function BookTourModal({ isOpen, onClose }: BookTourModalProps) {
       phone: "",
       date: "",
       time: "",
-      moveIn: "",
       priceRange: "",
       bedrooms: "",
       message: "",
@@ -389,27 +386,6 @@ export default function BookTourModal({ isOpen, onClose }: BookTourModalProps) {
                     </select>
                   )}
                 </div>
-              </div>
-
-              {/* Move-in Timeline */}
-              <div>
-                <label htmlFor="tour-moveIn" className="block text-xs font-medium text-city-night mb-1">
-                  Move-in Timeline
-                </label>
-                <select
-                  id="tour-moveIn"
-                  name="moveIn"
-                  value={formData.moveIn}
-                  onChange={handleChange}
-                  className="w-full px-3 py-2.5 border border-calm-waves-lighter rounded-md text-base text-city-night bg-white focus:outline-none focus:border-deep-ocean focus:ring-1 focus:ring-deep-ocean transition-colors"
-                >
-                  <option value="">Select timeline</option>
-                  {MOVE_IN_OPTIONS.map((opt) => (
-                    <option key={opt.value} value={opt.value}>
-                      {opt.label}
-                    </option>
-                  ))}
-                </select>
               </div>
 
               {/* Bedrooms & Price Range Row */}

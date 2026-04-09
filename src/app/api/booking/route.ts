@@ -1,6 +1,25 @@
 import { NextRequest, NextResponse } from "next/server";
+import { createHash } from "crypto";
 import { captureLead } from "@/lib/dam-ops";
-import { bookTour } from "@/lib/funnel-api";
+import { bookTour, FunnelApiError } from "@/lib/funnel-api";
+
+/** First 12 chars of sha256(email) — correlatable across logs without leaking PII. */
+function hashEmail(email: string): string {
+  return createHash("sha256").update(email.toLowerCase().trim()).digest("hex").slice(0, 12);
+}
+
+/** Pull a human-readable rejection reason out of Funnel's error response. */
+function extractFunnelReason(err: unknown): string | null {
+  if (!(err instanceof FunnelApiError)) return null;
+  const body = err.parsedBody as Record<string, unknown> | null;
+  const reason =
+    (body?.message as string) ||
+    (body?.error as string) ||
+    (body?.detail as string) ||
+    (body ? JSON.stringify(body) : null) ||
+    `HTTP ${err.status}`;
+  return reason.slice(0, 300);
+}
 
 /**
  * Funnel returns naive datetime strings (e.g. "2026-04-30T11:45:00") that
@@ -51,6 +70,7 @@ export async function POST(request: NextRequest) {
     // 1. Forward to Funnel CRM to book the appointment
     let funnelClientId: number | null = null;
     let funnelFailed = false;
+    let funnelFailureReason: string | null = null;
     const funnelEnabled = process.env.FUNNEL_ENABLED === "true";
     if (funnelEnabled) {
       try {
@@ -66,8 +86,32 @@ export async function POST(request: NextRequest) {
           notes: body.notes,
         });
         funnelClientId = funnelResult?.data?.client?.id || null;
+
+        // Diagnostic: log success shape so we can verify appointments persist
+        // and answer the open question about expiration_date behavior.
+        // Safe to remove once we have confidence.
+        console.log(JSON.stringify({
+          level: "info",
+          event: "funnel_booking_success",
+          funnel_client_id: funnelClientId,
+          funnel_appointment_id: funnelResult?.data?.appointment?.id ?? null,
+          funnel_appointment_status: funnelResult?.data?.appointment?.status ?? null,
+          funnel_expiration_date: funnelResult?.data?.appointment?.expiration_date ?? null,
+          email_hash: hashEmail(email),
+          start,
+        }));
       } catch (funnelError) {
-        console.error("[Funnel] Tour booking failed:", funnelError);
+        funnelFailureReason = extractFunnelReason(funnelError);
+        console.error(JSON.stringify({
+          level: "error",
+          event: "funnel_booking_failed",
+          funnel_status: funnelError instanceof FunnelApiError ? funnelError.status : null,
+          funnel_endpoint: funnelError instanceof FunnelApiError ? funnelError.endpoint : null,
+          funnel_response: funnelError instanceof FunnelApiError ? funnelError.parsedBody : null,
+          funnel_message: funnelError instanceof Error ? funnelError.message : String(funnelError),
+          email_hash: hashEmail(email),
+          start,
+        }));
         funnelFailed = true;
       }
     }
@@ -94,7 +138,10 @@ export async function POST(request: NextRequest) {
       source_referrer: body.source_referrer,
       source_raw: body.source_raw,
       source_gclid: body.source_gclid,
-      notes: `Tour requested for ${formatEasternWallTime(start)}`,
+      notes: [
+        `Tour requested for ${formatEasternWallTime(start)}`,
+        funnelFailureReason ? `[Funnel rejected: ${funnelFailureReason}]` : null,
+      ].filter(Boolean).join(" "),
     });
 
     // 3. If Funnel booking failed, tell the client the tour was not scheduled

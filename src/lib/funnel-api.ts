@@ -13,6 +13,31 @@ function getAuthHeader(): string {
 }
 
 /**
+ * Structured error thrown when the Funnel API returns a non-2xx response.
+ * Callers can read `status`, `parsedBody`, and `endpoint` to surface
+ * meaningful failure reasons instead of a stringified message.
+ */
+export class FunnelApiError extends Error {
+  status: number;
+  responseBody: string;
+  parsedBody: unknown;
+  endpoint: string;
+
+  constructor(opts: { status: number; responseBody: string; endpoint: string }) {
+    super(`Funnel API error (${opts.status}) at ${opts.endpoint}`);
+    this.name = "FunnelApiError";
+    this.status = opts.status;
+    this.responseBody = opts.responseBody;
+    this.endpoint = opts.endpoint;
+    try {
+      this.parsedBody = JSON.parse(opts.responseBody);
+    } catch {
+      this.parsedBody = null;
+    }
+  }
+}
+
+/**
  * Submit a lead/prospect to Funnel CRM.
  * POST /api/v2/clients
  */
@@ -26,6 +51,9 @@ export async function submitLead(data: {
   campaignId?: string;
   campaignInfo?: string;
 }) {
+  // Only include optional fields if we actually have a value. Sending "" for
+  // date-typed fields like move_in_date causes a 400 ("Not a valid date.").
+  // Omitting is safer than guessing what Funnel tolerates.
   const payload = {
     client: {
       people: [
@@ -38,12 +66,12 @@ export async function submitLead(data: {
         },
       ],
       group: FUNNEL_GROUP_ID,
-      move_in_date: data.moveInDate || "",
+      ...(data.moveInDate ? { move_in_date: data.moveInDate } : {}),
       notes: data.notes || "",
       client_referral: "Metroparc Website",
       discovery_source: 20, // Property Website
-      campaign_id: data.campaignId || "",
-      campaign_info: data.campaignInfo || "",
+      ...(data.campaignId ? { campaign_id: data.campaignId } : {}),
+      ...(data.campaignInfo ? { campaign_info: data.campaignInfo } : {}),
     },
   };
 
@@ -58,7 +86,11 @@ export async function submitLead(data: {
 
   if (!res.ok) {
     const errorBody = await res.text();
-    throw new Error(`Funnel API error (${res.status}): ${errorBody}`);
+    throw new FunnelApiError({
+      status: res.status,
+      responseBody: errorBody,
+      endpoint: "POST /api/v2/clients",
+    });
   }
 
   return res.json();
@@ -85,7 +117,11 @@ export async function getAvailableTimes(fromDate: string, toDate: string) {
 
   if (!res.ok) {
     const errorBody = await res.text();
-    throw new Error(`Funnel API error (${res.status}): ${errorBody}`);
+    throw new FunnelApiError({
+      status: res.status,
+      responseBody: errorBody,
+      endpoint: "GET /api/v2/appointments/group/:id/available-times",
+    });
   }
 
   return res.json();
@@ -107,6 +143,9 @@ export async function bookTour(data: {
   priceCeiling?: string;
   notes?: string;
 }) {
+  // Only include optional fields if we actually have a value. Sending "" for
+  // typed fields like move_in_date / price_floor / price_ceiling risks 400s
+  // (confirmed for move_in_date) — omit instead of guessing what Funnel tolerates.
   const payload = {
     appointment: {
       start: data.start,
@@ -122,9 +161,9 @@ export async function bookTour(data: {
         },
       ],
       group: FUNNEL_GROUP_ID,
-      move_in_date: data.moveInDate || "",
-      price_floor: data.priceFloor || "",
-      price_ceiling: data.priceCeiling || "",
+      ...(data.moveInDate ? { move_in_date: data.moveInDate } : {}),
+      ...(data.priceFloor ? { price_floor: data.priceFloor } : {}),
+      ...(data.priceCeiling ? { price_ceiling: data.priceCeiling } : {}),
       notes: data.notes || "",
       discovery_source: 20,
       client_referral: "Metroparc Website",
@@ -145,7 +184,11 @@ export async function bookTour(data: {
 
   if (!res.ok) {
     const errorBody = await res.text();
-    throw new Error(`Funnel API error (${res.status}): ${errorBody}`);
+    throw new FunnelApiError({
+      status: res.status,
+      responseBody: errorBody,
+      endpoint: "POST /api/v2/appointments/group/:id/book",
+    });
   }
 
   return res.json();
