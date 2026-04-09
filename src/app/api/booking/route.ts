@@ -2,6 +2,32 @@ import { NextRequest, NextResponse } from "next/server";
 import { captureLead } from "@/lib/dam-ops";
 import { bookTour } from "@/lib/funnel-api";
 
+/**
+ * Funnel returns naive datetime strings (e.g. "2026-04-30T11:45:00") that
+ * already represent property-local (US/Eastern) wall-clock time. Passing
+ * those through `new Date()` on a server running in UTC misinterprets them
+ * as UTC and shifts the displayed time by 4–5 hours. Format the wall-clock
+ * components directly instead.
+ */
+function formatEasternWallTime(naiveIso: string): string {
+  const match = naiveIso.match(/^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})/);
+  if (!match) return naiveIso;
+  const [, y, mo, d, h, mi] = match;
+  // Build a UTC date from the parsed components, then format in UTC so the
+  // wall-clock numbers come out unchanged.
+  const dt = new Date(Date.UTC(+y, +mo - 1, +d, +h, +mi));
+  return dt.toLocaleString("en-US", {
+    weekday: "long",
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+    hour12: true,
+    timeZone: "UTC",
+  });
+}
+
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
@@ -68,7 +94,7 @@ export async function POST(request: NextRequest) {
       source_referrer: body.source_referrer,
       source_raw: body.source_raw,
       source_gclid: body.source_gclid,
-      notes: `Tour requested for ${new Date(start).toLocaleString("en-US", { weekday: "long", month: "long", day: "numeric", year: "numeric", hour: "numeric", minute: "2-digit", hour12: true, timeZone: "America/New_York" })}`,
+      notes: `Tour requested for ${formatEasternWallTime(start)}`,
     });
 
     // 3. If Funnel booking failed, tell the client the tour was not scheduled
