@@ -61,7 +61,7 @@ export async function submitLead(data: {
           first_name: data.firstName,
           last_name: data.lastName || "",
           email: data.email,
-          phone_1: data.phone || "",
+          ...(data.phone ? { phone_1: data.phone } : {}),
           is_primary: true,
         },
       ],

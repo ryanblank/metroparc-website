@@ -24,6 +24,7 @@ export async function POST(request: NextRequest) {
           firstName,
           lastName: lastName || "",
           email,
+          phone: body.phone || undefined,
         });
         funnelClientId = funnelResult?.data?.client?.id || null;
       } catch (funnelError) {
