@@ -121,7 +121,7 @@ export default function GatedMediaModal({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.firstName || !formData.email) {
+    if (!formData.firstName || !formData.lastName || !formData.email || !formData.phone) {
       setError("Please fill in all required fields.");
       return;
     }
@@ -263,12 +263,13 @@ export default function GatedMediaModal({
                 </div>
                 <div>
                   <label htmlFor="gate-lastName" className="block text-xs font-medium text-city-night mb-1">
-                    Last Name
+                    Last Name <span className="text-error">*</span>
                   </label>
                   <input
                     id="gate-lastName"
                     name="lastName"
                     type="text"
+                    required
                     value={formData.lastName}
                     onChange={handleChange}
                     className="w-full px-3 py-2.5 border border-calm-waves-lighter rounded-md text-base text-city-night bg-white focus:outline-none focus:border-deep-ocean focus:ring-1 focus:ring-deep-ocean transition-colors"
@@ -293,12 +294,13 @@ export default function GatedMediaModal({
 
               <div>
                 <label htmlFor="gate-phone" className="block text-xs font-medium text-city-night mb-1">
-                  Phone
+                  Phone <span className="text-error">*</span>
                 </label>
                 <input
                   id="gate-phone"
                   name="phone"
                   type="tel"
+                  required
                   value={formData.phone}
                   onChange={handleChange}
                   className="w-full px-3 py-2.5 border border-calm-waves-lighter rounded-md text-base text-city-night bg-white focus:outline-none focus:border-deep-ocean focus:ring-1 focus:ring-deep-ocean transition-colors"
