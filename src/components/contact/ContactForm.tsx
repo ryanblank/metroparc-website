@@ -53,7 +53,7 @@ export default function ContactForm() {
           budgetMin: formData.priceRange ? Number(formData.priceRange.split("-")[0]) : undefined,
           budgetMax: formData.priceRange ? Number(formData.priceRange.split("-")[1]) : undefined,
           message: formData.message,
-          formType: "contact",
+          formType: "general_inquiry",
           ...attribution,
         }),
       });
