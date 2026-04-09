@@ -135,7 +135,7 @@ export default function ContactForm() {
             required
             value={formData.firstName}
             onChange={handleChange}
-            className="w-full px-3 py-2.5 border border-calm-waves-lighter rounded-md text-sm text-city-night bg-clouds focus:outline-none focus:border-deep-ocean focus:ring-1 focus:ring-deep-ocean focus:bg-white transition-colors"
+            className="w-full px-3 py-2.5 border border-calm-waves-lighter rounded-md text-base text-city-night bg-clouds focus:outline-none focus:border-deep-ocean focus:ring-1 focus:ring-deep-ocean focus:bg-white transition-colors"
           />
         </div>
         <div>
@@ -148,7 +148,7 @@ export default function ContactForm() {
             type="text"
             value={formData.lastName}
             onChange={handleChange}
-            className="w-full px-3 py-2.5 border border-calm-waves-lighter rounded-md text-sm text-city-night bg-clouds focus:outline-none focus:border-deep-ocean focus:ring-1 focus:ring-deep-ocean focus:bg-white transition-colors"
+            className="w-full px-3 py-2.5 border border-calm-waves-lighter rounded-md text-base text-city-night bg-clouds focus:outline-none focus:border-deep-ocean focus:ring-1 focus:ring-deep-ocean focus:bg-white transition-colors"
           />
         </div>
       </div>
@@ -164,7 +164,7 @@ export default function ContactForm() {
           required
           value={formData.email}
           onChange={handleChange}
-          className="w-full px-3 py-2.5 border border-calm-waves-lighter rounded-md text-sm text-city-night bg-clouds focus:outline-none focus:border-deep-ocean focus:ring-1 focus:ring-deep-ocean focus:bg-white transition-colors"
+          className="w-full px-3 py-2.5 border border-calm-waves-lighter rounded-md text-base text-city-night bg-clouds focus:outline-none focus:border-deep-ocean focus:ring-1 focus:ring-deep-ocean focus:bg-white transition-colors"
         />
       </div>
 
@@ -179,7 +179,7 @@ export default function ContactForm() {
           value={formData.phone}
           onChange={handleChange}
           required
-          className="w-full px-3 py-2.5 border border-calm-waves-lighter rounded-md text-sm text-city-night bg-clouds focus:outline-none focus:border-deep-ocean focus:ring-1 focus:ring-deep-ocean focus:bg-white transition-colors"
+          className="w-full px-3 py-2.5 border border-calm-waves-lighter rounded-md text-base text-city-night bg-clouds focus:outline-none focus:border-deep-ocean focus:ring-1 focus:ring-deep-ocean focus:bg-white transition-colors"
         />
       </div>
 
@@ -192,7 +192,7 @@ export default function ContactForm() {
           name="moveInDate"
           value={formData.moveInDate}
           onChange={handleChange}
-          className="w-full px-3 py-2.5 border border-calm-waves-lighter rounded-md text-sm text-city-night bg-clouds focus:outline-none focus:border-deep-ocean focus:ring-1 focus:ring-deep-ocean focus:bg-white transition-colors"
+          className="w-full px-3 py-2.5 border border-calm-waves-lighter rounded-md text-base text-city-night bg-clouds focus:outline-none focus:border-deep-ocean focus:ring-1 focus:ring-deep-ocean focus:bg-white transition-colors"
         >
           <option value="">Select timeline...</option>
           {MOVE_IN_OPTIONS.map((opt) => (
@@ -213,7 +213,7 @@ export default function ContactForm() {
             name="bedrooms"
             value={formData.bedrooms}
             onChange={handleChange}
-            className="w-full px-3 py-2.5 border border-calm-waves-lighter rounded-md text-sm text-city-night bg-clouds focus:outline-none focus:border-deep-ocean focus:ring-1 focus:ring-deep-ocean focus:bg-white transition-colors"
+            className="w-full px-3 py-2.5 border border-calm-waves-lighter rounded-md text-base text-city-night bg-clouds focus:outline-none focus:border-deep-ocean focus:ring-1 focus:ring-deep-ocean focus:bg-white transition-colors"
           >
             <option value="">Any</option>
             {BEDROOM_OPTIONS.map((opt) => (
@@ -232,7 +232,7 @@ export default function ContactForm() {
             name="priceRange"
             value={formData.priceRange}
             onChange={handleChange}
-            className="w-full px-3 py-2.5 border border-calm-waves-lighter rounded-md text-sm text-city-night bg-clouds focus:outline-none focus:border-deep-ocean focus:ring-1 focus:ring-deep-ocean focus:bg-white transition-colors"
+            className="w-full px-3 py-2.5 border border-calm-waves-lighter rounded-md text-base text-city-night bg-clouds focus:outline-none focus:border-deep-ocean focus:ring-1 focus:ring-deep-ocean focus:bg-white transition-colors"
           >
             <option value="">Any</option>
             {PRICE_RANGE_OPTIONS.map((opt) => (
@@ -255,7 +255,7 @@ export default function ContactForm() {
           value={formData.message}
           onChange={handleChange}
           placeholder="Tell us anything we should know..."
-          className="w-full px-3 py-2.5 border border-calm-waves-lighter rounded-md text-sm text-city-night bg-clouds focus:outline-none focus:border-deep-ocean focus:ring-1 focus:ring-deep-ocean focus:bg-white transition-colors resize-vertical"
+          className="w-full px-3 py-2.5 border border-calm-waves-lighter rounded-md text-base text-city-night bg-clouds focus:outline-none focus:border-deep-ocean focus:ring-1 focus:ring-deep-ocean focus:bg-white transition-colors resize-vertical"
         />
       </div>
 

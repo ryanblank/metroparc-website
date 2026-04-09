@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import GatedMediaModal from "@/components/shared/GatedMediaModal";
+import ZoomableImage from "@/components/shared/ZoomableImage";
 import type { DamUnit } from "@/lib/dam-ops";
 
 interface ListingsSectionProps {
@@ -109,10 +110,9 @@ export default function ListingsSection({ units }: ListingsSectionProps) {
       );
     } else if (type === "floorplan" && unit.floor_plans?.[0]) {
       content = (
-        <img
+        <ZoomableImage
           src={unit.floor_plans[0]}
           alt={`${unit.unit_number} floor plan — apartments for rent in Hialeah FL`}
-          className="max-w-full max-h-[500px] mx-auto"
         />
       );
     } else if (type === "video" && unit.video_tour_url) {

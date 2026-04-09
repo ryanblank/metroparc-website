@@ -258,7 +258,7 @@ export default function GatedMediaModal({
                     required
                     value={formData.firstName}
                     onChange={handleChange}
-                    className="w-full px-3 py-2.5 border border-calm-waves-lighter rounded-md text-sm text-city-night bg-white focus:outline-none focus:border-deep-ocean focus:ring-1 focus:ring-deep-ocean transition-colors"
+                    className="w-full px-3 py-2.5 border border-calm-waves-lighter rounded-md text-base text-city-night bg-white focus:outline-none focus:border-deep-ocean focus:ring-1 focus:ring-deep-ocean transition-colors"
                   />
                 </div>
                 <div>
@@ -271,7 +271,7 @@ export default function GatedMediaModal({
                     type="text"
                     value={formData.lastName}
                     onChange={handleChange}
-                    className="w-full px-3 py-2.5 border border-calm-waves-lighter rounded-md text-sm text-city-night bg-white focus:outline-none focus:border-deep-ocean focus:ring-1 focus:ring-deep-ocean transition-colors"
+                    className="w-full px-3 py-2.5 border border-calm-waves-lighter rounded-md text-base text-city-night bg-white focus:outline-none focus:border-deep-ocean focus:ring-1 focus:ring-deep-ocean transition-colors"
                   />
                 </div>
               </div>
@@ -287,7 +287,7 @@ export default function GatedMediaModal({
                   required
                   value={formData.email}
                   onChange={handleChange}
-                  className="w-full px-3 py-2.5 border border-calm-waves-lighter rounded-md text-sm text-city-night bg-white focus:outline-none focus:border-deep-ocean focus:ring-1 focus:ring-deep-ocean transition-colors"
+                  className="w-full px-3 py-2.5 border border-calm-waves-lighter rounded-md text-base text-city-night bg-white focus:outline-none focus:border-deep-ocean focus:ring-1 focus:ring-deep-ocean transition-colors"
                 />
               </div>
 
@@ -301,7 +301,7 @@ export default function GatedMediaModal({
                   type="tel"
                   value={formData.phone}
                   onChange={handleChange}
-                  className="w-full px-3 py-2.5 border border-calm-waves-lighter rounded-md text-sm text-city-night bg-white focus:outline-none focus:border-deep-ocean focus:ring-1 focus:ring-deep-ocean transition-colors"
+                  className="w-full px-3 py-2.5 border border-calm-waves-lighter rounded-md text-base text-city-night bg-white focus:outline-none focus:border-deep-ocean focus:ring-1 focus:ring-deep-ocean transition-colors"
                   placeholder="(305) 555-0123"
                 />
               </div>
@@ -319,13 +319,13 @@ export default function GatedMediaModal({
           </div>
         ) : (
           /* Media Content */
-          <div className="p-4">
+          <div className="p-2">
             {unitName && (
-              <p className="font-decorative text-xs text-calm-waves mb-2 px-4 pt-4">
+              <p className="font-decorative text-xs text-calm-waves mb-2 px-2 pt-2">
                 {unitName} — {mediaLabel}
               </p>
             )}
-            <div className="min-h-[400px] flex items-center justify-center">
+            <div className="flex items-center justify-center">
               {formType === "contact" ? (
                 <div className="text-center px-8 py-12">
                   <h2 className="text-2xl font-semibold text-city-night mb-3">

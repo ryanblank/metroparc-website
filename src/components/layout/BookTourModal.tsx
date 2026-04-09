@@ -284,7 +284,7 @@ export default function BookTourModal({ isOpen, onClose }: BookTourModalProps) {
                     required
                     value={formData.firstName}
                     onChange={handleChange}
-                    className="w-full px-3 py-2.5 border border-calm-waves-lighter rounded-md text-sm text-city-night bg-white focus:outline-none focus:border-deep-ocean focus:ring-1 focus:ring-deep-ocean transition-colors"
+                    className="w-full px-3 py-2.5 border border-calm-waves-lighter rounded-md text-base text-city-night bg-white focus:outline-none focus:border-deep-ocean focus:ring-1 focus:ring-deep-ocean transition-colors"
                     placeholder="John"
                   />
                 </div>
@@ -299,7 +299,7 @@ export default function BookTourModal({ isOpen, onClose }: BookTourModalProps) {
                     required
                     value={formData.lastName}
                     onChange={handleChange}
-                    className="w-full px-3 py-2.5 border border-calm-waves-lighter rounded-md text-sm text-city-night bg-white focus:outline-none focus:border-deep-ocean focus:ring-1 focus:ring-deep-ocean transition-colors"
+                    className="w-full px-3 py-2.5 border border-calm-waves-lighter rounded-md text-base text-city-night bg-white focus:outline-none focus:border-deep-ocean focus:ring-1 focus:ring-deep-ocean transition-colors"
                     placeholder="Doe"
                   />
                 </div>
@@ -317,7 +317,7 @@ export default function BookTourModal({ isOpen, onClose }: BookTourModalProps) {
                   required
                   value={formData.email}
                   onChange={handleChange}
-                  className="w-full px-3 py-2.5 border border-calm-waves-lighter rounded-md text-sm text-city-night bg-white focus:outline-none focus:border-deep-ocean focus:ring-1 focus:ring-deep-ocean transition-colors"
+                  className="w-full px-3 py-2.5 border border-calm-waves-lighter rounded-md text-base text-city-night bg-white focus:outline-none focus:border-deep-ocean focus:ring-1 focus:ring-deep-ocean transition-colors"
                   placeholder="john@example.com"
                 />
               </div>
@@ -334,7 +334,7 @@ export default function BookTourModal({ isOpen, onClose }: BookTourModalProps) {
                   value={formData.phone}
                   onChange={handleChange}
                   required
-                  className="w-full px-3 py-2.5 border border-calm-waves-lighter rounded-md text-sm text-city-night bg-white focus:outline-none focus:border-deep-ocean focus:ring-1 focus:ring-deep-ocean transition-colors"
+                  className="w-full px-3 py-2.5 border border-calm-waves-lighter rounded-md text-base text-city-night bg-white focus:outline-none focus:border-deep-ocean focus:ring-1 focus:ring-deep-ocean transition-colors"
                   placeholder="(305) 555-0123"
                 />
               </div>
@@ -354,7 +354,7 @@ export default function BookTourModal({ isOpen, onClose }: BookTourModalProps) {
                     max={maxDate}
                     value={formData.date}
                     onChange={handleChange}
-                    className="w-full px-3 py-2.5 border border-calm-waves-lighter rounded-md text-sm text-city-night bg-white focus:outline-none focus:border-deep-ocean focus:ring-1 focus:ring-deep-ocean transition-colors"
+                    className="w-full px-3 py-2.5 border border-calm-waves-lighter rounded-md text-base text-city-night bg-white focus:outline-none focus:border-deep-ocean focus:ring-1 focus:ring-deep-ocean transition-colors"
                   />
                 </div>
                 <div>
@@ -362,7 +362,7 @@ export default function BookTourModal({ isOpen, onClose }: BookTourModalProps) {
                     Preferred Time <span className="text-error">*</span>
                   </label>
                   {isLoadingTimes ? (
-                    <div className="w-full px-3 py-2.5 border border-calm-waves-lighter rounded-md text-sm text-calm-waves">
+                    <div className="w-full px-3 py-2.5 border border-calm-waves-lighter rounded-md text-base text-calm-waves">
                       Loading times...
                     </div>
                   ) : (
@@ -372,7 +372,7 @@ export default function BookTourModal({ isOpen, onClose }: BookTourModalProps) {
                       required
                       value={formData.time}
                       onChange={handleChange}
-                      className="w-full px-3 py-2.5 border border-calm-waves-lighter rounded-md text-sm text-city-night bg-white focus:outline-none focus:border-deep-ocean focus:ring-1 focus:ring-deep-ocean transition-colors"
+                      className="w-full px-3 py-2.5 border border-calm-waves-lighter rounded-md text-base text-city-night bg-white focus:outline-none focus:border-deep-ocean focus:ring-1 focus:ring-deep-ocean transition-colors"
                     >
                       <option value="">
                         {formData.date
@@ -401,7 +401,7 @@ export default function BookTourModal({ isOpen, onClose }: BookTourModalProps) {
                   name="moveIn"
                   value={formData.moveIn}
                   onChange={handleChange}
-                  className="w-full px-3 py-2.5 border border-calm-waves-lighter rounded-md text-sm text-city-night bg-white focus:outline-none focus:border-deep-ocean focus:ring-1 focus:ring-deep-ocean transition-colors"
+                  className="w-full px-3 py-2.5 border border-calm-waves-lighter rounded-md text-base text-city-night bg-white focus:outline-none focus:border-deep-ocean focus:ring-1 focus:ring-deep-ocean transition-colors"
                 >
                   <option value="">Select timeline</option>
                   {MOVE_IN_OPTIONS.map((opt) => (
@@ -423,7 +423,7 @@ export default function BookTourModal({ isOpen, onClose }: BookTourModalProps) {
                     name="bedrooms"
                     value={formData.bedrooms}
                     onChange={handleChange}
-                    className="w-full px-3 py-2.5 border border-calm-waves-lighter rounded-md text-sm text-city-night bg-white focus:outline-none focus:border-deep-ocean focus:ring-1 focus:ring-deep-ocean transition-colors"
+                    className="w-full px-3 py-2.5 border border-calm-waves-lighter rounded-md text-base text-city-night bg-white focus:outline-none focus:border-deep-ocean focus:ring-1 focus:ring-deep-ocean transition-colors"
                   >
                     <option value="">Any</option>
                     {BEDROOM_OPTIONS.map((opt) => (
@@ -442,7 +442,7 @@ export default function BookTourModal({ isOpen, onClose }: BookTourModalProps) {
                     name="priceRange"
                     value={formData.priceRange}
                     onChange={handleChange}
-                    className="w-full px-3 py-2.5 border border-calm-waves-lighter rounded-md text-sm text-city-night bg-white focus:outline-none focus:border-deep-ocean focus:ring-1 focus:ring-deep-ocean transition-colors"
+                    className="w-full px-3 py-2.5 border border-calm-waves-lighter rounded-md text-base text-city-night bg-white focus:outline-none focus:border-deep-ocean focus:ring-1 focus:ring-deep-ocean transition-colors"
                   >
                     <option value="">Any</option>
                     {PRICE_RANGE_OPTIONS.map((opt) => (
@@ -465,7 +465,7 @@ export default function BookTourModal({ isOpen, onClose }: BookTourModalProps) {
                   rows={3}
                   value={formData.message}
                   onChange={handleChange}
-                  className="w-full px-3 py-2.5 border border-calm-waves-lighter rounded-md text-sm text-city-night bg-white focus:outline-none focus:border-deep-ocean focus:ring-1 focus:ring-deep-ocean transition-colors resize-y"
+                  className="w-full px-3 py-2.5 border border-calm-waves-lighter rounded-md text-base text-city-night bg-white focus:outline-none focus:border-deep-ocean focus:ring-1 focus:ring-deep-ocean transition-colors resize-y"
                   placeholder="Any questions or preferences..."
                 />
               </div>
