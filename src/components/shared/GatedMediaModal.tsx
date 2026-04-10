@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { GTM_EVENTS } from "@/lib/constants";
 import { getAttribution } from "@/lib/dam-ops-client";
 
@@ -38,7 +38,6 @@ export default function GatedMediaModal({
     email: "",
     phone: "",
   });
-  const justSubmittedRef = useRef(false);
 
   // Check session for existing submission
   useEffect(() => {
@@ -47,60 +46,6 @@ export default function GatedMediaModal({
       if (stored) setIsGated(false);
     }
   }, []);
-
-  // Silent lead capture for ungated inquiry (returning user opens modal for a new unit)
-  useEffect(() => {
-    if (!isOpen || isGated || formType !== "contact") return;
-    // Skip if the user just submitted the form manually — that already captured the lead
-    if (justSubmittedRef.current) {
-      justSubmittedRef.current = false;
-      return;
-    }
-
-    const stored = sessionStorage.getItem(SESSION_KEY);
-    if (!stored) return;
-
-    let userData: { firstName: string; lastName: string; email: string; phone?: string };
-    try {
-      const parsed = JSON.parse(stored);
-      // Handle legacy "true" values from before we stored user data
-      if (typeof parsed !== "object" || !parsed.email) return;
-      userData = parsed;
-    } catch {
-      return;
-    }
-
-    const attribution = getAttribution();
-
-    fetch("/api/lead", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        firstName: userData.firstName,
-        lastName: userData.lastName,
-        email: userData.email,
-        phone: userData.phone || undefined,
-        formType: "contact",
-        unitId,
-        bedrooms: unitBedrooms ?? undefined,
-        ...attribution,
-      }),
-    })
-      .then((res) => (res.ok ? res.json() : null))
-      .then((data) => {
-        if (!data) return;
-        const eventName = GTM_EVENTS.listingsLead.event;
-        const w = window as unknown as { dataLayer?: Record<string, unknown>[] };
-        w.dataLayer = w.dataLayer || [];
-        w.dataLayer.push({
-          event: eventName,
-          form_type: "contact",
-          lead_id: data.lead_id,
-          customer_id: data.customer_id,
-          is_new_customer: data.is_new_customer,
-        });
-      });
-  }, [isOpen, isGated, formType, unitId, unitBedrooms]);
 
   // Lock body scroll
   useEffect(() => {
@@ -194,7 +139,6 @@ export default function GatedMediaModal({
         );
       }
 
-      justSubmittedRef.current = true;
       setIsGated(false);
     } catch {
       setError("Something went wrong. Please try again.");
