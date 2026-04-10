@@ -84,7 +84,7 @@ export async function POST(request: NextRequest) {
           moveInDate: body.moveInDate,
           priceFloor: budgetMin,
           priceCeiling: budgetMax,
-          notes: body.notes,
+          notes: typeof body.notes === "string" && body.notes.trim() ? body.notes.trim() : undefined,
         });
         funnelClientId = funnelResult?.data?.client?.id || null;
 

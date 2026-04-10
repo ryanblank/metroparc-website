@@ -15,6 +15,8 @@ interface GatedMediaModalProps {
   mediaContent?: React.ReactNode;
   unitName?: string;
   unitBedrooms?: number | null;
+  unitBathrooms?: number | null;
+  unitPriceNet?: number | null;
 }
 
 const SESSION_KEY = "metroparc_media_gated";
@@ -28,6 +30,8 @@ export default function GatedMediaModal({
   mediaContent,
   unitName,
   unitBedrooms,
+  unitBathrooms,
+  unitPriceNet,
 }: GatedMediaModalProps) {
   const [isGated, setIsGated] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -64,6 +68,33 @@ export default function GatedMediaModal({
     setError(null);
   };
 
+  // Build a concise notes string the leasing team sees as the lead's first
+  // "message" in Funnel. Gives them immediate context on what the user engaged
+  // with (unit, media type, bedroom/bath/price) without clicking into preferences.
+  const buildContextNotes = (): string | undefined => {
+    if (!unitName) return undefined;
+    const actionLabel =
+      formType === "floor_plan"
+        ? "Viewed floor plan"
+        : formType === "3d_tour"
+          ? "Viewed 3D tour"
+          : formType === "video_tour"
+            ? "Viewed video tour"
+            : "Inquired";
+
+    const detailParts: string[] = [];
+    if (unitBedrooms === 0) detailParts.push("Studio");
+    else if (unitBedrooms === 1) detailParts.push("1BR");
+    else if (unitBedrooms === 2) detailParts.push("2BR");
+    if (unitBathrooms != null) detailParts.push(`${unitBathrooms}BA`);
+    if (unitPriceNet != null) detailParts.push(`$${unitPriceNet.toLocaleString("en-US")}/mo`);
+
+    const unitPart = detailParts.length > 0
+      ? `Unit ${unitName} (${detailParts.join(" • ")})`
+      : `Unit ${unitName}`;
+    return `${actionLabel} — ${unitPart}`;
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.firstName || !formData.lastName || !formData.email || !formData.phone) {
@@ -88,6 +119,7 @@ export default function GatedMediaModal({
           formType,
           unitId,
           bedrooms: unitBedrooms ?? undefined,
+          message: buildContextNotes(),
           ...attribution,
         }),
       });

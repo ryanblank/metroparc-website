@@ -79,6 +79,8 @@ export default function ListingsSection({ units }: ListingsSectionProps) {
     unitId: string;
     unitName: string;
     unitBedrooms: number | null;
+    unitBathrooms: number | null;
+    unitPriceNet: number | null;
     content?: React.ReactNode;
   } | null>(null);
 
@@ -132,6 +134,8 @@ export default function ListingsSection({ units }: ListingsSectionProps) {
       unitId: unit.id,
       unitName: unit.unit_number,
       unitBedrooms: unit.bedrooms,
+      unitBathrooms: unit.bathrooms,
+      unitPriceNet: unit.price_net,
       content,
     });
     setModalOpen(true);
@@ -144,6 +148,8 @@ export default function ListingsSection({ units }: ListingsSectionProps) {
       unitId: unit.id,
       unitName: unit.unit_number,
       unitBedrooms: unit.bedrooms,
+      unitBathrooms: unit.bathrooms,
+      unitPriceNet: unit.price_net,
       content: undefined,
     });
     setModalOpen(true);
@@ -322,6 +328,8 @@ export default function ListingsSection({ units }: ListingsSectionProps) {
           unitId={modalMedia.unitId}
           unitName={modalMedia.unitName}
           unitBedrooms={modalMedia.unitBedrooms}
+          unitBathrooms={modalMedia.unitBathrooms}
+          unitPriceNet={modalMedia.unitPriceNet}
           mediaContent={modalMedia.content}
         />
       )}

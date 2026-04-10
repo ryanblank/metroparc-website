@@ -88,7 +88,7 @@ export async function submitLead(data: {
       ...(data.priceFloor ? { price_floor: data.priceFloor } : {}),
       ...(data.priceCeiling ? { price_ceiling: data.priceCeiling } : {}),
       ...(layout ? { layout } : {}),
-      notes: data.notes || "",
+      ...(data.notes ? { notes: data.notes } : {}),
       client_referral: "Metroparc Website",
       discovery_source: 20, // Property Website
       ...(data.campaignId ? { campaign_id: data.campaignId } : {}),
@@ -188,7 +188,7 @@ export async function bookTour(data: {
       ...(data.priceFloor ? { price_floor: data.priceFloor } : {}),
       ...(data.priceCeiling ? { price_ceiling: data.priceCeiling } : {}),
       ...(layout ? { layout } : {}),
-      notes: data.notes || "",
+      ...(data.notes ? { notes: data.notes } : {}),
       discovery_source: 20,
       client_referral: "Metroparc Website",
     },
