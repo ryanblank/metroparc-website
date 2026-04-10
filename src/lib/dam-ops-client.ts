@@ -27,7 +27,7 @@ export function getAttribution(): Attribution {
       source_utm_term: data.utm_term || undefined,
       source_utm_content: data.utm_content || undefined,
       source_referrer: data.referrer || undefined,
-      source_raw: data.landing_page || undefined,
+      source_raw: data.referrer || undefined,
       source_gclid: data.gclid || undefined,
     };
   } catch {
