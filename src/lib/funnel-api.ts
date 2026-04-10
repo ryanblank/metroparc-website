@@ -61,6 +61,8 @@ export async function submitLead(data: {
   email: string;
   phone?: string;
   bedrooms?: number;
+  priceFloor?: string;
+  priceCeiling?: string;
   moveInDate?: string;
   notes?: string;
   campaignId?: string;
@@ -83,6 +85,8 @@ export async function submitLead(data: {
       ],
       group: FUNNEL_GROUP_ID,
       ...(data.moveInDate ? { move_in_date: data.moveInDate } : {}),
+      ...(data.priceFloor ? { price_floor: data.priceFloor } : {}),
+      ...(data.priceCeiling ? { price_ceiling: data.priceCeiling } : {}),
       ...(layout ? { layout } : {}),
       notes: data.notes || "",
       client_referral: "Metroparc Website",

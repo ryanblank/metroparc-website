@@ -26,6 +26,9 @@ export async function POST(request: NextRequest) {
           email,
           phone: body.phone || undefined,
           bedrooms: bedrooms != null ? Number(bedrooms) : undefined,
+          priceFloor: budgetMin != null ? String(budgetMin) : undefined,
+          priceCeiling: budgetMax != null ? String(budgetMax) : undefined,
+          notes: body.message || undefined,
         });
         funnelClientId = funnelResult?.data?.client?.id || null;
       } catch (funnelError) {
