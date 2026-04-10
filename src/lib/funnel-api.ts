@@ -38,6 +38,20 @@ export class FunnelApiError extends Error {
 }
 
 /**
+ * Map a numeric bedroom count to Funnel's `layout` enum slug array.
+ * Funnel's `layout` field is a "choice" enum that accepts lowercase slugs
+ * (verified via probe: "studio", "1br", "2br" → stored as "Studio",
+ * "1 Bedroom", "2 Bedroom" in the CRM). Returns undefined for unknown
+ * counts so the field gets omitted entirely from the payload.
+ */
+function bedroomsToLayout(bedrooms?: number): string[] | undefined {
+  if (bedrooms === 0) return ["studio"];
+  if (bedrooms === 1) return ["1br"];
+  if (bedrooms === 2) return ["2br"];
+  return undefined;
+}
+
+/**
  * Submit a lead/prospect to Funnel CRM.
  * POST /api/v2/clients
  */
@@ -46,11 +60,13 @@ export async function submitLead(data: {
   lastName?: string;
   email: string;
   phone?: string;
+  bedrooms?: number;
   moveInDate?: string;
   notes?: string;
   campaignId?: string;
   campaignInfo?: string;
 }) {
+  const layout = bedroomsToLayout(data.bedrooms);
   // Only include optional fields if we actually have a value. Sending "" for
   // date-typed fields like move_in_date causes a 400 ("Not a valid date.").
   // Omitting is safer than guessing what Funnel tolerates.
@@ -67,6 +83,7 @@ export async function submitLead(data: {
       ],
       group: FUNNEL_GROUP_ID,
       ...(data.moveInDate ? { move_in_date: data.moveInDate } : {}),
+      ...(layout ? { layout } : {}),
       notes: data.notes || "",
       client_referral: "Metroparc Website",
       discovery_source: 20, // Property Website
@@ -138,6 +155,7 @@ export async function bookTour(data: {
   email: string;
   phone?: string;
   start: string; // ISO datetime from available-times
+  bedrooms?: number;
   moveInDate?: string;
   priceFloor?: string;
   priceCeiling?: string;
@@ -146,6 +164,7 @@ export async function bookTour(data: {
   // Only include optional fields if we actually have a value. Sending "" for
   // typed fields like move_in_date / price_floor / price_ceiling risks 400s
   // (confirmed for move_in_date) — omit instead of guessing what Funnel tolerates.
+  const layout = bedroomsToLayout(data.bedrooms);
   const payload = {
     appointment: {
       start: data.start,
@@ -164,6 +183,7 @@ export async function bookTour(data: {
       ...(data.moveInDate ? { move_in_date: data.moveInDate } : {}),
       ...(data.priceFloor ? { price_floor: data.priceFloor } : {}),
       ...(data.priceCeiling ? { price_ceiling: data.priceCeiling } : {}),
+      ...(layout ? { layout } : {}),
       notes: data.notes || "",
       discovery_source: 20,
       client_referral: "Metroparc Website",

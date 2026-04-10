@@ -80,6 +80,7 @@ export async function POST(request: NextRequest) {
           email,
           phone: phone || undefined,
           start,
+          bedrooms: bedrooms != null ? Number(bedrooms) : undefined,
           moveInDate: body.moveInDate,
           priceFloor: budgetMin,
           priceCeiling: budgetMax,

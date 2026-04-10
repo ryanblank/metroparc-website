@@ -25,6 +25,7 @@ export async function POST(request: NextRequest) {
           lastName: lastName || "",
           email,
           phone: body.phone || undefined,
+          bedrooms: bedrooms != null ? Number(bedrooms) : undefined,
         });
         funnelClientId = funnelResult?.data?.client?.id || null;
       } catch (funnelError) {
