@@ -188,9 +188,18 @@ export default function BookTourModal({ isOpen, onClose }: BookTourModalProps) {
         });
       }
 
-      // Funnel booking failed but lead was captured — show partial success
+      // Funnel booking failed but lead was captured.
+      // For a time conflict (user already has a tour around this slot), keep
+      // the form open, show the error inline, and clear the time so they
+      // must pick a different slot. For any other failure, fall back to the
+      // partial-success screen that asks them to call.
       if (data.tour_booked === false) {
-        setStep("partial");
+        if (data.error_type === "time_conflict") {
+          setError(data.error);
+          setFormData((prev) => ({ ...prev, time: "" }));
+        } else {
+          setStep("partial");
+        }
       } else {
         setStep("confirmation");
       }

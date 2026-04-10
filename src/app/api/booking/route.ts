@@ -22,6 +22,24 @@ function extractFunnelReason(err: unknown): string | null {
 }
 
 /**
+ * Detect Funnel's per-prospect time-conflict error so we can show a
+ * specific, user-actionable message instead of the generic "we couldn't
+ * schedule" fallback. Funnel's shape:
+ * { errors: { appointment: { start: ["Prospect has a conflicting appointment at the same time."] } } }
+ */
+function isTimeConflictError(err: unknown): boolean {
+  if (!(err instanceof FunnelApiError)) return false;
+  const body = err.parsedBody as
+    | { errors?: { appointment?: { start?: unknown } } }
+    | null;
+  const startErrors = body?.errors?.appointment?.start;
+  if (!Array.isArray(startErrors)) return false;
+  return startErrors.some(
+    (s) => typeof s === "string" && s.toLowerCase().includes("conflicting")
+  );
+}
+
+/**
  * Funnel returns naive datetime strings (e.g. "2026-04-30T11:45:00") that
  * already represent property-local (US/Eastern) wall-clock time. Passing
  * those through `new Date()` on a server running in UTC misinterprets them
@@ -71,6 +89,7 @@ export async function POST(request: NextRequest) {
     let funnelClientId: number | null = null;
     let funnelFailed = false;
     let funnelFailureReason: string | null = null;
+    let funnelFailureType: "time_conflict" | "other" | null = null;
     const funnelEnabled = process.env.FUNNEL_ENABLED === "true";
     if (funnelEnabled) {
       try {
@@ -103,6 +122,7 @@ export async function POST(request: NextRequest) {
         }));
       } catch (funnelError) {
         funnelFailureReason = extractFunnelReason(funnelError);
+        funnelFailureType = isTimeConflictError(funnelError) ? "time_conflict" : "other";
         console.error(JSON.stringify({
           level: "error",
           event: "funnel_booking_failed",
@@ -147,8 +167,17 @@ export async function POST(request: NextRequest) {
 
     // 3. If Funnel booking failed, tell the client the tour was not scheduled
     if (funnelFailed) {
+      const errorMessage =
+        funnelFailureType === "time_conflict"
+          ? "You already have a tour scheduled near this time. Please pick a different slot."
+          : "We couldn't schedule your tour right now. Our leasing team has your info and will reach out to confirm.";
       return NextResponse.json(
-        { ...damResult, tour_booked: false, error: "We couldn't schedule your tour right now. Our leasing team has your info and will reach out to confirm." },
+        {
+          ...damResult,
+          tour_booked: false,
+          error: errorMessage,
+          error_type: funnelFailureType,
+        },
         { status: 207 }
       );
     }
