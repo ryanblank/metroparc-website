@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 
 const MESSAGES = [
-  "Hablamos Español · 2.5 Meses Gratis",
+  "Hablamos Español · Hasta 2.5 Meses Gratis",
   "Now Offering Up to 2.5 Months Free",
 ];
 
