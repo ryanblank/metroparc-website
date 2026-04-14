@@ -178,7 +178,7 @@ export default function ListingsSection({ units }: ListingsSectionProps) {
               <th className="py-3 px-4 font-decorative text-xs uppercase tracking-[0.1em] text-deep-ocean">Bed</th>
               <th className="py-3 px-4 font-decorative text-xs uppercase tracking-[0.1em] text-deep-ocean">Bath</th>
               {hasNetPrice && (
-                <th className="py-3 px-4 font-decorative text-xs uppercase tracking-[0.1em] text-deep-ocean">Net Price</th>
+                <th className="py-3 px-4 font-decorative text-xs uppercase tracking-[0.1em] text-deep-ocean">Net Price*</th>
               )}
               {hasFloorPlan && (
                 <th className="py-3 px-4 w-16 text-center font-decorative text-xs uppercase tracking-[0.1em] text-deep-ocean">Floorplan</th>
@@ -275,7 +275,7 @@ export default function ListingsSection({ units }: ListingsSectionProps) {
             </div>
             {hasNetPrice && unit.price_net != null && (
               <div className="mb-4">
-                <p className="text-xs text-city-night-light">Net Price</p>
+                <p className="text-xs text-city-night-light">Net Price*</p>
                 <p className="text-lg font-semibold text-city-night">{formatPrice(unit.price_net)}</p>
               </div>
             )}
