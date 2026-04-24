@@ -97,6 +97,7 @@ export default function ListingsSection({ units }: ListingsSectionProps) {
   const hasVideoTour = units.some((u) => u.video_tour_url);
   const has3DTour = units.some((u) => u.tour_3d_url);
   const hasNetPrice = units.some((u) => u.price_net != null);
+  const hasGrossPrice = units.some((u) => u.price_gross != null);
 
   const openMedia = (type: MediaType, unit: DamUnit) => {
     let content: React.ReactNode;
@@ -180,6 +181,9 @@ export default function ListingsSection({ units }: ListingsSectionProps) {
               {hasNetPrice && (
                 <th className="py-3 px-4 font-decorative text-xs uppercase tracking-[0.1em] text-deep-ocean">Net Price*</th>
               )}
+              {hasGrossPrice && (
+                <th className="py-3 px-4 font-decorative text-xs uppercase tracking-[0.1em] text-deep-ocean">Gross</th>
+              )}
               {hasFloorPlan && (
                 <th className="py-3 px-4 w-16 text-center font-decorative text-xs uppercase tracking-[0.1em] text-deep-ocean">Floorplan</th>
               )}
@@ -200,6 +204,9 @@ export default function ListingsSection({ units }: ListingsSectionProps) {
                 <td className="py-4 px-4 text-city-night-light">{unit.bathrooms ?? "—"}</td>
                 {hasNetPrice && (
                   <td className="py-4 px-4 text-city-night-light">{formatPrice(unit.price_net)}</td>
+                )}
+                {hasGrossPrice && (
+                  <td className="py-4 px-4 text-city-night-light">{formatPrice(unit.price_gross)}</td>
                 )}
                 {hasFloorPlan && (
                   <td className="py-4 px-4 text-center">
@@ -277,6 +284,12 @@ export default function ListingsSection({ units }: ListingsSectionProps) {
               <div className="mb-4">
                 <p className="text-xs text-city-night-light">Net Price*</p>
                 <p className="text-lg font-semibold text-city-night">{formatPrice(unit.price_net)}</p>
+              </div>
+            )}
+            {hasGrossPrice && unit.price_gross != null && (
+              <div className="mb-4">
+                <p className="text-xs text-city-night-light">Gross</p>
+                <p className="text-lg font-semibold text-city-night">{formatPrice(unit.price_gross)}</p>
               </div>
             )}
             <div className="flex gap-2 flex-wrap">
