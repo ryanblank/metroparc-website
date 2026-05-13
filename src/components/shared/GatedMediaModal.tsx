@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { GTM_EVENTS } from "@/lib/constants";
 import { getAttribution } from "@/lib/dam-ops-client";
+import { formatPhone } from "@/lib/format-phone";
 
 type FormType = "floor_plan" | "video_tour" | "3d_tour" | "contact";
 
@@ -64,7 +65,9 @@ export default function GatedMediaModal({
   }, [isOpen]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    const { name, value } = e.target;
+    const nextValue = name === "phone" ? formatPhone(value) : value;
+    setFormData((prev) => ({ ...prev, [name]: nextValue }));
     setError(null);
   };
 
@@ -276,6 +279,9 @@ export default function GatedMediaModal({
                   id="gate-phone"
                   name="phone"
                   type="tel"
+                  inputMode="tel"
+                  autoComplete="tel"
+                  maxLength={14}
                   required
                   value={formData.phone}
                   onChange={handleChange}

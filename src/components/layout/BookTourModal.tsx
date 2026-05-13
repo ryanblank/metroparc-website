@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { BEDROOM_OPTIONS, PRICE_RANGE_OPTIONS, GTM_EVENTS } from "@/lib/constants";
 import { getAttribution } from "@/lib/dam-ops-client";
+import { formatPhone } from "@/lib/format-phone";
 
 interface BookTourModalProps {
   isOpen: boolean;
@@ -111,7 +112,9 @@ export default function BookTourModal({ isOpen, onClose }: BookTourModalProps) {
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
   ) => {
-    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    const { name, value } = e.target;
+    const nextValue = name === "phone" ? formatPhone(value) : value;
+    setFormData((prev) => ({ ...prev, [name]: nextValue }));
     setError(null);
   };
 
@@ -337,6 +340,9 @@ export default function BookTourModal({ isOpen, onClose }: BookTourModalProps) {
                   id="tour-phone"
                   name="phone"
                   type="tel"
+                  inputMode="tel"
+                  autoComplete="tel"
+                  maxLength={14}
                   value={formData.phone}
                   onChange={handleChange}
                   required
