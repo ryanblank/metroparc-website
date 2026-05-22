@@ -123,7 +123,7 @@ export default function BookTourModal({ isOpen, onClose }: BookTourModalProps) {
     setError(null);
 
     // Validation
-    if (!formData.firstName || !formData.lastName || !formData.email || !formData.phone) {
+    if (!formData.firstName || !formData.lastName || !formData.email) {
       setError("Please fill in all required fields.");
       return;
     }
@@ -334,7 +334,7 @@ export default function BookTourModal({ isOpen, onClose }: BookTourModalProps) {
               {/* Phone */}
               <div>
                 <label htmlFor="tour-phone" className="block text-xs font-medium text-city-night mb-1">
-                  Phone <span className="text-red-500">*</span>
+                  Phone
                 </label>
                 <input
                   id="tour-phone"
@@ -345,7 +345,6 @@ export default function BookTourModal({ isOpen, onClose }: BookTourModalProps) {
                   maxLength={14}
                   value={formData.phone}
                   onChange={handleChange}
-                  required
                   className="w-full px-3 py-2.5 border border-calm-waves-lighter rounded-md text-base text-city-night bg-white focus:outline-none focus:border-deep-ocean focus:ring-1 focus:ring-deep-ocean transition-colors"
                   placeholder="(305) 555-0123"
                 />

@@ -31,7 +31,7 @@ export default function ContactForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!formData.firstName || !formData.lastName || !formData.email || !formData.phone) {
+    if (!formData.firstName || !formData.lastName || !formData.email) {
       setError("Please fill in all required fields.");
       return;
     }
@@ -172,7 +172,7 @@ export default function ContactForm() {
 
       <div className="mb-4">
         <label htmlFor="contact-phone" className="block text-xs font-medium text-city-night mb-1">
-          Phone <span className="text-red-500">*</span>
+          Phone
         </label>
         <input
           id="contact-phone"
@@ -184,7 +184,6 @@ export default function ContactForm() {
           placeholder="(305) 555-0123"
           value={formData.phone}
           onChange={handleChange}
-          required
           className="w-full px-3 py-2.5 border border-calm-waves-lighter rounded-md text-base text-city-night bg-clouds focus:outline-none focus:border-deep-ocean focus:ring-1 focus:ring-deep-ocean focus:bg-white transition-colors"
         />
       </div>
