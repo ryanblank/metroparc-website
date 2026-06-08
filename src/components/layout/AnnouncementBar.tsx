@@ -8,8 +8,8 @@ type Message =
   | { id: string; copy: string; hasTerms: true };
 
 const MESSAGES: Message[] = [
-  { id: "es-concession", copy: "Hablamos Español · Hasta 2.5 Meses Gratis" },
-  { id: "en-concession", copy: "Now Offering Up to 2.5 Months Free" },
+  { id: "es-prices", copy: "Hablamos Español · Nuevos Precios Desde Los $1,700's" },
+  { id: "starting-prices", copy: "Starting Prices in the $1,700's" },
   {
     id: "vehicle-offer",
     copy: "2nd Vehicle Parking Free —",
@@ -66,7 +66,19 @@ export default function AnnouncementBar() {
           }`}
           style={{ animation: "announcementSlideUp 0.5s ease-out" }}
         >
-          {current.copy}
+          {current.id === "starting-prices" ? (
+            <>
+              Starting Prices in the{" "}
+              <span className="normal-case">$1,700&apos;s</span>
+            </>
+          ) : current.id === "es-prices" ? (
+            <>
+              Hablamos Español · Nuevos Precios Desde Los{" "}
+              <span className="normal-case">$1,700&apos;s</span>
+            </>
+          ) : (
+            current.copy
+          )}
           {hasTerms && (
             <>
               {" "}

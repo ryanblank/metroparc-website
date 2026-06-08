@@ -1,9 +1,34 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { useBookTour } from "@/context/BookTourContext";
+
+const HERO_MESSAGES = [
+  { id: "summer", node: <>Summer is coming, so is your new home!</> },
+  {
+    id: "price",
+    node: (
+      <>
+        New reduced prices starting in the{" "}
+        <span className="font-semibold text-avocado-light">$1,700s</span>
+        <span className="align-super text-[0.6em]">*</span>
+      </>
+    ),
+  },
+];
 
 export default function HeroSection() {
   const { openBookTour } = useBookTour();
+  const [msgIndex, setMsgIndex] = useState(0);
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      setMsgIndex((i) => (i + 1) % HERO_MESSAGES.length);
+    }, 4000);
+    return () => clearInterval(id);
+  }, []);
+
+  const currentMessage = HERO_MESSAGES[msgIndex];
 
   return (
     <section className="relative h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-city-night to-deep-ocean">
@@ -35,8 +60,11 @@ export default function HeroSection() {
         <h1 className="font-decorative text-[clamp(2rem,8vw,4rem)] font-[800] tracking-[0.2em] uppercase mb-4 animate-[fadeInUp_0.8s_ease_forwards]">
           Metro Parc
         </h1>
-        <p className="font-display text-[clamp(1.5rem,4vw,3rem)] text-avocado-light animate-[fadeInUp_0.8s_ease_forwards_0.2s] [animation-fill-mode:backwards]">
-          Tu Vida, Connected.
+        <p
+          key={currentMessage.id}
+          className="mt-5 font-display text-[clamp(1.1rem,2.8vw,1.65rem)] text-clouds min-h-[1.6em] animate-[fadeInUp_0.5s_ease]"
+        >
+          {currentMessage.node}
         </p>
         <div className="mt-8">
           <button
