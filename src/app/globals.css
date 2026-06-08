@@ -159,19 +159,23 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* ===== SCROLLBAR STYLING ===== */
-::-webkit-scrollbar {
-  width: 8px;
-}
+/* Scope to fine pointers (desktop/mouse) only. On touch devices this keeps
+   the native overlay scrollbar instead of forcing a permanent light gutter. */
+@media (pointer: fine) {
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
 
-::-webkit-scrollbar-track {
-  background: var(--color-clouds);
-}
+  ::-webkit-scrollbar-track {
+    background: var(--color-clouds);
+  }
 
-::-webkit-scrollbar-thumb {
-  background: var(--color-calm-waves);
-  border-radius: 4px;
-}
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-calm-waves);
+    border-radius: 4px;
+  }
 
-::-webkit-scrollbar-thumb:hover {
-  background: var(--color-calm-waves-muted);
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--color-calm-waves-muted);
+  }
 }
