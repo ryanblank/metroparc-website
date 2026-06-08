@@ -8,7 +8,7 @@ type Message =
   | { id: string; copy: string; hasTerms: true };
 
 const MESSAGES: Message[] = [
-  { id: "es-prices", copy: "Hablamos Español · Nuevos Precios Desde Los $1,700's" },
+  { id: "es-prices", copy: "Hablamos Español · Desde Los $1,700's" },
   { id: "starting-prices", copy: "Starting Prices in the $1,700's" },
   {
     id: "vehicle-offer",
@@ -73,7 +73,7 @@ export default function AnnouncementBar() {
             </>
           ) : current.id === "es-prices" ? (
             <>
-              Hablamos Español · Nuevos Precios Desde Los{" "}
+              Hablamos Español · Desde Los{" "}
               <span className="normal-case">$1,700&apos;s</span>
             </>
           ) : (
