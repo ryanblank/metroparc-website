@@ -1,12 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 import { captureLead } from "@/lib/dam-ops";
 import { submitLead } from "@/lib/funnel-api";
+import { normalizeFunnelLeadSource } from "@/lib/funnel-lead-source";
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
 
     const { firstName, lastName, email, formType, unitId, bedrooms, budgetMin, budgetMax } = body;
+    const funnelLeadSource = normalizeFunnelLeadSource(body);
 
     if (!email || !firstName) {
       return NextResponse.json(
@@ -29,6 +31,7 @@ export async function POST(request: NextRequest) {
           priceFloor: budgetMin != null ? String(budgetMin) : undefined,
           priceCeiling: budgetMax != null ? String(budgetMax) : undefined,
           notes: typeof body.message === "string" && body.message.trim() ? body.message.trim() : undefined,
+          leadSource: funnelLeadSource,
         });
         funnelClientId = funnelResult?.data?.client?.id || null;
       } catch (funnelError) {

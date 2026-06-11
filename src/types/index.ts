@@ -17,6 +17,7 @@ export interface FunnelLeadPayload {
     notes?: string;
     client_referral?: string;
     discovery_source?: number;
+    lead_source?: string;
     price_floor?: number;
     price_ceiling?: number;
     campaign_id?: string;
@@ -41,6 +42,7 @@ export interface FunnelBookingPayload {
     notes?: string;
     sms_opted_in?: string;
     discovery_source?: number;
+    lead_source?: string;
     client_referral?: string;
   };
 }

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { createHash } from "crypto";
 import { captureLead } from "@/lib/dam-ops";
 import { bookTour, FunnelApiError } from "@/lib/funnel-api";
+import { normalizeFunnelLeadSource } from "@/lib/funnel-lead-source";
 
 /** First 12 chars of sha256(email) — correlatable across logs without leaking PII. */
 function hashEmail(email: string): string {
@@ -70,6 +71,7 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
 
     const { firstName, lastName, email, phone, start, bedrooms, budgetMin, budgetMax } = body;
+    const funnelLeadSource = normalizeFunnelLeadSource(body);
 
     if (!email || !firstName) {
       return NextResponse.json(
@@ -104,6 +106,7 @@ export async function POST(request: NextRequest) {
           priceFloor: budgetMin,
           priceCeiling: budgetMax,
           notes: typeof body.notes === "string" && body.notes.trim() ? body.notes.trim() : undefined,
+          leadSource: funnelLeadSource,
         });
         funnelClientId = funnelResult?.data?.client?.id || null;
 
