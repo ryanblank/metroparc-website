@@ -69,7 +69,7 @@ export default function Footer() {
               <p>
                 <a
                   href={`tel:${PHONE.replace(/[^0-9]/g, "")}`}
-                  className="DCRPhoneHref text-clouds/80 no-underline transition-colors hover:text-avocado"
+                  className="DCRPhone DCRPhoneHref text-clouds/80 no-underline transition-colors hover:text-avocado"
                 >
                   {PHONE}
                 </a>

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Montserrat, Josefin_Sans } from "next/font/google";
 import Script from "next/script";
 import ClientLayout from "@/components/layout/ClientLayout";
+import FunnelDNI from "@/components/layout/FunnelDNI";
 import { ApartmentComplexSchema } from "./structured-data";
 import "./globals.css";
 
@@ -76,11 +77,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             __html: `(function(){var K='dam_attribution',P=['utm_source','utm_medium','utm_campaign','utm_term','utm_content','gclid'];var s=new URLSearchParams(location.search),a={},f=!sessionStorage.getItem(K);P.forEach(function(k){var v=s.get(k);if(v)a[k]=v});if(document.referrer&&f){try{if(new URL(document.referrer).origin!==location.origin)a.referrer=document.referrer}catch(x){}}if(Object.keys(a).length>0||f){var e={};try{e=JSON.parse(sessionStorage.getItem(K)||'{}')}catch(x){e={}}P.forEach(function(k){if(a[k]&&!e[k])e[k]=a[k]});if(a.referrer&&!e.referrer)e.referrer=a.referrer;if(!e.captured_at)e.captured_at=new Date().toISOString();sessionStorage.setItem(K,JSON.stringify(e))}})();`,
           }}
         />
-        {/* Funnel DNI — Dynamic Number Insertion for call tracking */}
-        <Script
-          src="https://integrations.funnelleasing.com/dni/v1/dni.js"
-          strategy="afterInteractive"
-        />
         {/* Google Tag Manager (noscript) */}
         <noscript>
           <iframe
@@ -92,6 +88,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         </noscript>
         <ApartmentComplexSchema />
         <ClientLayout>{children}</ClientLayout>
+        <FunnelDNI />
       </body>
     </html>
   );

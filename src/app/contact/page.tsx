@@ -153,7 +153,7 @@ export default function ContactPage() {
 
               <div>
                 <h3 className="font-semibold text-sm uppercase tracking-wider mb-2">Phone</h3>
-                <a href={`tel:${PHONE.replace(/[^0-9]/g, "")}`} className="DCRPhoneHref text-deep-ocean hover:underline">
+                <a href={`tel:${PHONE.replace(/[^0-9]/g, "")}`} className="DCRPhone DCRPhoneHref text-deep-ocean hover:underline">
                   {PHONE}
                 </a>
               </div>
