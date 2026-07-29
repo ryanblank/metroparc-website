@@ -91,7 +91,12 @@ export async function submitLead(data: {
       ...(layout ? { layout } : {}),
       ...(data.notes ? { notes: data.notes } : {}),
       client_referral: "Metroparc Website",
-      discovery_source: 20, // Property Website
+      // Constant on purpose. Funnel's Discovery Source answers "how did they
+      // reach us" (the property website) — the marketing channel goes in
+      // lead_source. Verified: 20 resolves to "Building/Property Website".
+      // Do not drive this from attribution; it would duplicate lead_source and
+      // discard the website-vs-ILS/walk-in/phone distinction.
+      discovery_source: 20,
       ...(data.leadSource ? { lead_source: data.leadSource } : {}),
       ...(data.campaignId ? { campaign_id: data.campaignId } : {}),
       ...(data.campaignInfo ? { campaign_info: data.campaignInfo } : {}),
@@ -167,6 +172,8 @@ export async function bookTour(data: {
   priceCeiling?: string;
   notes?: string;
   leadSource?: string;
+  campaignId?: string;
+  campaignInfo?: string;
 }) {
   // Only include optional fields if we actually have a value. Sending "" for
   // typed fields like move_in_date / price_floor / price_ceiling risks 400s
@@ -195,6 +202,8 @@ export async function bookTour(data: {
       discovery_source: 20,
       client_referral: "Metroparc Website",
       ...(data.leadSource ? { lead_source: data.leadSource } : {}),
+      ...(data.campaignId ? { campaign_id: data.campaignId } : {}),
+      ...(data.campaignInfo ? { campaign_info: data.campaignInfo } : {}),
     },
   };
 

@@ -2,7 +2,11 @@ import { NextRequest, NextResponse } from "next/server";
 import { createHash } from "crypto";
 import { captureLead } from "@/lib/dam-ops";
 import { bookTour, FunnelApiError } from "@/lib/funnel-api";
-import { normalizeFunnelLeadSource } from "@/lib/funnel-lead-source";
+import {
+  buildCampaignInfo,
+  buildSourceNote,
+  normalizeFunnelLeadSource,
+} from "@/lib/funnel-lead-source";
 
 /** First 12 chars of sha256(email) — correlatable across logs without leaking PII. */
 function hashEmail(email: string): string {
@@ -73,6 +77,16 @@ export async function POST(request: NextRequest) {
     const { firstName, lastName, email, phone, start, bedrooms, budgetMin, budgetMax } = body;
     const funnelLeadSource = normalizeFunnelLeadSource(body);
 
+    // Funnel's `notes` renders as the lead's first message and is the only
+    // place source detail is visible to the leasing team. The tour modal's
+    // message field is usually blank, so this is often the only note we send.
+    const funnelNotes = [
+      typeof body.notes === "string" && body.notes.trim() ? body.notes.trim() : null,
+      buildSourceNote(body),
+    ]
+      .filter(Boolean)
+      .join("\n");
+
     if (!email || !firstName) {
       return NextResponse.json(
         { error: "First name and email are required." },
@@ -105,8 +119,12 @@ export async function POST(request: NextRequest) {
           moveInDate: body.moveInDate,
           priceFloor: budgetMin,
           priceCeiling: budgetMax,
-          notes: typeof body.notes === "string" && body.notes.trim() ? body.notes.trim() : undefined,
+          notes: funnelNotes || undefined,
           leadSource: funnelLeadSource,
+          campaignId: typeof body.source_utm_campaign === "string" && body.source_utm_campaign.trim()
+            ? body.source_utm_campaign.trim()
+            : undefined,
+          campaignInfo: buildCampaignInfo(body),
         });
         funnelClientId = funnelResult?.data?.client?.id || null;
 

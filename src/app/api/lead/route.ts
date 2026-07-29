@@ -1,7 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import { captureLead } from "@/lib/dam-ops";
 import { submitLead } from "@/lib/funnel-api";
-import { normalizeFunnelLeadSource } from "@/lib/funnel-lead-source";
+import {
+  buildCampaignInfo,
+  buildSourceNote,
+  normalizeFunnelLeadSource,
+} from "@/lib/funnel-lead-source";
 
 export async function POST(request: NextRequest) {
   try {
@@ -9,6 +13,16 @@ export async function POST(request: NextRequest) {
 
     const { firstName, lastName, email, formType, unitId, bedrooms, budgetMin, budgetMax } = body;
     const funnelLeadSource = normalizeFunnelLeadSource(body);
+
+    // Funnel's `notes` renders as the lead's first message and is the only
+    // place source detail is visible to the leasing team. Append it after the
+    // form's own context rather than replacing it.
+    const funnelNotes = [
+      typeof body.message === "string" && body.message.trim() ? body.message.trim() : null,
+      buildSourceNote(body),
+    ]
+      .filter(Boolean)
+      .join("\n");
 
     if (!email || !firstName) {
       return NextResponse.json(
@@ -30,8 +44,12 @@ export async function POST(request: NextRequest) {
           bedrooms: bedrooms != null ? Number(bedrooms) : undefined,
           priceFloor: budgetMin != null ? String(budgetMin) : undefined,
           priceCeiling: budgetMax != null ? String(budgetMax) : undefined,
-          notes: typeof body.message === "string" && body.message.trim() ? body.message.trim() : undefined,
+          notes: funnelNotes || undefined,
           leadSource: funnelLeadSource,
+          campaignId: typeof body.source_utm_campaign === "string" && body.source_utm_campaign.trim()
+            ? body.source_utm_campaign.trim()
+            : undefined,
+          campaignInfo: buildCampaignInfo(body),
         });
         funnelClientId = funnelResult?.data?.client?.id || null;
       } catch (funnelError) {
