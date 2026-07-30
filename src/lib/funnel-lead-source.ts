@@ -180,12 +180,18 @@ export function normalizeFunnelLeadSource(
 }
 
 /**
- * Human-readable source detail for the leasing team.
+ * Channel label for the leasing team, e.g. "Source: google / cpc".
  *
  * Funnel's `campaign_info` stores fine but is not displayed anywhere on the
- * prospect record — `notes` is the only field that surfaces, rendering as the
- * lead's first message. So the engine/campaign/keyword detail rides along here,
- * appended after whatever context the form already sends.
+ * prospect record — `notes` is the only field that surfaces. It renders as a
+ * message in the lead's thread, which Funnel's automated response also draws
+ * from, so *the prospect can see this text*.
+ *
+ * That is why this is the channel only. Campaign ID and keyword deliberately
+ * stay out: echoing someone's search term back at them in an auto-reply reads
+ * as surveillance, and campaign IDs are noise to a customer. Both are still
+ * captured in full in DAM Ops and sent to Funnel via `campaign_info` /
+ * `campaign_id`, neither of which is ever displayed.
  *
  * Returns undefined when there's no attribution at all, so direct traffic
  * doesn't get a meaningless line.
@@ -193,8 +199,6 @@ export function normalizeFunnelLeadSource(
 export function buildSourceNote(attribution: AttributionInput): string | undefined {
   const source = raw(attribution.source_utm_source);
   const medium = raw(attribution.source_utm_medium);
-  const campaign = raw(attribution.source_utm_campaign);
-  const term = raw(attribution.source_utm_term);
   const referrer = raw(attribution.source_referrer) || raw(attribution.source_raw);
 
   // Fall back to the referring host only when it actually parses as one —
@@ -210,11 +214,7 @@ export function buildSourceNote(attribution: AttributionInput): string | undefin
 
   if (!channel) return undefined;
 
-  const parts = [`Source: ${channel}`];
-  if (campaign) parts.push(`Campaign: ${campaign}`);
-  if (term) parts.push(`Keyword: ${term}`);
-
-  return parts.join(" · ");
+  return `Source: ${channel}`;
 }
 
 /**

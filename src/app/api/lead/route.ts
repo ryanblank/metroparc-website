@@ -46,9 +46,9 @@ export async function POST(request: NextRequest) {
           priceCeiling: budgetMax != null ? String(budgetMax) : undefined,
           notes: funnelNotes || undefined,
           leadSource: funnelLeadSource,
-          campaignId: typeof body.source_utm_campaign === "string" && body.source_utm_campaign.trim()
-            ? body.source_utm_campaign.trim()
-            : undefined,
+          // Channel only. Campaign ID and keyword are deliberately not sent to
+          // Funnel — they never were, and `notes` reaches the prospect via
+          // Funnel's automated response. Both live in DAM Ops.
           campaignInfo: buildCampaignInfo(body),
         });
         funnelClientId = funnelResult?.data?.client?.id || null;
