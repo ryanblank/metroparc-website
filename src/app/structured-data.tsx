@@ -37,6 +37,7 @@ export function ApartmentComplexSchema() {
       { "@type": "LocationFeatureSpecification", name: "High-Speed Wi-Fi Throughout Property", value: true },
       { "@type": "LocationFeatureSpecification", name: "Controlled Access Bike Storage", value: true },
       { "@type": "LocationFeatureSpecification", name: "Amazon Lockers for Package Delivery", value: true },
+      { "@type": "LocationFeatureSpecification", name: "TULU Smart Rental Store", value: true },
       { "@type": "LocationFeatureSpecification", name: "In-Unit Washer & Dryer", value: true },
       { "@type": "LocationFeatureSpecification", name: "Controlled-Access Parking", value: true },
       { "@type": "LocationFeatureSpecification", name: "Ground-Floor Retail", value: true },

@@ -47,6 +47,7 @@ const MARQUEE_ITEMS = [
   "Tri-Rail & Metrorail Access",
   "Controlled-Access Bike Storage",
   "Amazon Lockers",
+  "TULU Smart Rental Store",
   "High-Speed Wi-Fi",
   "Ground-Floor Retail",
 ];

@@ -22,6 +22,7 @@ const ALL_COMMUNITY_AMENITIES = [
   "High-Speed Wi-Fi throughout the property",
   "Controlled Access Bike Storage",
   "Hassle-Free Package with Amazon Lockers",
+  "TULU Smart Rental Store: Rent Everyday Essentials 24/7",
   "24/7 Emergency Maintenance",
   "Controlled-Access Parking",
   "Ground-Floor Retail",
