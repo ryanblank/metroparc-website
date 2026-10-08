@@ -40,7 +40,7 @@ export default async function AvailabilityPage() {
         <div className="max-w-[1200px] mx-auto">
           <ListingsSection units={units} />
           <p className="text-deep-ocean font-bold text-center text-sm mt-8 max-w-[600px] mx-auto">
-            *Net effective rent shown reflects all concessions, including any free rent.
+            *Net effective rent shown is based on a 13-month lease term and reflects all concessions, including any free rent. Pricing for other lease terms may vary.
           </p>
           <div className="mt-10 flex justify-center">
             <Image
