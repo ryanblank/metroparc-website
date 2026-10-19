@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { GTM_EVENTS, BEDROOM_OPTIONS, PRICE_RANGE_OPTIONS } from "@/lib/constants";
 import { getAttribution } from "@/lib/dam-ops-client";
-import { formatPhone } from "@/lib/format-phone";
+import { formatPhone, isCompletePhone } from "@/lib/format-phone";
 
 export default function ContactForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -33,6 +33,10 @@ export default function ContactForm() {
 
     if (!formData.firstName || !formData.lastName || !formData.email || !formData.phone) {
       setError("Please fill in all required fields.");
+      return;
+    }
+    if (!isCompletePhone(formData.phone)) {
+      setError("Please enter a 10-digit phone number.");
       return;
     }
 
@@ -180,7 +184,6 @@ export default function ContactForm() {
           type="tel"
           inputMode="tel"
           autoComplete="tel"
-          maxLength={14}
           placeholder="(305) 555-0123"
           value={formData.phone}
           onChange={handleChange}

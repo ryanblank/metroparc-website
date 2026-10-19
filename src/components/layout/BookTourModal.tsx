@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { BEDROOM_OPTIONS, PRICE_RANGE_OPTIONS, GTM_EVENTS } from "@/lib/constants";
 import { getAttribution } from "@/lib/dam-ops-client";
-import { formatPhone } from "@/lib/format-phone";
+import { formatPhone, isCompletePhone } from "@/lib/format-phone";
 
 interface BookTourModalProps {
   isOpen: boolean;
@@ -125,6 +125,10 @@ export default function BookTourModal({ isOpen, onClose }: BookTourModalProps) {
     // Validation
     if (!formData.firstName || !formData.lastName || !formData.email || !formData.phone) {
       setError("Please fill in all required fields.");
+      return;
+    }
+    if (!isCompletePhone(formData.phone)) {
+      setError("Please enter a 10-digit phone number.");
       return;
     }
     if (!formData.date || !formData.time) {
@@ -342,7 +346,6 @@ export default function BookTourModal({ isOpen, onClose }: BookTourModalProps) {
                   type="tel"
                   inputMode="tel"
                   autoComplete="tel"
-                  maxLength={14}
                   value={formData.phone}
                   onChange={handleChange}
                   required

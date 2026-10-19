@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { GTM_EVENTS } from "@/lib/constants";
 import { getAttribution } from "@/lib/dam-ops-client";
-import { formatPhone } from "@/lib/format-phone";
+import { formatPhone, isCompletePhone } from "@/lib/format-phone";
 
 type FormType = "floor_plan" | "video_tour" | "3d_tour" | "contact";
 
@@ -102,6 +102,11 @@ export default function GatedMediaModal({
     e.preventDefault();
     if (!formData.firstName || !formData.lastName || !formData.email) {
       setError("Please fill in all required fields.");
+      return;
+    }
+    // Phone is optional here, but if entered it must be complete.
+    if (formData.phone && !isCompletePhone(formData.phone)) {
+      setError("Please enter a 10-digit phone number.");
       return;
     }
 
@@ -281,7 +286,6 @@ export default function GatedMediaModal({
                   type="tel"
                   inputMode="tel"
                   autoComplete="tel"
-                  maxLength={14}
                   value={formData.phone}
                   onChange={handleChange}
                   className="w-full px-3 py-2.5 border border-calm-waves-lighter rounded-md text-base text-city-night bg-white focus:outline-none focus:border-deep-ocean focus:ring-1 focus:ring-deep-ocean transition-colors"
