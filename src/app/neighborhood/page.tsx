@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   alternates: { canonical: "/neighborhood" },
   title: "Hialeah Apartments Near Metrorail & Downtown Miami",
   description:
-    "Metro Parc is 2 blocks from the Metrorail/Tri-Rail station in Hialeah — 20 min to Downtown Miami, 25 min to Brickell, 15 min to the Health District, 13 min to Miami Airport. Studios from $1,976.",
+    "Metro Parc is 2 blocks from the Metrorail/Tri-Rail station in Hialeah — 20 min to Downtown Miami, 25 min to Brickell, 15 min to the Health District, 13 min to Miami Airport. Minutes from Miami Springs, Doral & Miami Lakes.",
 };
 
 const TRANSIT_STATS = [

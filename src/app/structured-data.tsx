@@ -75,6 +75,12 @@ export function ApartmentComplexSchema() {
     areaServed: [
       { "@type": "City", name: "Hialeah" },
       { "@type": "City", name: "Miami" },
+      { "@type": "City", name: "Miami Springs" },
+      { "@type": "City", name: "Hialeah Gardens" },
+      { "@type": "City", name: "Medley" },
+      { "@type": "City", name: "Miami Lakes" },
+      { "@type": "City", name: "Doral" },
+      { "@type": "AdministrativeArea", name: "Miami-Dade County" },
     ],
     dateModified: new Date().toISOString().split("T")[0],
   };
