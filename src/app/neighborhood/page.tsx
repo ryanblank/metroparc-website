@@ -8,7 +8,8 @@ import { BreadcrumbSchema } from "../structured-data";
 import { SITE_URL } from "@/lib/constants";
 
 export const metadata: Metadata = {
-  title: "Metro Parc Neighborhood | Hialeah Apartments Near Metrorail & Downtown Miami",
+  alternates: { canonical: "/neighborhood" },
+  title: "Hialeah Apartments Near Metrorail & Downtown Miami",
   description:
     "Metro Parc is 2 blocks from the Metrorail/Tri-Rail station in Hialeah — 20 min to Downtown Miami, 25 min to Brickell, 15 min to the Health District, 13 min to Miami Airport. Studios from $1,976.",
 };

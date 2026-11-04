@@ -6,6 +6,7 @@ import { BreadcrumbSchema } from "../structured-data";
 import { SITE_URL } from "@/lib/constants";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/amenities" },
   title: "Pet-Friendly Apartments with Pool & Fitness Center in Hialeah",
   description:
     "Resort-style pool, Peloton fitness center, co-working space, 24-hr concierge & pet-friendly living at Metro Parc apartments in Hialeah, FL.",

@@ -7,6 +7,7 @@ import { SITE_URL } from "@/lib/constants";
 import { getListings } from "@/lib/dam-ops";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/availability" },
   title: "Apartments for Rent in Hialeah FL \u2014 Pricing & Availability",
   description:
     "View available apartments at Metro Parc Hialeah. Studios from ~$1,976, 1-beds from ~$2,098, 2-beds from ~$2,616. Floor plans, 3D tours & move-in specials.",

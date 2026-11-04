@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { FAQItem } from "@/types";
 
 interface FAQAccordionProps {
@@ -23,6 +23,24 @@ export default function FAQAccordion({ items, className = "" }: FAQAccordionProp
     return acc;
   }, {});
 
+  // Deep links (e.g. /contact#pet-policy): open the matching item on load and on hash change.
+  // Indexes follow the grouped render order, so search the flattened groups.
+  const orderedIds = Object.values(categories).flat().map((item) => item.id);
+  const idsKey = orderedIds.join("|");
+  useEffect(() => {
+    const openFromHash = () => {
+      const hash = window.location.hash.slice(1);
+      if (!hash) return;
+      const idx = idsKey.split("|").indexOf(hash);
+      if (idx === -1) return;
+      setOpenIndex(idx);
+      document.getElementById(hash)?.scrollIntoView({ behavior: "smooth", block: "start" });
+    };
+    openFromHash();
+    window.addEventListener("hashchange", openFromHash);
+    return () => window.removeEventListener("hashchange", openFromHash);
+  }, [idsKey]);
+
   let globalIndex = 0;
 
   return (
@@ -40,7 +58,7 @@ export default function FAQAccordion({ items, className = "" }: FAQAccordionProp
               const isOpen = openIndex === idx;
 
               return (
-                <div key={idx} className="border-b border-calm-waves-lighter">
+                <div key={idx} id={item.id} className="border-b border-calm-waves-lighter scroll-mt-32">
                   <button
                     onClick={() => toggle(idx)}
                     className="w-full flex justify-between items-center py-5 px-0 text-left bg-transparent border-none cursor-pointer group"

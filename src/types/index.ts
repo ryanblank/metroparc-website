@@ -94,6 +94,8 @@ export interface NavItem {
 }
 
 export interface FAQItem {
+  /** Optional anchor id so the item can be deep-linked (e.g. /contact#pet-policy) */
+  id?: string;
   question: string;
   answer: string;
   category?: string;

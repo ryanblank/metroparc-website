@@ -7,7 +7,12 @@ import UnitTeaserSection from "@/components/home/UnitTeaserSection";
 import type { UnitGroup } from "@/components/home/UnitTeaserSection";
 import AvailabilityCTA from "@/components/home/AvailabilityCTA";
 import Image from "next/image";
+import type { Metadata } from "next";
 import { getListings } from "@/lib/dam-ops";
+
+export const metadata: Metadata = {
+  alternates: { canonical: "/" },
+};
 
 const UNIT_CONFIG: Array<{
   beds: number;

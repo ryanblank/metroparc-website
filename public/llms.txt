@@ -3,6 +3,9 @@
 ## Overview
 Metro Parc is a new 559-unit luxury apartment community in Hialeah, FL, located 2 blocks from the Hialeah Metrorail and Tri-Rail Transfer Station. It offers studios, 1-bedroom, and 2-bedroom apartments with resort-style amenities.
 
+## Languages
+The leasing team speaks English and Spanish (Hablamos Español).
+
 ## Location
 - Address: 952 East 26th Street, Hialeah, FL 33013
 - 5 min walk to Metrorail / Tri-Rail station
@@ -13,7 +16,9 @@ Metro Parc is a new 559-unit luxury apartment community in Hialeah, FL, located 
 - Walk Score: 73 (Very Walkable)
 
 ## Unit Types
-- Studios: starting from $1,976/mo
+Current pricing and available units: https://metroparchialeah.com/availability (updated daily)
+
+- Studios
 - 1 Bedrooms
 - 2 Bedrooms
 - Penthouse / The Heights collection
@@ -51,3 +56,4 @@ Metro Parc is a new 559-unit luxury apartment community in Hialeah, FL, located 
 - Neighborhood: https://metroparchialeah.com/neighborhood
 - Availability: https://metroparchialeah.com/availability
 - Contact: https://metroparchialeah.com/contact
+- Workforce Housing: https://metroparchialeah.com/workforce-housing

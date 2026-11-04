@@ -94,5 +94,5 @@ export const PROPERTY_STATS = {
 // ===== FOOTER LINKS =====
 export const FOOTER_LEGAL_LINKS = [
   { label: "Privacy Policy", href: "/privacy-policy" },
-  { label: "Pet Policy", href: "#" },
+  { label: "Pet Policy", href: "/contact#pet-policy" },
 ] as const;

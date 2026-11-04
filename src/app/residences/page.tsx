@@ -7,6 +7,7 @@ import { BreadcrumbSchema } from "../structured-data";
 import { SITE_URL } from "@/lib/constants";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/residences" },
   title: "Studio, 1 & 2 Bedroom Apartments Hialeah FL",
   description:
     "Explore studio, 1 & 2-bedroom floor plans plus The Heights penthouse residences at Metro Parc. 11-ft ceilings, in-unit laundry & luxury finishes.",

@@ -4,7 +4,8 @@ import { BreadcrumbSchema } from "../structured-data";
 import { SITE_URL } from "@/lib/constants";
 
 export const metadata: Metadata = {
-  title: "Workforce Housing Units",
+  alternates: { canonical: "/workforce-housing" },
+  title: "Workforce Housing in Hialeah, FL",
   description:
     "Metro Parc participates in the Miami Dade County Workforce Housing Program. Learn about eligibility requirements and designated units available in Hialeah, FL.",
 };

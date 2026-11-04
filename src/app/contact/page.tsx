@@ -9,7 +9,8 @@ import { ADDRESS, PHONE, EMAIL, OFFICE_HOURS, DIRECTIONS_URL, SITE_URL } from "@
 import type { FAQItem } from "@/types";
 
 export const metadata: Metadata = {
-  title: "Schedule a Tour at Metro Parc Hialeah FL",
+  alternates: { canonical: "/contact" },
+  title: "Schedule a Tour – Hialeah Apartments",
   description:
     "Contact Metro Parc at 952 E 26th St, Hialeah FL 33013. Office hours, directions, FAQs & schedule your apartment tour today.",
 };
@@ -22,6 +23,7 @@ const FAQ_ITEMS: FAQItem[] = [
     category: "General Community",
   },
   {
+    id: "pet-policy",
     question: "Is Metro Parc a pet-friendly community?",
     answer: "Yes, Metro Parc is a pet-friendly community welcoming cats and dogs of all sizes, including larger breeds. Contact our leasing team for details on our pet policy.",
     category: "General Community",

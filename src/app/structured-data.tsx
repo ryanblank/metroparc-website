@@ -1,4 +1,4 @@
-import { SITE_URL, ADDRESS, PHONE, EMAIL, OFFICE_HOURS } from "@/lib/constants";
+import { SITE_URL, ADDRESS, PHONE, EMAIL, OFFICE_HOURS, SOCIAL_LINKS, DIRECTIONS_URL } from "@/lib/constants";
 
 export function ApartmentComplexSchema() {
   const schema = {
@@ -25,8 +25,11 @@ export function ApartmentComplexSchema() {
       latitude: 25.846063,
       longitude: -80.263033,
     },
-    numberOfAvailableAccommodation: 559,
+    numberOfAccommodationUnits: 559,
     petsAllowed: true,
+    hasMap: DIRECTIONS_URL,
+    sameAs: [SOCIAL_LINKS.facebook, SOCIAL_LINKS.instagram],
+    tourBookingPage: `${SITE_URL}/contact`,
     amenityFeature: [
       { "@type": "LocationFeatureSpecification", name: "Resort-Style Pool with Private Cabanas", value: true },
       { "@type": "LocationFeatureSpecification", name: "Modern Fitness Center with Matrix Gear & Peloton Bikes", value: true },
