@@ -25,7 +25,7 @@ export default function ClientLayout({
       <main className="flex-1">{children}</main>
       <Footer />
       <FixedCTA />
-      <BookTourModal isOpen={isBookTourOpen} onClose={closeBookTour} />
+      {isBookTourOpen && <BookTourModal isOpen onClose={closeBookTour} />}
     </BookTourContext.Provider>
   );
 }

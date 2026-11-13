@@ -2,7 +2,8 @@
 
 import { useState, useEffect, useCallback, useRef } from "react";
 import { BEDROOM_OPTIONS, PRICE_RANGE_OPTIONS, GTM_EVENTS } from "@/lib/constants";
-import { getAttribution } from "@/lib/dam-ops-client";
+import { rememberAcceptedContact, submitWebsiteForm, getVisitorContact } from "@/lib/dam-ops-client";
+import { easternSlot, formatTourSlot, slotWallTime } from "@/lib/tour-slot";
 import { formatPhone, isCompletePhone } from "@/lib/format-phone";
 
 interface BookTourModalProps {
@@ -24,17 +25,18 @@ export default function BookTourModal({ isOpen, onClose }: BookTourModalProps) {
   const modalRef = useRef<HTMLDivElement>(null);
 
   // Form state
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState(() => ({
     firstName: "",
     lastName: "",
     email: "",
     phone: "",
+    ...getVisitorContact(),
     date: "",
     time: "",
     priceRange: "",
     bedrooms: "",
     message: "",
-  });
+  }));
 
   // Lock body scroll when open
   useEffect(() => {
@@ -60,7 +62,7 @@ export default function BookTourModal({ isOpen, onClose }: BookTourModalProps) {
   }, [isOpen, onClose]);
 
   // Fetch available times when date changes
-  const fetchAvailableTimes = useCallback(async (date: string) => {
+  const fetchAvailableTimes = useCallback(async (date: string, signal: AbortSignal) => {
     if (!date) return;
     setIsLoadingTimes(true);
     setAvailableTimes([]);
@@ -68,45 +70,29 @@ export default function BookTourModal({ isOpen, onClose }: BookTourModalProps) {
     try {
       // Get a 1-day window for the selected date
       const res = await fetch(
-        `/api/availability?from_date=${date}&to_date=${date}`
+        `/api/availability?from_date=${date}&to_date=${date}`, { signal }
       );
       const data = await res.json();
 
-      if (data.available_times) {
-        const now = new Date();
-        const twoHoursFromNow = new Date(now.getTime() + 120 * 60 * 1000);
-
-        const slots: TimeSlot[] = data.available_times
-          .filter((time: string) => {
-            const slotDate = new Date(time);
-            return slotDate > twoHoursFromNow;
-          })
-          .map((time: string) => {
-            const d = new Date(time);
-            return {
-              time,
-              display: d.toLocaleTimeString("en-US", {
-                hour: "numeric",
-                minute: "2-digit",
-                hour12: true,
-                timeZone: "America/New_York",
-              }),
-            };
-          });
-
-        setAvailableTimes(slots);
+      if (Array.isArray(data.available_times)) {
+        const earliest = easternSlot(new Date(Date.now() + 120 * 60_000));
+        const slots = (data.available_times as string[])
+          .map(slotWallTime)
+          .filter((slot): slot is string => Boolean(slot && slot > earliest))
+          .map((time) => ({ time, display: formatTourSlot(time) }));
+        if (!signal.aborted) setAvailableTimes(slots);
       }
     } catch {
-      console.error("Failed to fetch available times");
+      if (!signal.aborted) setError("Couldn’t load tour times. Please choose a date again.");
     } finally {
-      setIsLoadingTimes(false);
+      if (!signal.aborted) setIsLoadingTimes(false);
     }
   }, []);
 
   useEffect(() => {
-    if (formData.date) {
-      fetchAvailableTimes(formData.date);
-    }
+    const controller = new AbortController();
+    if (formData.date) void fetchAvailableTimes(formData.date, controller.signal);
+    return () => controller.abort();
   }, [formData.date, fetchAvailableTimes]);
 
   const handleChange = (
@@ -114,7 +100,7 @@ export default function BookTourModal({ isOpen, onClose }: BookTourModalProps) {
   ) => {
     const { name, value } = e.target;
     const nextValue = name === "phone" ? formatPhone(value) : value;
-    setFormData((prev) => ({ ...prev, [name]: nextValue }));
+    setFormData((prev) => ({ ...prev, [name]: nextValue, ...(name === "date" && { time: "" }) }));
     setError(null);
   };
 
@@ -131,7 +117,7 @@ export default function BookTourModal({ isOpen, onClose }: BookTourModalProps) {
       setError("Please enter a 10-digit phone number.");
       return;
     }
-    if (!formData.date || !formData.time) {
+    if (!formData.date || !formData.time || !availableTimes.some(({ time }) => time === formData.time)) {
       setError("Please select a date and time for your tour.");
       return;
     }
@@ -139,31 +125,18 @@ export default function BookTourModal({ isOpen, onClose }: BookTourModalProps) {
     setIsSubmitting(true);
 
     try {
-      const attribution = getAttribution();
-
-      const res = await fetch("/api/booking", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          firstName: formData.firstName,
-          lastName: formData.lastName,
-          email: formData.email,
-          phone: formData.phone,
-          start: formData.time,
-          budgetMin: formData.priceRange ? Number(formData.priceRange.split("-")[0]) : undefined,
-          budgetMax: formData.priceRange ? Number(formData.priceRange.split("-")[1]) : undefined,
-          bedrooms: formData.bedrooms !== "" ? Number(formData.bedrooms) : undefined,
-          notes: formData.message,
-          ...attribution,
-        }),
+      const data = await submitWebsiteForm("/api/booking", {
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        email: formData.email,
+        phone: formData.phone,
+        start: formData.time,
+        budgetMin: formData.priceRange ? Number(formData.priceRange.split("-")[0]) : undefined,
+        budgetMax: formData.priceRange ? Number(formData.priceRange.split("-")[1]) : undefined,
+        bedrooms: formData.bedrooms !== "" ? Number(formData.bedrooms) : undefined,
+        notes: formData.message,
       });
-
-      if (!res.ok) {
-        const errorData = await res.json();
-        throw new Error(errorData.error || "Failed to book tour");
-      }
-
-      const data = await res.json();
+      rememberAcceptedContact(formData);
 
       // Fire dam_tour_lead event with enriched data
       if (typeof window !== "undefined") {
@@ -200,7 +173,7 @@ export default function BookTourModal({ isOpen, onClose }: BookTourModalProps) {
       // the form open, show the error inline, and clear the time so they
       // must pick a different slot. For any other failure, fall back to the
       // partial-success screen that asks them to call.
-      if (data.tour_booked === false) {
+      if (data.tour_booked !== true) {
         if (data.error_type === "time_conflict") {
           setError(data.error);
           setFormData((prev) => ({ ...prev, time: "" }));
@@ -218,29 +191,13 @@ export default function BookTourModal({ isOpen, onClose }: BookTourModalProps) {
   };
 
   const handleClose = () => {
-    setStep("form");
-    setFormData({
-      firstName: "",
-      lastName: "",
-      email: "",
-      phone: "",
-      date: "",
-      time: "",
-      priceRange: "",
-      bedrooms: "",
-      message: "",
-    });
-    setError(null);
-    setAvailableTimes([]);
     onClose();
   };
 
   // Get min date (today)
-  const today = new Date().toISOString().split("T")[0];
+  const today = easternSlot(new Date()).slice(0, 10);
   // Get max date (30 days out)
-  const maxDate = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)
-    .toISOString()
-    .split("T")[0];
+  const maxDate = easternSlot(new Date(Date.now() + 30 * 86_400_000)).slice(0, 10);
 
   if (!isOpen) return null;
 
@@ -475,7 +432,7 @@ export default function BookTourModal({ isOpen, onClose }: BookTourModalProps) {
                 disabled={isSubmitting}
                 className="w-full bg-deep-ocean text-clouds py-3 rounded-md font-decorative text-sm uppercase tracking-[0.1em] cursor-pointer transition-all duration-300 hover:bg-deep-ocean-hover disabled:opacity-60 disabled:cursor-not-allowed border-none"
               >
-                {isSubmitting ? "Booking..." : "Schedule Tour"}
+                {isSubmitting ? "Booking..." : "Confirm tour slot"}
               </button>
             </form>
           </div>
@@ -492,26 +449,7 @@ export default function BookTourModal({ isOpen, onClose }: BookTourModalProps) {
               We&apos;ve scheduled your tour for:
             </p>
             <p className="text-lg font-semibold text-deep-ocean mb-6">
-              {formData.date &&
-                new Date(formData.date + "T12:00:00").toLocaleDateString("en-US", {
-                  weekday: "long",
-                  month: "long",
-                  day: "numeric",
-                })}
-              {formData.time && (
-                <>
-                  {" at "}
-                  {new Date(formData.time).toLocaleTimeString("en-US", {
-                    hour: "numeric",
-                    minute: "2-digit",
-                    hour12: true,
-                    timeZone: "America/New_York",
-                  })}
-                </>
-              )}
-            </p>
-            <p className="text-sm text-calm-waves mb-8">
-              A confirmation will be sent to {formData.email}
+              {formatTourSlot(formData.time, true)} ET
             </p>
             <button
               onClick={handleClose}
@@ -530,7 +468,7 @@ export default function BookTourModal({ isOpen, onClose }: BookTourModalProps) {
               We&apos;ve Got Your Info
             </h2>
             <p className="text-calm-waves-muted mb-6">
-              We couldn&apos;t schedule your tour online right now, but our leasing team has your request and will reach out to confirm your appointment.
+              Your tour request was saved for follow-up. Our leasing team will contact you about scheduling.
             </p>
             <a
               href="tel:+13056149674"

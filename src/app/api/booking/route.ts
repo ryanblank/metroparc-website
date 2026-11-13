@@ -1,37 +1,10 @@
-import { NextRequest, NextResponse } from "next/server";
-import { createHash } from "crypto";
 import { captureLead } from "@/lib/dam-ops";
-import { bookTour, FunnelApiError } from "@/lib/funnel-api";
-import {
-  buildCampaignInfo,
-  buildSourceNote,
-  normalizeFunnelLeadSource,
-} from "@/lib/funnel-lead-source";
+import { bookTour, FunnelApiError, getAvailableTimes } from "@/lib/funnel-api";
+import { buildCampaignInfo, buildSourceNote, normalizeFunnelLeadSource } from "@/lib/funnel-lead-source";
+import { formatTourSlot, slotWallTime } from "@/lib/tour-slot";
+import { guardForm, websiteRequest } from "@/lib/website-form-guard";
+import { LeadInputError, readWebsiteForm } from "@/lib/website-form-input";
 
-/** First 12 chars of sha256(email) — correlatable across logs without leaking PII. */
-function hashEmail(email: string): string {
-  return createHash("sha256").update(email.toLowerCase().trim()).digest("hex").slice(0, 12);
-}
-
-/** Pull a human-readable rejection reason out of Funnel's error response. */
-function extractFunnelReason(err: unknown): string | null {
-  if (!(err instanceof FunnelApiError)) return null;
-  const body = err.parsedBody as Record<string, unknown> | null;
-  const reason =
-    (body?.message as string) ||
-    (body?.error as string) ||
-    (body?.detail as string) ||
-    (body ? JSON.stringify(body) : null) ||
-    `HTTP ${err.status}`;
-  return reason.slice(0, 300);
-}
-
-/**
- * Detect Funnel's per-prospect time-conflict error so we can show a
- * specific, user-actionable message instead of the generic "we couldn't
- * schedule" fallback. Funnel's shape:
- * { errors: { appointment: { start: ["Prospect has a conflicting appointment at the same time."] } } }
- */
 function isTimeConflictError(err: unknown): boolean {
   if (!(err instanceof FunnelApiError)) return false;
   const body = err.parsedBody as
@@ -44,172 +17,114 @@ function isTimeConflictError(err: unknown): boolean {
   );
 }
 
-/**
- * Funnel returns naive datetime strings (e.g. "2026-04-30T11:45:00") that
- * already represent property-local (US/Eastern) wall-clock time. Passing
- * those through `new Date()` on a server running in UTC misinterprets them
- * as UTC and shifts the displayed time by 4–5 hours. Format the wall-clock
- * components directly instead.
- */
-function formatEasternWallTime(naiveIso: string): string {
-  const match = naiveIso.match(/^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})/);
-  if (!match) return naiveIso;
-  const [, y, mo, d, h, mi] = match;
-  // Build a UTC date from the parsed components, then format in UTC so the
-  // wall-clock numbers come out unchanged.
-  const dt = new Date(Date.UTC(+y, +mo - 1, +d, +h, +mi));
-  return dt.toLocaleString("en-US", {
-    weekday: "long",
-    month: "long",
-    day: "numeric",
-    year: "numeric",
-    hour: "numeric",
-    minute: "2-digit",
-    hour12: true,
-    timeZone: "UTC",
-  });
-}
-
-export async function POST(request: NextRequest) {
+export async function POST(request: Request) {
+  const context = websiteRequest();
+  context.setAction("book_tour");
   try {
-    const body = await request.json();
+    const form = await readWebsiteForm(request, true);
+    const { firstName, lastName, email, phone, start, bedrooms, budgetMin, budgetMax, notes, attribution } = form;
+    if (!start) throw new LeadInputError("Select an available tour time.");
 
-    const { firstName, lastName, email, phone, start, bedrooms, budgetMin, budgetMax } = body;
-    const funnelLeadSource = normalizeFunnelLeadSource(body);
-
-    // Funnel's `notes` renders as the lead's first message and is the only
-    // place source detail is visible to the leasing team. The tour modal's
-    // message field is usually blank, so this is often the only note we send.
-    const funnelNotes = [
-      typeof body.notes === "string" && body.notes.trim() ? body.notes.trim() : null,
-      buildSourceNote(body),
-    ]
-      .filter(Boolean)
-      .join("\n");
-
-    if (!email || !firstName) {
-      return NextResponse.json(
-        { error: "First name and email are required." },
-        { status: 400 }
-      );
+    const date = start.slice(0, 10);
+    const availability = await getAvailableTimes(date, date);
+    if (!availability.available_times?.some((slot: string) => slotWallTime(slot) === start)) {
+      throw new LeadInputError("That tour time is no longer available. Please choose another time.");
     }
+    const rejection = await guardForm(request, context, form);
+    if (rejection) return rejection;
 
-    if (!start) {
-      return NextResponse.json(
-        { error: "Appointment start time is required." },
-        { status: 400 }
-      );
-    }
-
-    // 1. Forward to Funnel CRM to book the appointment
+    let appointmentId: number | undefined;
+    let tourBooked = false;
     let funnelClientId: number | null = null;
-    let funnelFailed = false;
-    let funnelFailureReason: string | null = null;
-    let funnelFailureType: "time_conflict" | "other" | null = null;
-    const funnelEnabled = process.env.FUNNEL_ENABLED === "true";
-    if (funnelEnabled) {
+    let timeConflict = false;
+    if (process.env.FUNNEL_ENABLED === "true") {
       try {
-        const funnelResult = await bookTour({
+        const result = await bookTour({
           firstName,
-          lastName: lastName || "",
+          lastName,
           email,
-          phone: phone || undefined,
+          phone,
           start,
-          bedrooms: bedrooms != null ? Number(bedrooms) : undefined,
-          moveInDate: body.moveInDate,
-          priceFloor: budgetMin,
-          priceCeiling: budgetMax,
-          notes: funnelNotes || undefined,
-          leadSource: funnelLeadSource,
-          // Channel only. Campaign ID and keyword are deliberately not sent to
-          // Funnel — they never were, and `notes` reaches the prospect via
-          // Funnel's automated response. Both live in DAM Ops.
-          campaignInfo: buildCampaignInfo(body),
+          bedrooms,
+          priceFloor: budgetMin?.toString(),
+          priceCeiling: budgetMax?.toString(),
+          notes: [notes, buildSourceNote(attribution)].filter(Boolean).join("\n") || undefined,
+          leadSource: normalizeFunnelLeadSource(attribution),
+          campaignInfo: buildCampaignInfo(attribution),
         });
-        funnelClientId = funnelResult?.data?.client?.id || null;
+        const appointment = result?.data?.appointment;
+        funnelClientId = result?.data?.client?.id ?? null;
+        if (Number.isSafeInteger(appointment?.id) && appointment.id > 0) {
+          appointmentId = appointment.id;
+          // The live booking response omitted status. Its ID and slot matched
+          // a confirmed appointment on read-back. Respect explicit statuses
+          // when Funnel includes them.
+          tourBooked = typeof appointment.start === "string" &&
+            slotWallTime(appointment.start) === start &&
+            (appointment.status === undefined || appointment.status === 30);
+        }
+        context.log(tourBooked ? "funnel_booking_confirmed" : "funnel_booking_unverified");
+      } catch (error) {
+        timeConflict = isTimeConflictError(error);
+        context.log(
+          timeConflict ? "funnel_booking_conflict" : "funnel_booking_failed",
+          error instanceof FunnelApiError ? error.status : undefined,
+        );
+      }
+    } else {
+      context.log("funnel_booking_disabled");
+    }
 
-        // Diagnostic: log success shape so we can verify appointments persist
-        // and answer the open question about expiration_date behavior.
-        // Safe to remove once we have confidence.
-        console.log(JSON.stringify({
-          level: "info",
-          event: "funnel_booking_success",
-          funnel_client_id: funnelClientId,
-          funnel_appointment_id: funnelResult?.data?.appointment?.id ?? null,
-          funnel_appointment_status: funnelResult?.data?.appointment?.status ?? null,
-          funnel_expiration_date: funnelResult?.data?.appointment?.expiration_date ?? null,
-          email_hash: hashEmail(email),
-          start,
-        }));
-      } catch (funnelError) {
-        funnelFailureReason = extractFunnelReason(funnelError);
-        funnelFailureType = isTimeConflictError(funnelError) ? "time_conflict" : "other";
-        console.error(JSON.stringify({
-          level: "error",
-          event: "funnel_booking_failed",
-          funnel_status: funnelError instanceof FunnelApiError ? funnelError.status : null,
-          funnel_endpoint: funnelError instanceof FunnelApiError ? funnelError.endpoint : null,
-          funnel_response: funnelError instanceof FunnelApiError ? funnelError.parsedBody : null,
-          funnel_message: funnelError instanceof Error ? funnelError.message : String(funnelError),
-          email_hash: hashEmail(email),
-          start,
-        }));
-        funnelFailed = true;
+    let intake;
+    try {
+      intake = await captureLead({
+        organization_id: process.env.METROPARC_ORGANIZATION_ID!,
+        building_id: process.env.METROPARC_BUILDING_ID!,
+        first_name: firstName,
+        last_name: lastName,
+        email,
+        phone,
+        form_type: "book_tour",
+        source: "website",
+        bedrooms,
+        budget_min: budgetMin,
+        budget_max: budgetMax,
+        funnel_client_id: funnelClientId,
+        ...attribution,
+        notes: [
+          `Tour requested for ${formatTourSlot(start, true)} ET.`,
+          tourBooked ? "Funnel appointment confirmed." : "Funnel appointment not confirmed. Check Funnel before booking.",
+          appointmentId ? `Funnel appointment #${appointmentId}.` : null,
+          notes,
+        ].filter(Boolean).join(" "),
+      }, context.id);
+      context.log("intake_saved");
+    } catch {
+      context.log("intake_failed");
+      if (!tourBooked) {
+        return context.respond({ error: "We couldn’t verify your tour request. Please contact leasing before retrying." }, 502);
       }
     }
 
-    // 2. Always capture in DAM Ops (don't lose the lead even if Funnel failed)
-    const damResult = await captureLead({
-      organization_id: process.env.METROPARC_ORGANIZATION_ID!,
-      building_id: process.env.METROPARC_BUILDING_ID!,
-      first_name: firstName,
-      last_name: lastName || "",
-      email,
-      phone: phone || undefined,
-      form_type: "book_tour",
-      source: "website",
-      bedrooms: bedrooms != null ? Number(bedrooms) : undefined,
-      budget_min: budgetMin != null ? Number(budgetMin) : undefined,
-      budget_max: budgetMax != null ? Number(budgetMax) : undefined,
-      funnel_client_id: funnelClientId,
-      source_utm_source: body.source_utm_source,
-      source_utm_medium: body.source_utm_medium,
-      source_utm_campaign: body.source_utm_campaign,
-      source_utm_term: body.source_utm_term,
-      source_utm_content: body.source_utm_content,
-      source_referrer: body.source_referrer,
-      source_raw: body.source_raw,
-      source_gclid: body.source_gclid,
-      notes: [
-        `Tour requested for ${formatEasternWallTime(start)}`,
-        funnelFailureReason ? `[Funnel rejected: ${funnelFailureReason}]` : null,
-      ].filter(Boolean).join(" "),
-    });
-
-    // 3. If Funnel booking failed, tell the client the tour was not scheduled
-    if (funnelFailed) {
-      const errorMessage =
-        funnelFailureType === "time_conflict"
-          ? "You already have a tour scheduled near this time. Please pick a different slot."
-          : "We couldn't schedule your tour right now. Our leasing team has your info and will reach out to confirm.";
-      return NextResponse.json(
-        {
-          ...damResult,
-          tour_booked: false,
-          error: errorMessage,
-          error_type: funnelFailureType,
-        },
-        { status: 207 }
-      );
+    if (tourBooked) {
+      return context.respond({ ...intake, accepted: true, tour_booked: true, appointment_id: appointmentId }, 201);
     }
 
-    // 4. Return success
-    return NextResponse.json({ ...damResult, tour_booked: true }, { status: 201 });
+    return context.respond({
+      ...intake,
+      accepted: true,
+      tour_booked: false,
+      error_type: timeConflict ? "time_conflict" : "other",
+      error: timeConflict
+        ? "You already have a tour scheduled near this time. Please pick a different slot."
+        : "Your request was saved for follow-up.",
+    }, 207);
   } catch (error) {
-    console.error("Booking error:", error);
-    return NextResponse.json(
-      { error: error instanceof Error ? error.message : "Failed to book tour" },
-      { status: 500 }
-    );
+    if (error instanceof LeadInputError) {
+      context.log("invalid_input", error.status);
+      return context.respond({ error: error.message }, error.status);
+    }
+    context.log("booking_submission_failed");
+    return context.respond({ error: "We couldn’t submit your tour request. Please try again." }, 502);
   }
 }

@@ -110,6 +110,7 @@ export async function submitLead(data: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(payload),
+    signal: AbortSignal.timeout(8_000),
   });
 
   if (!res.ok) {
@@ -140,6 +141,7 @@ export async function getAvailableTimes(fromDate: string, toDate: string) {
       headers: {
         Authorization: getAuthHeader(),
       },
+      signal: AbortSignal.timeout(8_000),
     }
   );
 
@@ -216,6 +218,7 @@ export async function bookTour(data: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(payload),
+      signal: AbortSignal.timeout(8_000),
     }
   );
 

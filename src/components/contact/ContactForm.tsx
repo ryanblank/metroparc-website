@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { GTM_EVENTS, BEDROOM_OPTIONS, PRICE_RANGE_OPTIONS } from "@/lib/constants";
-import { getAttribution } from "@/lib/dam-ops-client";
+import { rememberAcceptedContact, submitWebsiteForm } from "@/lib/dam-ops-client";
 import { formatPhone, isCompletePhone } from "@/lib/format-phone";
 
 export default function ContactForm() {
@@ -44,28 +44,18 @@ export default function ContactForm() {
     setError(null);
 
     try {
-      const attribution = getAttribution();
-
-      const res = await fetch("/api/lead", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          firstName: formData.firstName,
-          lastName: formData.lastName,
-          email: formData.email,
-          phone: formData.phone,
-          bedrooms: formData.bedrooms !== "" ? Number(formData.bedrooms) : undefined,
-          budgetMin: formData.priceRange ? Number(formData.priceRange.split("-")[0]) : undefined,
-          budgetMax: formData.priceRange ? Number(formData.priceRange.split("-")[1]) : undefined,
-          message: formData.message,
-          formType: "general_inquiry",
-          ...attribution,
-        }),
+      const data = await submitWebsiteForm("/api/lead", {
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        email: formData.email,
+        phone: formData.phone,
+        bedrooms: formData.bedrooms !== "" ? Number(formData.bedrooms) : undefined,
+        budgetMin: formData.priceRange ? Number(formData.priceRange.split("-")[0]) : undefined,
+        budgetMax: formData.priceRange ? Number(formData.priceRange.split("-")[1]) : undefined,
+        message: formData.message,
+        formType: "general_inquiry",
       });
-
-      if (!res.ok) throw new Error("Failed to submit");
-
-      const data = await res.json();
+      rememberAcceptedContact(formData);
 
       // Fire dam_registration event with enriched data
       if (typeof window !== "undefined") {
@@ -99,8 +89,8 @@ export default function ContactForm() {
 
       setIsSuccess(true);
       setFormData({ firstName: "", lastName: "", email: "", phone: "", bedrooms: "", priceRange: "", message: "" });
-    } catch {
-      setError("Something went wrong. Please try again.");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Something went wrong. Please try again.");
     } finally {
       setIsSubmitting(false);
     }

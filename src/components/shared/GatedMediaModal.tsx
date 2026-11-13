@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { GTM_EVENTS } from "@/lib/constants";
-import { getAttribution } from "@/lib/dam-ops-client";
+import { rememberAcceptedContact, submitWebsiteForm, getVisitorContact, isListingMediaUnlocked } from "@/lib/dam-ops-client";
 import { formatPhone, isCompletePhone } from "@/lib/format-phone";
 
 type FormType = "floor_plan" | "video_tour" | "3d_tour" | "contact";
@@ -20,8 +20,6 @@ interface GatedMediaModalProps {
   unitPriceNet?: number | null;
 }
 
-const SESSION_KEY = "metroparc_media_gated";
-
 export default function GatedMediaModal({
   isOpen,
   onClose,
@@ -34,23 +32,18 @@ export default function GatedMediaModal({
   unitBathrooms,
   unitPriceNet,
 }: GatedMediaModalProps) {
-  const [isGated, setIsGated] = useState(true);
+  const isInquiry = formType === "contact";
+  const [accepted, setAccepted] = useState(false);
+  const [mediaUnlocked] = useState(isListingMediaUnlocked);
+  const showForm = !accepted && (isInquiry || !mediaUnlocked);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState(() => getVisitorContact() ?? {
     firstName: "",
     lastName: "",
     email: "",
     phone: "",
   });
-
-  // Check session for existing submission
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const stored = sessionStorage.getItem(SESSION_KEY);
-      if (stored) setIsGated(false);
-    }
-  }, []);
 
   // Lock body scroll
   useEffect(() => {
@@ -114,29 +107,17 @@ export default function GatedMediaModal({
     setError(null);
 
     try {
-      const attribution = getAttribution();
-
-      const res = await fetch("/api/lead", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          firstName: formData.firstName,
-          lastName: formData.lastName,
-          email: formData.email,
-          phone: formData.phone || undefined,
-          formType,
-          unitId,
-          bedrooms: unitBedrooms ?? undefined,
-          message: buildContextNotes(),
-          ...attribution,
-        }),
+      const data = await submitWebsiteForm("/api/lead", {
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        email: formData.email,
+        phone: formData.phone || undefined,
+        formType,
+        unitId,
+        bedrooms: unitBedrooms ?? undefined,
+        message: buildContextNotes(),
       });
-
-      if (!res.ok) {
-        throw new Error("Failed to submit");
-      }
-
-      const data = await res.json();
+      rememberAcceptedContact(formData);
 
       // Fire GTM event with enriched data from capture-lead response
       if (typeof window !== "undefined") {
@@ -166,22 +147,11 @@ export default function GatedMediaModal({
           customer_id: data.customer_id,
           is_new_customer: data.is_new_customer,
         });
-
-        // Store in session to skip gate for rest of session
-        sessionStorage.setItem(
-          SESSION_KEY,
-          JSON.stringify({
-            firstName: formData.firstName,
-            lastName: formData.lastName,
-            email: formData.email,
-            phone: formData.phone,
-          })
-        );
       }
 
-      setIsGated(false);
-    } catch {
-      setError("Something went wrong. Please try again.");
+      setAccepted(true);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Something went wrong. Please try again.");
     } finally {
       setIsSubmitting(false);
     }
@@ -214,19 +184,19 @@ export default function GatedMediaModal({
           &times;
         </button>
 
-        {isGated ? (
+        {showForm ? (
           /* Lead Capture Form */
           <div className="p-8">
             <div className="mb-6">
               <p className="font-decorative text-xs text-calm-waves mb-1">
-                {unitName ? `${unitName} — ${mediaLabel}` : mediaLabel}
+                {isInquiry ? `Unit ${unitName}` : unitName ? `${unitName} — ${mediaLabel}` : mediaLabel}
               </p>
               <h2 className="text-2xl font-semibold text-city-night">
-                Enter your info to view
+                {isInquiry ? "Inquire about this unit" : "Enter your info to view"}
               </h2>
-              <p className="text-sm text-calm-waves-muted mt-2">
+              {!isInquiry && <p className="text-sm text-calm-waves-muted mt-2">
                 Get instant access to floor plans, 3D tours, and videos.
-              </p>
+              </p>}
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-4">
@@ -300,14 +270,14 @@ export default function GatedMediaModal({
                 disabled={isSubmitting}
                 className="w-full bg-deep-ocean text-clouds py-3 rounded-md font-decorative text-sm uppercase tracking-[0.1em] cursor-pointer transition-all duration-300 hover:bg-deep-ocean-hover disabled:opacity-60 disabled:cursor-not-allowed border-none"
               >
-                {isSubmitting ? "Submitting..." : `View ${mediaLabel}`}
+                {isSubmitting ? "Submitting..." : isInquiry ? "Send inquiry" : `View ${mediaLabel}`}
               </button>
             </form>
           </div>
         ) : (
           /* Media Content */
           <div className="p-2">
-            {unitName && (
+            {unitName && !isInquiry && (
               <p className="font-decorative text-xs text-calm-waves mb-2 px-2 pt-2">
                 {unitName} — {mediaLabel}
               </p>

@@ -20,6 +20,25 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
+## Website form checks
+
+Keep `FUNNEL_ENABLED=false` during local QA. Use stubs for Funnel availability
+and booking responses and a stub or test destination for DAM Ops intake. The
+configured Funnel group 7380 is live.
+
+Both write routes use the same Redis REST store. Set
+`METROPARC_FORM_REDIS_URL`, `METROPARC_FORM_REDIS_TOKEN`, and a separate
+`METROPARC_FORM_HMAC_KEY` on the server. The default
+`METROPARC_FORM_LIMIT_MODE=observe` logs duplicate and rate-limit matches.
+Switch to `enforce` after tuning against traffic. In enforce mode an
+unavailable limiter returns HTTP 503 before writes. Enable
+`METROPARC_TRUST_VERCEL_IP=1` only after verifying the trusted proxy header.
+
+The initial thresholds allow eight distinct actions per normalized email
+per minute and 40 per trusted IP per minute. Identical lead actions are held
+for 30 seconds and identical bookings for 120 seconds, including after an
+ambiguous upstream result. Check Funnel before replaying an ambiguous booking.
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:

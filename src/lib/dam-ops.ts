@@ -91,7 +91,7 @@ export async function getListings(
   });
 
   if (!res.ok) {
-    console.error("[DAM Ops] get-listings failed:", res.status, await res.text());
+    console.error("[DAM Ops] get-listings failed:", res.status);
     return [];
   }
 
@@ -100,22 +100,27 @@ export async function getListings(
 }
 
 export async function captureLead(
-  payload: CaptureLeadPayload
+  payload: CaptureLeadPayload,
+  requestId: string,
 ): Promise<CaptureLeadResponse> {
   const res = await fetch(`${SUPABASE_URL}/functions/v1/capture-lead`, {
     method: "POST",
     headers: {
       Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
       "Content-Type": "application/json",
+      "X-Request-ID": requestId,
     },
     body: JSON.stringify(payload),
+    signal: AbortSignal.timeout(8_000),
   });
 
   if (!res.ok) {
-    const errorText = await res.text();
-    console.error("[DAM Ops] capture-lead failed:", res.status, errorText);
     throw new Error(`capture-lead failed: ${res.status}`);
   }
 
-  return res.json();
+  const result = await res.json();
+  if (typeof result?.activity_id !== "string" || !result.activity_id) {
+    throw new Error("DAM Ops did not confirm a saved activity");
+  }
+  return result;
 }

@@ -1,95 +1,66 @@
-import { NextRequest, NextResponse } from "next/server";
 import { captureLead } from "@/lib/dam-ops";
-import { submitLead } from "@/lib/funnel-api";
-import {
-  buildCampaignInfo,
-  buildSourceNote,
-  normalizeFunnelLeadSource,
-} from "@/lib/funnel-lead-source";
+import { submitLead, FunnelApiError } from "@/lib/funnel-api";
+import { buildCampaignInfo, buildSourceNote, normalizeFunnelLeadSource } from "@/lib/funnel-lead-source";
+import { guardForm, validateUnit, websiteRequest } from "@/lib/website-form-guard";
+import { LeadInputError, readWebsiteForm } from "@/lib/website-form-input";
 
-export async function POST(request: NextRequest) {
+export async function POST(request: Request) {
+  const context = websiteRequest();
   try {
-    const body = await request.json();
+    const form = await readWebsiteForm(request);
+    const { firstName, lastName, email, phone, formType, unitId, bedrooms, budgetMin, budgetMax, notes, attribution } = form;
+    context.setAction(formType);
+    await validateUnit(unitId);
+    const rejection = await guardForm(request, context, form);
+    if (rejection) return rejection;
 
-    const { firstName, lastName, email, formType, unitId, bedrooms, budgetMin, budgetMax } = body;
-    const funnelLeadSource = normalizeFunnelLeadSource(body);
-
-    // Funnel's `notes` renders as the lead's first message and is the only
-    // place source detail is visible to the leasing team. Append it after the
-    // form's own context rather than replacing it.
-    const funnelNotes = [
-      typeof body.message === "string" && body.message.trim() ? body.message.trim() : null,
-      buildSourceNote(body),
-    ]
-      .filter(Boolean)
-      .join("\n");
-
-    if (!email || !firstName) {
-      return NextResponse.json(
-        { error: "First name and email are required." },
-        { status: 400 }
-      );
-    }
-
-    // 1. Forward to Funnel CRM first to get funnel_client_id (best-effort)
     let funnelClientId: number | null = null;
-    const funnelEnabled = process.env.FUNNEL_ENABLED === "true";
-    if (funnelEnabled) {
+    if (process.env.FUNNEL_ENABLED === "true") {
       try {
-        const funnelResult = await submitLead({
+        const result = await submitLead({
           firstName,
-          lastName: lastName || "",
+          lastName,
           email,
-          phone: body.phone || undefined,
-          bedrooms: bedrooms != null ? Number(bedrooms) : undefined,
-          priceFloor: budgetMin != null ? String(budgetMin) : undefined,
-          priceCeiling: budgetMax != null ? String(budgetMax) : undefined,
-          notes: funnelNotes || undefined,
-          leadSource: funnelLeadSource,
-          // Channel only. Campaign ID and keyword are deliberately not sent to
-          // Funnel — they never were, and `notes` reaches the prospect via
-          // Funnel's automated response. Both live in DAM Ops.
-          campaignInfo: buildCampaignInfo(body),
+          phone,
+          bedrooms,
+          priceFloor: budgetMin?.toString(),
+          priceCeiling: budgetMax?.toString(),
+          notes: [notes, buildSourceNote(attribution)].filter(Boolean).join("\n") || undefined,
+          leadSource: normalizeFunnelLeadSource(attribution),
+          campaignInfo: buildCampaignInfo(attribution),
         });
-        funnelClientId = funnelResult?.data?.client?.id || null;
-      } catch (funnelError) {
-        console.error("[Funnel] Lead forward failed:", funnelError);
-        // Do NOT throw — proceed to DAM Ops without funnel_client_id
+        funnelClientId = result?.data?.client?.id ?? null;
+        context.log("funnel_lead_accepted");
+      } catch (error) {
+        context.log("funnel_lead_failed", error instanceof FunnelApiError ? error.status : undefined);
       }
     }
 
-    // 2. Capture in DAM Ops with funnel_client_id if available
-    const damResult = await captureLead({
+    const result = await captureLead({
       organization_id: process.env.METROPARC_ORGANIZATION_ID!,
       building_id: process.env.METROPARC_BUILDING_ID!,
-      unit_id: unitId || undefined,
+      unit_id: unitId,
       first_name: firstName,
-      last_name: lastName || "",
+      last_name: lastName,
       email,
-      phone: body.phone || undefined,
-      form_type: formType || "contact",
+      phone,
+      form_type: formType,
       source: "website",
-      bedrooms: bedrooms != null ? Number(bedrooms) : undefined,
-      budget_min: budgetMin != null ? Number(budgetMin) : undefined,
-      budget_max: budgetMax != null ? Number(budgetMax) : undefined,
+      bedrooms,
+      budget_min: budgetMin,
+      budget_max: budgetMax,
+      notes,
       funnel_client_id: funnelClientId,
-      source_utm_source: body.source_utm_source,
-      source_utm_medium: body.source_utm_medium,
-      source_utm_campaign: body.source_utm_campaign,
-      source_utm_term: body.source_utm_term,
-      source_utm_content: body.source_utm_content,
-      source_referrer: body.source_referrer,
-      source_raw: body.source_raw,
-      source_gclid: body.source_gclid,
-    });
-
-    // 3. Return capture-lead response to client
-    return NextResponse.json(damResult, { status: 201 });
+      ...attribution,
+    }, context.id);
+    context.log("intake_saved");
+    return context.respond({ ...result, accepted: true }, 201);
   } catch (error) {
-    console.error("Lead submission error:", error);
-    return NextResponse.json(
-      { error: error instanceof Error ? error.message : "Failed to submit lead" },
-      { status: 500 }
-    );
+    if (error instanceof LeadInputError) {
+      context.log("invalid_input", error.status);
+      return context.respond({ error: error.message }, error.status);
+    }
+    context.log("lead_submission_failed");
+    return context.respond({ error: "We couldn’t save your submission. Please try again." }, 502);
   }
 }
