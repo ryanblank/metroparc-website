@@ -114,7 +114,7 @@ export default function BookTourModal({ isOpen, onClose }: BookTourModalProps) {
       return;
     }
     if (!isCompletePhone(formData.phone)) {
-      setError("Please enter a 10-digit phone number.");
+      setError("Please enter a valid 10-digit phone number.");
       return;
     }
     if (!formData.date || !formData.time || !availableTimes.some(({ time }) => time === formData.time)) {

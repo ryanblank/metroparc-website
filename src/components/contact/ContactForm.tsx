@@ -36,7 +36,7 @@ export default function ContactForm() {
       return;
     }
     if (!isCompletePhone(formData.phone)) {
-      setError("Please enter a 10-digit phone number.");
+      setError("Please enter a valid 10-digit phone number.");
       return;
     }
 

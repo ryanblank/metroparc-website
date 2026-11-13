@@ -99,7 +99,7 @@ export default function GatedMediaModal({
     }
     // Phone is optional here, but if entered it must be complete.
     if (formData.phone && !isCompletePhone(formData.phone)) {
-      setError("Please enter a 10-digit phone number.");
+      setError("Please enter a valid 10-digit phone number.");
       return;
     }
 
