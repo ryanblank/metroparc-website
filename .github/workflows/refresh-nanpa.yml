@@ -1,0 +1,85 @@
+name: Refresh NANPA data
+on:
+  schedule:
+    - cron: '23 12 * * 2'
+  workflow_dispatch:
+    inputs:
+      deploy_only:
+        description: Redeploy the valid committed snapshot without downloading
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: nanpa-refresh-main
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    if: vars.NANPA_REFRESH_ENABLED == 'true' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      FUNNEL_ENABLED: 'false'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 1
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+      - name: Require deployment configuration
+        env:
+          NANPA_VERCEL_DEPLOY_HOOK: ${{ secrets.NANPA_VERCEL_DEPLOY_HOOK }}
+        run: node scripts/deploy-nanpa.mjs --check
+      - run: npm ci
+      - run: npm run refresh:nanpa
+        if: inputs.deploy_only != true
+      - name: Validate committed snapshot
+        run: node --experimental-strip-types scripts/check-nanpa-snapshot.mjs
+      - name: Test validation and route regressions
+        run: |
+          node --experimental-strip-types --test tests/nanpa.test.mjs
+          node tests/website-phone-routes.cjs
+          npx tsc --noEmit --incremental false
+          npx eslint src/lib/nanpa.ts src/lib/website-form-input.ts scripts/refresh-nanpa.mjs scripts/deploy-nanpa.mjs
+          git diff --check
+      - name: Detect changed artifact
+        id: artifact
+        run: |
+          if git diff --quiet -- src/data/nanpa.json; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Commit only the snapshot
+        if: inputs.deploy_only != true && steps.artifact.outputs.changed == 'true'
+        run: |
+          set -eu
+          changed="$(git diff --name-only)"
+          test "$changed" = "src/data/nanpa.json"
+          test -z "$(git ls-files --others --exclude-standard)"
+          git fetch origin main
+          test "$(git rev-parse HEAD)" = "$(git rev-parse origin/main)"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -- src/data/nanpa.json
+          git commit -m "Refresh official NANPA snapshot"
+          git push origin HEAD:main
+      - name: Refuse deployment if main moved
+        if: inputs.deploy_only == true || steps.artifact.outputs.changed == 'true'
+        run: |
+          git fetch origin main
+          test "$(git rev-parse HEAD)" = "$(git rev-parse origin/main)"
+      - name: Request Vercel deployment of main
+        if: inputs.deploy_only == true || steps.artifact.outputs.changed == 'true'
+        env:
+          NANPA_VERCEL_DEPLOY_HOOK: ${{ secrets.NANPA_VERCEL_DEPLOY_HOOK }}
+        run: node scripts/deploy-nanpa.mjs
+      - name: Record data version
+        if: inputs.deploy_only == true || steps.artifact.outputs.changed == 'true'
+        run: node -e 'const s=require("./src/data/nanpa.json");require("fs").appendFileSync(process.env.GITHUB_STEP_SUMMARY,"NANPA "+s.version+"\nDeployment requested through the main-branch Vercel hook. Check Vercel for Ready status.\n")'

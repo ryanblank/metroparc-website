@@ -93,12 +93,11 @@ export default function GatedMediaModal({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.firstName || !formData.lastName || !formData.email) {
+    if (!formData.firstName || !formData.lastName || !formData.email || !formData.phone) {
       setError("Please fill in all required fields.");
       return;
     }
-    // Phone is optional here, but if entered it must be complete.
-    if (formData.phone && !isCompletePhone(formData.phone)) {
+    if (!isCompletePhone(formData.phone)) {
       setError("Please enter a valid 10-digit phone number.");
       return;
     }
@@ -111,7 +110,7 @@ export default function GatedMediaModal({
         firstName: formData.firstName,
         lastName: formData.lastName,
         email: formData.email,
-        phone: formData.phone || undefined,
+        phone: formData.phone,
         formType,
         unitId,
         bedrooms: unitBedrooms ?? undefined,
@@ -248,12 +247,13 @@ export default function GatedMediaModal({
 
               <div>
                 <label htmlFor="gate-phone" className="block text-xs font-medium text-city-night mb-1">
-                  Phone
+                  Phone <span className="text-error">*</span>
                 </label>
                 <input
                   id="gate-phone"
                   name="phone"
                   type="tel"
+                  required
                   inputMode="tel"
                   autoComplete="tel"
                   value={formData.phone}

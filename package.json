@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "refresh:nanpa": "node --experimental-strip-types scripts/refresh-nanpa.mjs"
   },
   "dependencies": {
     "lightningcss": "^1.32.0",

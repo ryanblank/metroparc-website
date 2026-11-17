@@ -1,3 +1,5 @@
+import snapshot from "../data/nanpa.json";
+import { checkNanpa } from "./nanpa";
 import { easternSlot, slotWallTime } from "./tour-slot";
 import { isCompletePhone } from "./format-phone";
 
@@ -114,8 +116,17 @@ export async function readWebsiteForm(request: Request, booking = false) {
     source_gclid: optionalString(body.source_gclid, ATTRIBUTION_LIMITS.source_gclid, "Invalid attribution."),
   };
   const phone = optionalString(body.phone, 80, "Enter a valid phone number.")?.trim() || undefined;
-  if ((phone || booking || formType === "general_inquiry") && !isCompletePhone(phone ?? "")) {
+  if (!isCompletePhone(phone ?? "")) {
     throw new LeadInputError("Enter a valid 10-digit phone number.");
+  }
+  if (phone) {
+    const membership = checkNanpa(phone, snapshot);
+    if (membership.reason !== "in_service") {
+      console.info(JSON.stringify({ event: "nanpa_validation", reason: membership.reason, version: snapshot.version }));
+    }
+    if (membership.reject) {
+      throw new LeadInputError("Check your phone area code and enter a number currently in service.");
+    }
   }
   const bedrooms = optionalNumber(body.bedrooms, 20, "Select a valid bedroom count.");
   if (bedrooms !== undefined && !Number.isInteger(bedrooms)) {
