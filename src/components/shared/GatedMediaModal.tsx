@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { GTM_EVENTS } from "@/lib/constants";
 import { rememberAcceptedContact, submitWebsiteForm, getVisitorContact, isListingMediaUnlocked } from "@/lib/dam-ops-client";
 import { formatPhone, isCompletePhone } from "@/lib/format-phone";
@@ -36,6 +36,27 @@ export default function GatedMediaModal({
   const [accepted, setAccepted] = useState(false);
   const [mediaUnlocked] = useState(isListingMediaUnlocked);
   const showForm = !accepted && (isInquiry || !mediaUnlocked);
+  const showTour = mediaType === "3dtour" && !isInquiry && !showForm;
+  const tourControls = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!isOpen || !showTour) return;
+    const opener = document.activeElement as HTMLElement | null;
+    tourControls.current?.querySelector<HTMLButtonElement>("button")?.focus();
+    return () => opener?.focus();
+  }, [isOpen, showTour]);
+
+  useEffect(() => {
+    if (!isOpen || !showTour) return;
+    const handleKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        onClose();
+      }
+    };
+    document.addEventListener("keydown", handleKey);
+    return () => document.removeEventListener("keydown", handleKey);
+  }, [isOpen, showTour, onClose]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [formData, setFormData] = useState(() => getVisitorContact() ?? {
@@ -173,8 +194,9 @@ export default function GatedMediaModal({
     >
       <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" />
 
-      <div className="relative bg-white rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl animate-[fadeInUp_0.3s_ease]">
+      <div className={`relative bg-white rounded-xl w-full shadow-2xl animate-[fadeInUp_0.3s_ease] ${showTour ? "max-w-none max-h-[calc(100dvh-2rem)] overflow-hidden" : "max-w-2xl max-h-[90vh] overflow-y-auto"}`}>
         {/* Close */}
+        {!showTour && (
         <button
           onClick={onClose}
           className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center text-city-night/60 hover:text-city-night transition-colors cursor-pointer bg-transparent border-none text-xl z-10"
@@ -182,6 +204,7 @@ export default function GatedMediaModal({
         >
           &times;
         </button>
+        )}
 
         {showForm ? (
           /* Lead Capture Form */
@@ -277,12 +300,22 @@ export default function GatedMediaModal({
         ) : (
           /* Media Content */
           <div className="p-2">
-            {unitName && !isInquiry && (
+            {showTour && (
+              <div ref={tourControls} className="flex items-center gap-3 px-2 pb-2 min-h-12">
+                <p className="font-decorative text-xs text-calm-waves flex-1">
+                  {unitName ? `${unitName} — ` : ""}3D Tour
+                </p>
+                <button type="button" onClick={onClose} aria-label="Close" className="shrink-0 w-10 h-10 rounded text-xl text-city-night cursor-pointer">
+                  &times;
+                </button>
+              </div>
+            )}
+            {unitName && !isInquiry && !showTour && (
               <p className="font-decorative text-xs text-calm-waves mb-2 px-2 pt-2">
                 {unitName} — {mediaLabel}
               </p>
             )}
-            <div className="flex items-center justify-center">
+            <div className={`flex items-center justify-center ${showTour ? "h-[calc(100dvh-6rem)] [&_iframe]:h-full" : ""}`}>
               {formType === "contact" ? (
                 <div className="text-center px-8 py-12">
                   <h2 className="text-2xl font-semibold text-city-night mb-3">
